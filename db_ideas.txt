@@ -1,0 +1,10 @@
+Matches Table
+Match ID
+Tournament ID
+Round No.
+Player1 ast
+Player2 ast
+
+Tournament Table
+TournamentID
+Tournament name
