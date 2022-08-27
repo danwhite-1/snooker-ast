@@ -24,7 +24,6 @@ class Match:
 
         return -1, -1
 
-
     def getMatchInfo(self):
         ret_dict = {
             "matchid" : self.matchid,

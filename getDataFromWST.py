@@ -6,6 +6,7 @@ from psutil import AccessDenied
 from tournament import Tournament
 from match import Match
 from accessDB import accessSnookerDB
+from logger import logLevel, log, initLogs
 
 valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
 
@@ -48,8 +49,8 @@ def main():
     print("finished w/o err")
 
 if __name__ == "__main__":
+    initLogs()
     main()
-
 
 # Theory of how a daily update script would run
 # Checks for valid tournaments above our current largest
