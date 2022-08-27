@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-import math
-from nis import match
-from psutil import AccessDenied
 from tournament import Tournament
 from match import Match
 from accessDB import accessSnookerDB
