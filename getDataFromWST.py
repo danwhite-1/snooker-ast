@@ -31,13 +31,13 @@ def main():
     if new_tourn_ids:
         for tourn in new_tourn_ids:
             if Tournament.isFinished(tourn):
-                print(f"{tourn} is finished")
+                log(logLevel.INFO ,f"{tourn} is finished")
                 new_tourns.append(Tournament(tourn))
     else:
-        print("No new tournaments found")
+        log(logLevel.INFO, "No new tournaments found")
 
     for t in new_tourns:
-        print(f"{t.tournamentid} being added to db")
+        log(logLevel.INFO ,f"{t.tournamentid} being added to db")
         dbcon.addTournamentToDB(t)
 
     for t in new_tourns:
@@ -46,7 +46,7 @@ def main():
                 m = Match(m_id, t.tournamentid)
                 dbcon.addMatchToDB(m)
 
-    print("finished w/o err")
+    log(logLevel.INFO, "Finished without Error")
 
 if __name__ == "__main__":
     initLogs()

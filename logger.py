@@ -1,6 +1,8 @@
 from enum import Enum
 from datetime import datetime
 
+logOutput = "logfile"
+
 class logLevel(str, Enum):
     INFO = "INFO"
     WARN = "WARN"
@@ -9,13 +11,16 @@ class logLevel(str, Enum):
 
 def initLogs():
     logfile = open("snookerast_logs.txt", "a")
-    logfile.write(f"{'-' * 60}")
+    logfile.write(f"\n{'-' * 60}\n")
     logfile.close()
 
 def log(level, message):
-    logfile = open("snookerast_logs.txt", "a")
-    logfile.write(createLogMessage(level, message))
-    logfile.close()
+    if logOutput == "logfile":
+        logfile = open("snookerast_logs.txt", "a")
+        logfile.write(createLogMessage(level, message))
+        logfile.close()
+    else:
+        print(createLogMessage(level, message))
 
 def createLogMessage(level, message):
     return f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][{level}] {message}\n"

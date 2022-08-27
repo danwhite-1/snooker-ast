@@ -1,12 +1,12 @@
 import psycopg2
-
+from logger import log, logLevel
 class accessSnookerDB:
     def __init__(self) :
         try:
             self.conn = psycopg2.connect("dbname='snookertest' host='/tmp/' user='postgres' password='myPassword'")
             self.cursor = self.conn.cursor()
         except psycopg2.DatabaseError as err:
-            print(err)
+            log(logLevel.ERR, err)
             return False
 
     def closedb(self):
@@ -22,7 +22,7 @@ class accessSnookerDB:
             self.conn.commit()
         except psycopg2.errors.UniqueViolation as err:
             self.conn.rollback()
-            print("Error: This tournament already exists")
+            log(logLevel.ERR ,"Error: This tournament already exists")
 
     def addMatchToDB(self, match):
         tab = "matches"
