@@ -28,11 +28,13 @@ class accessSnookerDB:
         tab = "matches"
         vals = [match.matchid, match.tournamentid, match.roundno, match.p1ast, match.p2ast]
         command = constructInsert(tab, vals)
-        self.cursor.execute(command)
-        self.conn.commit()
-        if self.cursor.rowcount == 1:
+
+        try:
+            self.cursor.execute(command)
+            self.conn.commit()
             return True
-        else:
+        except psycopg2.errors.UniqueViolation as err:
+            self.conn.rollback()
             return False
 
     def getLargestTournamentID(self) -> str:
