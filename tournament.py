@@ -50,14 +50,20 @@ class Tournament:
 
     @staticmethod
     def isValidTourn(tourn_num):
+        valid = False
+        isChampLeague = False
         r = requests.get(INDEX_URL + str(tourn_num), allow_redirects=False)
         if r.status_code == 200:
             with StringIO(r.text) as s:
                 for line in s.readlines():
+                    if valid:
+                        if "championship league" in line.lower():
+                            isChampLeague = True
+                        break
                     if "tournament-name" in line:
-                        return True
+                        valid = True
 
-        return False
+        return valid and not isChampLeague
 
     @staticmethod # This is a bit messy, could do with a refactor or whole rethink
     def isFinished(tourn_num):
