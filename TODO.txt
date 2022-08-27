@@ -1,0 +1,2 @@
+Consider putting date in tournament table
+Consider putting date in match table - don't think this is possible

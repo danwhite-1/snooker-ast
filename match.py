@@ -19,7 +19,7 @@ class Match:
                         p_idx = line.index("</p>")
                         rtn_arr.append(line[p_idx-9:p_idx-5])
 
-        if rtn_arr:
+        if len(rtn_arr) == 2:
             return rtn_arr[0], rtn_arr[1]
 
         return -1, -1
@@ -39,8 +39,12 @@ class Match:
         if r.status_code == 200:
             with StringIO(r.text) as s:
                 for line in s.readlines():
-                    if "final" in line: # Will catch quarter and semi NOT TESTED YET
-                        return line.strip()[4:-5]
+                    if "Final" in line:
+                        if "Semi" in line:
+                            return "semi-final"
+                        elif "Quarter" in line:
+                            return "quarter-final"
+                        return "final"
                     elif "<p>Round" in line:
                         return line.strip()[3:10]
 
