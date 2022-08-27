@@ -23,7 +23,7 @@ def findValidTourns(startnum, endnum):
 
 def main():
     dbcon = accessSnookerDB()
-    current_largest_tourn = 14539#dbcon.getLargestTournamentID()
+    current_largest_tourn = 14538#dbcon.getLargestTournamentID()
     new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
     new_tourns = []
 
@@ -41,8 +41,9 @@ def main():
 
     for t in new_tourns:
         for m_id in t.matches:
-            m = Match(m_id, t.tournamentid)
-            dbcon.addMatchToDB(m)
+            if Match.isMatchValid(m_id, t.tournamentid):
+                m = Match(m_id, t.tournamentid)
+                dbcon.addMatchToDB(m)
 
     print("finished w/o err")
 

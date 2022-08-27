@@ -18,10 +18,12 @@ class Match:
                     if "secs" in line:
                         p_idx = line.index("</p>")
                         rtn_arr.append(line[p_idx-9:p_idx-5])
-        else:
-            return -1, -1
 
-        return rtn_arr[0], rtn_arr[1]
+        if rtn_arr:
+            return rtn_arr[0], rtn_arr[1]
+
+        return -1, -1
+
 
     def getMatchInfo(self):
         ret_dict = {
@@ -43,3 +45,10 @@ class Match:
                         return line.strip()[3:10]
 
         return "not found"
+
+    @staticmethod
+    def isMatchValid(matchid, tournamentid) -> bool:
+        r = requests.get(RESULT_URL + tournamentid + "/" + matchid + "/", allow_redirects=False)
+        if r.status_code == 200:
+            return True
+        return False
