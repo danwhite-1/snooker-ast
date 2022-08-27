@@ -21,7 +21,7 @@ def findValidTourns(startnum, endnum):
 
     return rtn_arr
 
-if __name__ == "__main__":
+def main():
     dbcon = accessSnookerDB()
     current_largest_tourn = 14539#dbcon.getLargestTournamentID()
     new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
@@ -45,6 +45,9 @@ if __name__ == "__main__":
             dbcon.addMatchToDB(m)
 
     print("finished w/o err")
+
+if __name__ == "__main__":
+    main()
 
 
 # Theory of how a daily update script would run
