@@ -1,5 +1,6 @@
 import psycopg2
 from logger import log, logLevel
+
 class accessSnookerDB:
     def __init__(self) :
         try:
