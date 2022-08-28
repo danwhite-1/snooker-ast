@@ -20,6 +20,36 @@ def findValidTourns(startnum, endnum):
 
     return rtn_arr
 
+def checkNewTourns(newTournIds):
+    rtn_arr = []
+    if not newTournIds:
+        log(logLevel.INFO, "No new tournaments found")
+        return rtn_arr
+
+    for tourn in newTournIds:
+        if Tournament.isFinished(tourn):
+            log(logLevel.INFO ,f"{tourn} is finished")
+            rtn_arr.append(Tournament(tourn))
+        else:
+            log(logLevel.INFO, f"{tourn} is not finished")
+
+    return rtn_arr
+
+def addNewTournsToDb(dbcon, newTourns):
+    if newTourns:
+        for t in newTourns:
+            log(logLevel.INFO ,f"{t.tournamentid} being added to DB")
+            dbcon.addTournamentToDB(t)
+    else:
+        log(logLevel.INFO, "No tournaments to be added to DB")
+
+def addTournMatchesToDB(dbcon, newTourns):
+    for t in newTourns:
+        for m_id in t.matches:
+            if Match.isMatchValid(m_id, t.tournamentid):
+                m = Match(m_id, t.tournamentid)
+                dbcon.addMatchToDB(m)
+
 def parseArgs():
     parser = ArgumentParser()
     parser.add_argument("-o", "--output", help="Send output to logfile or stdout. Default value: 'logfile' Option value: 'stdout'")
@@ -33,32 +63,12 @@ def parseArgs():
 
 def main():
     dbcon = accessSnookerDB()
+
     current_largest_tourn = dbcon.getLargestTournamentID()
     new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
-    new_tourns = []
-
-    if new_tourn_ids:
-        for tourn in new_tourn_ids:
-            if Tournament.isFinished(tourn):
-                log(logLevel.INFO ,f"{tourn} is finished")
-                new_tourns.append(Tournament(tourn))
-            else:
-                log(logLevel.INFO, f"{tourn} is not finished")
-    else:
-        log(logLevel.INFO, "No new tournaments found")
-
-    if new_tourns:
-        for t in new_tourns:
-            log(logLevel.INFO ,f"{t.tournamentid} being added to DB")
-            dbcon.addTournamentToDB(t)
-    else:
-        log(logLevel.INFO, "No tournaments to be added to DB")
-
-    for t in new_tourns:
-        for m_id in t.matches:
-            if Match.isMatchValid(m_id, t.tournamentid):
-                m = Match(m_id, t.tournamentid)
-                dbcon.addMatchToDB(m)
+    new_tourns = checkNewTourns(new_tourn_ids)
+    addNewTournsToDb(dbcon, new_tourns)
+    addTournMatchesToDB(dbcon, new_tourns)
 
     dbcon.closedb()
 
