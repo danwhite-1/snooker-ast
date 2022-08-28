@@ -5,14 +5,15 @@ from match import Match
 from accessDB import accessSnookerDB
 from logger import logLevel, log, initLogs, logOutput
 from argparse import ArgumentParser
+from typing import List
 
 valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
 
-def findNewValidTournaments(startnum):
+def findNewValidTournaments(startnum) -> List[int]:
     endnum = startnum + 100
     return findValidTourns(startnum, endnum)
 
-def findValidTourns(startnum, endnum):
+def findValidTourns(startnum, endnum) -> List[int]:
     rtn_arr = []
     for i in range(startnum + 1, endnum): # Already checked up to 20000 on 14/08/22
         if Tournament.isValidTourn(i):
@@ -20,7 +21,7 @@ def findValidTourns(startnum, endnum):
 
     return rtn_arr
 
-def checkNewTourns(newTournIds):
+def checkNewTourns(newTournIds) -> List[Tournament]:
     rtn_arr = []
     if not newTournIds:
         log(logLevel.INFO, "No new tournaments found")
@@ -35,7 +36,7 @@ def checkNewTourns(newTournIds):
 
     return rtn_arr
 
-def addNewTournsToDb(dbcon, newTourns):
+def addNewTournsToDb(dbcon, newTourns) -> None:
     if newTourns:
         for t in newTourns:
             log(logLevel.INFO ,f"{t.tournamentid} being added to DB")
@@ -43,14 +44,14 @@ def addNewTournsToDb(dbcon, newTourns):
     else:
         log(logLevel.INFO, "No tournaments to be added to DB")
 
-def addTournMatchesToDB(dbcon, newTourns):
+def addTournMatchesToDB(dbcon, newTourns) -> None:
     for t in newTourns:
         for m_id in t.matches:
             if Match.isMatchValid(m_id, t.tournamentid):
                 m = Match(m_id, t.tournamentid)
                 dbcon.addMatchToDB(m)
 
-def parseArgs():
+def parseArgs() -> None:
     parser = ArgumentParser()
     parser.add_argument("-o", "--output", help="Send output to logfile or stdout. Default value: 'logfile' Option value: 'stdout'")
     args = parser.parse_args()
