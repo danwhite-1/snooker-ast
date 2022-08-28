@@ -3,7 +3,8 @@
 from tournament import Tournament
 from match import Match
 from accessDB import accessSnookerDB
-from logger import logLevel, log, initLogs
+from logger import logLevel, log, initLogs, logOutput
+from argparse import ArgumentParser
 
 valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
 
@@ -19,9 +20,18 @@ def findValidTourns(startnum, endnum):
 
     return rtn_arr
 
+def parseArgs():
+    parser = ArgumentParser()
+    parser.add_argument("-o", "--output", help="Send output to logfile or stdout. Default value: 'logfile' Option value: 'stdout'")
+    args = parser.parse_args()
+
+    if args.output == "stdout":
+        logOutput[0] = "stdout"
+        log(logLevel.INFO, "Setting log output to stdout")
+
 def main():
     dbcon = accessSnookerDB()
-    current_largest_tourn = 14538#dbcon.getLargestTournamentID()
+    current_largest_tourn = dbcon.getLargestTournamentID()
     new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
     new_tourns = []
 
@@ -30,12 +40,17 @@ def main():
             if Tournament.isFinished(tourn):
                 log(logLevel.INFO ,f"{tourn} is finished")
                 new_tourns.append(Tournament(tourn))
+            else:
+                log(logLevel.INFO, f"{tourn} is not finished")
     else:
         log(logLevel.INFO, "No new tournaments found")
 
-    for t in new_tourns:
-        log(logLevel.INFO ,f"{t.tournamentid} being added to db")
-        dbcon.addTournamentToDB(t)
+    if new_tourns:
+        for t in new_tourns:
+            log(logLevel.INFO ,f"{t.tournamentid} being added to DB")
+            dbcon.addTournamentToDB(t)
+    else:
+        log(logLevel.INFO, "No tournaments to be added to DB")
 
     for t in new_tourns:
         for m_id in t.matches:
@@ -43,9 +58,12 @@ def main():
                 m = Match(m_id, t.tournamentid)
                 dbcon.addMatchToDB(m)
 
+    dbcon.closedb()
+
     log(logLevel.INFO, "Finished without Error")
 
 if __name__ == "__main__":
+    parseArgs()
     initLogs()
     main()
 

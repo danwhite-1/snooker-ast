@@ -1,7 +1,7 @@
 from enum import Enum
 from datetime import datetime
 
-logOutput = "logfile"
+logOutput = ["logfile"] # Needs to be a list so can be modified in main
 
 class logLevel(str, Enum):
     INFO = "INFO"
@@ -15,12 +15,12 @@ def initLogs():
     logfile.close()
 
 def log(level, message):
-    if logOutput == "logfile":
+    if logOutput[0] == "logfile":
         logfile = open("snookerast_logs.txt", "a")
         logfile.write(createLogMessage(level, message))
         logfile.close()
     else:
-        print(createLogMessage(level, message))
+        print(createLogMessage(level, message), end="") #newline is handled by createLogMessage
 
 def createLogMessage(level, message):
     return f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][{level}] {message}\n"
