@@ -28,6 +28,8 @@ def parseArgs():
     if args.output == "stdout":
         logOutput[0] = "stdout"
         log(logLevel.INFO, "Setting log output to stdout")
+    else:
+        initLogs()
 
 def main():
     dbcon = accessSnookerDB()
@@ -64,7 +66,6 @@ def main():
 
 if __name__ == "__main__":
     parseArgs()
-    initLogs()
     main()
 
 # Theory of how a daily update script would run
