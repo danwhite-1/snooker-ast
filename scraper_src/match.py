@@ -1,6 +1,8 @@
 import requests
 from io import StringIO
 from wst_urls import RESULT_URL
+from logger import logLevel, log
+from utils import isFloat
 
 class Match:
     def __init__(self, matchid, tournamentid):
@@ -17,7 +19,14 @@ class Match:
                 for line in s.readlines():
                     if "secs" in line:
                         p_idx = line.index("</p>")
-                        rtn_arr.append(line[p_idx-9:p_idx-5])
+                        val = line[p_idx-9:p_idx-5]
+                        if not isFloat(val):
+                            if val[0] == ">": # incase the shot time < 10.0
+                                val = val[1:]
+                            else:
+                                log(logLevel.ERR, f"Tournament: {self.tournamentid} Match: {self.matchid} Failed to parse AST")
+                                return -1, -1
+                        rtn_arr.append(val)
 
         if len(rtn_arr) == 2:
             return rtn_arr[0], rtn_arr[1]
