@@ -6,6 +6,7 @@ from accessDB import accessSnookerDB
 from logger import logLevel, log, initLogs, logOutput
 from argparse import ArgumentParser
 from typing import List
+from utils import isInt
 
 valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
 
@@ -29,10 +30,10 @@ def checkNewTourns(newTournIds) -> List[Tournament]:
 
     for tourn in newTournIds:
         if Tournament.isFinished(tourn):
-            log(logLevel.INFO ,f"{tourn} is finished")
+            log(logLevel.INFO ,f"Tournament {tourn} is finished")
             rtn_arr.append(Tournament(tourn))
         else:
-            log(logLevel.INFO, f"{tourn} is not finished")
+            log(logLevel.INFO, f"Tournament {tourn} is not finished")
 
     return rtn_arr
 
@@ -51,9 +52,17 @@ def addTournMatchesToDB(dbcon, newTourns) -> None:
                 m = Match(m_id, t.tournamentid)
                 dbcon.addMatchToDB(m)
 
-def parseArgs() -> None:
+def addTournMatchToDB(dbcon, tournamentid, matchid) -> None:
+    # TODO Check if tournament is already in DB
+    if Match.isMatchValid(matchid, tournamentid):
+        m = Match(matchid, tournamentid)
+        dbcon.addMatchToDB(m)
+
+def parseArgs():
     parser = ArgumentParser()
     parser.add_argument("-o", "--output", help="Send output to logfile or stdout. Default value: 'logfile' Option value: 'stdout'")
+    parser.add_argument("-FAT", "--forceaddtourn", help="Force adding or re-adding of a specified tournament.")
+    parser.add_argument("-FAM", "--forceaddmatch", help="Force adding or re-adding of a specified match. Must be used with -FAT.")
     args = parser.parse_args()
 
     if args.output == "stdout":
@@ -62,11 +71,32 @@ def parseArgs() -> None:
     else:
         initLogs()
 
+    return args
+
 def main():
+    args = parseArgs()
+
     dbcon = accessSnookerDB()
 
-    current_largest_tourn = dbcon.getLargestTournamentID()
-    new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
+    if args.forceaddtourn:
+        if args.forceaddmatch:
+            if not isInt(args.forceaddmatch) or not Match.isMatchValid(args.forceaddmatch, args.forceaddtourn):
+                log(logLevel.WARN, f"Invalid match and/or tournament ID")
+                return
+            addTournMatchToDB(dbcon, args.forceaddtourn, args.forceaddmatch)
+            dbcon.closedb()
+            log(logLevel.INFO, "Finished without Error")
+            return
+
+        if not isInt(args.forceaddtourn) or not Tournament.isValidTourn(args.forceaddtourn):
+            log(logLevel.WARN, f"Invalid tournament ID")
+            return
+
+        new_tourn_ids = [args.forceaddtourn]
+    else:
+        current_largest_tourn = dbcon.getLargestTournamentID()
+        new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
+
     new_tourns = checkNewTourns(new_tourn_ids)
     addNewTournsToDb(dbcon, new_tourns)
     addTournMatchesToDB(dbcon, new_tourns)
@@ -76,7 +106,6 @@ def main():
     log(logLevel.INFO, "Finished without Error")
 
 if __name__ == "__main__":
-    parseArgs()
     main()
 
 # Theory of how a daily update script would run
