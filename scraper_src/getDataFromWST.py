@@ -73,6 +73,7 @@ def parseArgs():
 
     return args
 
+# TODO Tidyup logic + refactor
 def main():
     args = parseArgs()
 
