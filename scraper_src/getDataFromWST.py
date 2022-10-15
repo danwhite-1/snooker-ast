@@ -7,6 +7,8 @@ from logger import logLevel, log, initLogs, logOutput
 from argparse import ArgumentParser
 from typing import List
 from utils import isInt
+from enum import Enum
+
 
 valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
 
@@ -73,34 +75,54 @@ def parseArgs():
 
     return args
 
-# TODO Tidyup logic + refactor
+class Mode(Enum):
+    FULL = 1
+    MATCH = 2
+    TOURN = 3
+
 def main():
     args = parseArgs()
 
-    dbcon = accessSnookerDB()
+    mode = Mode.FULL
 
     if args.forceaddtourn:
-        if args.forceaddmatch:
-            if not isInt(args.forceaddmatch) or not Match.isMatchValid(args.forceaddmatch, args.forceaddtourn):
+        tournToAdd = args.forceaddtourn
+        mode = Mode.TOURN
+
+    if args.forceaddmatch:
+        matchToAdd = args.forceaddmatch
+        mode = Mode.MATCH
+
+    dbcon = accessSnookerDB()
+
+    if mode == Mode.MATCH: # untested
+        if tournToAdd and matchToAdd:
+            if not isInt(matchToAdd) or not Match.isMatchValid(matchToAdd, tournToAdd):
                 log(logLevel.WARN, f"Invalid match and/or tournament ID")
                 return
-            addTournMatchToDB(dbcon, args.forceaddtourn, args.forceaddmatch)
+            addTournMatchToDB(dbcon, tournToAdd, matchToAdd)
             dbcon.closedb()
             log(logLevel.INFO, "Finished without Error")
             return
 
-        if not isInt(args.forceaddtourn) or not Tournament.isValidTourn(args.forceaddtourn):
-            log(logLevel.WARN, f"Invalid tournament ID")
-            return
+        log(logLevel.WARN, f"Invalid match and/or tournament ID")
+        return
 
-        new_tourn_ids = [args.forceaddtourn]
     else:
-        current_largest_tourn = dbcon.getLargestTournamentID()
-        new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
+        if mode == Mode.TOURN:
+            if tournToAdd:
+                if not isInt(args.forceaddtourn) or not Tournament.isValidTourn(args.forceaddtourn):
+                    log(logLevel.WARN, f"Invalid tournament ID")
+                    return
+            new_tourn_ids = [args.forceaddtourn]
 
-    new_tourns = checkNewTourns(new_tourn_ids)
-    addNewTournsToDb(dbcon, new_tourns)
-    addTournMatchesToDB(dbcon, new_tourns)
+        elif mode == Mode.FULL:
+            current_largest_tourn = dbcon.getLargestTournamentID()
+            new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
+
+        new_tourns = checkNewTourns(new_tourn_ids)
+        addNewTournsToDb(dbcon, new_tourns)
+        addTournMatchesToDB(dbcon, new_tourns)
 
     dbcon.closedb()
 
