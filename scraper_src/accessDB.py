@@ -13,6 +13,7 @@ class accessSnookerDB:
     def closedb(self):
         self.cursor.close()
 
+    # TODO Add a force arg to allow a tournament to be re-added
     def addTournamentToDB(self, tournament):
         table = "tournaments" # needs to be an enum
         vals = [tournament.tournamentid, tournament.tournamentname]
@@ -25,6 +26,7 @@ class accessSnookerDB:
             self.conn.rollback()
             log(logLevel.ERR ,"Error: This tournament already exists")
 
+    # TODO Add a force arg to allow a match to be re-added
     def addMatchToDB(self, match):
         tab = "matches"
         vals = [match.matchid, match.tournamentid, match.roundno, match.p1ast, match.p2ast]
@@ -36,6 +38,7 @@ class accessSnookerDB:
             return True
         except psycopg2.errors.UniqueViolation as err:
             self.conn.rollback()
+            log(logLevel.ERR ,"Error: This match already exists")
             return False
 
     def getLargestTournamentID(self) -> str:
