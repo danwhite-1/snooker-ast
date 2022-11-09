@@ -44,23 +44,23 @@ class Match:
 
     def getRoundNo(self) -> str: 
         r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
-        if r.status_code == 200:
-            with StringIO(r.text) as s:
-                for line in s.readlines():
-                    if "Final" in line:
-                        if "Semi" in line:
-                            return "semi-final"
-                        elif "Quarter" in line:
-                            return "quarter-final"
-                        return "final"
-                    elif "<p>Round" in line:
-                        return line.strip()[3:10]
+        if r.status_code != 200:
+            return "not found"
 
-        return "not found"
+        with StringIO(r.text) as s:
+            for line in s.readlines():
+                if "Final" in line:
+                    if "Semi" in line:
+                        return "semi-final"
+                    elif "Quarter" in line:
+                        return "quarter-final"
+                    return "final"
+                elif "<p>Round" in line:
+                    return line.strip()[3:10]
 
     @staticmethod
     def isMatchValid(matchid, tournamentid) -> bool:
         r = requests.get(RESULT_URL + tournamentid + "/" + matchid + "/", allow_redirects=False)
-        if r.status_code == 200:
-            return True
-        return False
+        if r.status_code != 200:
+            return False
+        return True
