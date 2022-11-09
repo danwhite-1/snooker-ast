@@ -57,7 +57,6 @@ class Tournament:
         isChampLeague = False
         r = requests.get(INDEX_URL + str(tourn_num), allow_redirects=False)
         if r.status_code != 200:
-            log(logLevel.INFO, f"Tourn {tourn_num} did not return a 200")
             return False
 
         with StringIO(r.text) as s:
