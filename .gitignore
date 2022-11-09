@@ -3,3 +3,5 @@ psycopg2
 __pycache__
 
 snookerast_logs.txt
+
+node_modules
