@@ -80,6 +80,7 @@ class Mode(Enum):
     MATCH = 2
     TOURN = 3
 
+# BUG! Assumption that more recent tourns would have higher tourn number is not necessarily correct
 def main():
     args = parseArgs()
 
