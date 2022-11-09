@@ -35,7 +35,6 @@ class Tournament:
                     return line.strip()[4:-5]
                 if "tournament-name" in line:
                     found = True
-        
 
     def getNoOfRounds(self):
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
@@ -48,7 +47,6 @@ class Tournament:
                 if "matches-sub-title" in line:
                     counter += 1
             return counter
-
 
     @staticmethod
     def isValidTourn(tourn_num):
@@ -119,7 +117,7 @@ class Tournament:
                             return False
                     else:
                         find_arr["count"] += 1
-                
+
                 elif str(tourn_num) in line:
                     find_arr["found"] = True
 
