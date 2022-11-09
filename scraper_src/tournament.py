@@ -2,7 +2,6 @@ import requests
 from io import StringIO
 from wst_urls import INDEX_URL, CAL_URL
 from datetime import date
-from logger import log,logLevel
 
 class Tournament:
     def __init__(self, tournamentid):
