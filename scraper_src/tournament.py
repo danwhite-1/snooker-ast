@@ -2,6 +2,7 @@ import requests
 from io import StringIO
 from wst_urls import INDEX_URL, CAL_URL
 from datetime import date
+from logger import log,logLevel
 
 class Tournament:
     def __init__(self, tournamentid):
@@ -13,55 +14,60 @@ class Tournament:
     def findValidMatches(self):
         rtn_arr = []
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
-        if r.status_code == 200:
-            with StringIO(r.text) as s:
-                for line in s.readlines():
-                    if "data-href" in line:
-                        idx = line.index(self.tournamentid)
-                        rtn_arr.append(line[idx+6:idx+12])
-            return rtn_arr
-        else:
+        if r.status_code != 200:
             return False
+
+        with StringIO(r.text) as s:
+            for line in s.readlines():
+                if "data-href" in line:
+                    idx = line.index(self.tournamentid)
+                    rtn_arr.append(line[idx+6:idx+12])
+        return rtn_arr
 
     def getTournamentName(self):
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
-        if r.status_code == 200:
-            with StringIO(r.text) as s:
-                found = False
-                for line in s.readlines():
-                    if found:
-                        return line.strip()[4:-5]
-                    if "tournament-name" in line:
-                        found = True
+        if r.status_code != 200:
+            return "not found"
+
+        with StringIO(r.text) as s:
+            found = False
+            for line in s.readlines():
+                if found:
+                    return line.strip()[4:-5]
+                if "tournament-name" in line:
+                    found = True
         
-        return "not found"
 
     def getNoOfRounds(self):
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
-        if r.status_code == 200:
-            with StringIO(r.text) as s:
-                counter = 0
-                for line in s.readlines():
-                    if "matches-sub-title" in line:
-                        counter += 1
-                return counter
+        if r.status_code != 200:
+            return -1
 
-        return -1
+        with StringIO(r.text) as s:
+            counter = 0
+            for line in s.readlines():
+                if "matches-sub-title" in line:
+                    counter += 1
+            return counter
+
 
     @staticmethod
     def isValidTourn(tourn_num):
         valid = False
         isChampLeague = False
         r = requests.get(INDEX_URL + str(tourn_num), allow_redirects=False)
-        if r.status_code == 200:
-            with StringIO(r.text) as s:
-                for line in s.readlines():
-                    if valid:
-                        if "championship league" in line.lower():
-                            isChampLeague = True
-                        break
-                    if "tournament-name" in line:
-                        valid = True
+        if r.status_code != 200:
+            log(logLevel.INFO, f"Tourn {tourn_num} did not return a 200")
+            return False
+
+        with StringIO(r.text) as s:
+            for line in s.readlines():
+                if valid:
+                    if "championship league" in line.lower():
+                        isChampLeague = True
+                    break
+                if "tournament-name" in line:
+                    valid = True
 
         return valid and not isChampLeague
 
