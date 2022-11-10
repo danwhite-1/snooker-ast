@@ -1,8 +1,11 @@
 const query = require('./queries')
+var cors = require('cors');
 const express = require('express');
 const app = express();
+app.use(cors());
 
 app.get('/tournament/:t_id', async function (req, res) {
+    console.log("Made request to tournament api");
     const tournamentData = await query.getTournamanetById(req.params.t_id);
     res.end(JSON.stringify(tournamentData.rows));
 })
