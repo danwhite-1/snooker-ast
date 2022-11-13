@@ -5,19 +5,18 @@ const app = express();
 app.use(cors());
 
 app.get('/tournament/:t_id', async function (req, res) {
-    console.log("Made request to tournament api");
     const tournamentData = await query.getTournamanetById(req.params.t_id);
-    res.end(JSON.stringify(tournamentData.rows));
+    res.end(JSON.stringify(tournamentData));
 })
 
 app.get('/match/:t_id', async function (req, res) {
     const matchData = await query.getMatchesByTournamentId(req.params.t_id);
-    res.end(JSON.stringify(matchData.rows));
+    res.end(JSON.stringify(matchData));
 })
 
 app.get('/match/:t_id/:m_id', async function (req, res) {
     const matchData = await query.getMatchByMatchID(req.params.t_id, req.params.m_id);
-    res.end(JSON.stringify(matchData.rows));
+    res.end(JSON.stringify(matchData));
 })
 
 const server = app.listen(8000, function () {
