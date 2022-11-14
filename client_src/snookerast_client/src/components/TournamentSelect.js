@@ -30,8 +30,7 @@ class TournamentSelect extends Component {
             return;
         }
 
-        // TODO investigate using a proxy with axios to prevent needing whole URL, or custom route function
-        const search_url = "http://127.0.0.1:8000/tournament/" + this.state.tournament_id;
+        const search_url = "/api/tournament/" + this.state.tournament_id;
         fetch(search_url)
             .then(res => res.json())
             .then(tournamentData => {
