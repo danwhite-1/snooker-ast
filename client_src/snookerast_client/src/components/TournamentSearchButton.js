@@ -4,8 +4,8 @@ class TournamentSearchButton extends Component {
 
     render() {
         return (
-            <div>
-                <button onClick={this.props.onButtonPress}>Search</button>
+            <div className="TournamentSearchButtonDiv">
+                <button className="TournamentSearchButton" onClick={this.props.onButtonPress}>Search</button>
             </div>
         )
     }

@@ -9,7 +9,7 @@ class TournamentSearchBox extends Component {
 
     render() {
         return (
-            <div>
+            <div className="TournamentSearchBoxDiv">
                 <label>Enter tournament number here: </label>
                 <input type="text" className="tournamentSearchBoxTextbox" onChange={this.handleChange.bind(this)}/>
             </div>
