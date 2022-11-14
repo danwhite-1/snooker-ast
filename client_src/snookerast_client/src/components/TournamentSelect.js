@@ -46,7 +46,7 @@ class TournamentSelect extends Component {
     render() {
         return (
             <div className="TournamentSearchBoxDiv">
-                <h1 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h1>
+                <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
                 <TournamentSearchBox onSearchBoxChange={this.handleSearchBoxChange}/>
                 <TournamentSearchButton onButtonPress={this.handleSearchButtonPress} />
             </div>

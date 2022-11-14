@@ -3,7 +3,10 @@ import TournamentSelect from './components/TournamentSelect';
 
 function App() {
   return (
-    <TournamentSelect />
+    <div className='AppDiv'>
+      <h1 className='title'>Snooker AST</h1>
+      <TournamentSelect />
+    </div>
   );
 }
 

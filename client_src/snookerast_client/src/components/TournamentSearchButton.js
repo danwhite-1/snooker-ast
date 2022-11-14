@@ -5,7 +5,7 @@ class TournamentSearchButton extends Component {
     render() {
         return (
             <div className="TournamentSearchButtonDiv">
-                <button className="TournamentSearchButton" onClick={this.props.onButtonPress}>Search</button>
+                <button className="TournamentSearchButton rounded" onClick={this.props.onButtonPress}>Search</button>
             </div>
         )
     }

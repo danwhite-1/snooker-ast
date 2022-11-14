@@ -11,7 +11,7 @@ class TournamentSearchBox extends Component {
         return (
             <div className="TournamentSearchBoxDiv">
                 <label>Enter tournament number here: </label>
-                <input type="text" className="tournamentSearchBoxTextbox" onChange={this.handleChange.bind(this)}/>
+                <input type="text" className="tournamentSearchBoxTextbox rounded" onChange={this.handleChange.bind(this)}/>
             </div>
         )
     }
