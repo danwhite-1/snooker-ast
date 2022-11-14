@@ -4,17 +4,17 @@ const express = require('express');
 const app = express();
 app.use(cors());
 
-app.get('/tournament/:t_id', async function (req, res) {
+app.get('/api/tournament/:t_id', async function (req, res) {
     const tournamentData = await query.getTournamanetById(req.params.t_id);
     res.end(JSON.stringify(tournamentData));
 })
 
-app.get('/match/:t_id', async function (req, res) {
+app.get('/api/match/:t_id', async function (req, res) {
     const matchData = await query.getMatchesByTournamentId(req.params.t_id);
     res.end(JSON.stringify(matchData));
 })
 
-app.get('/match/:t_id/:m_id', async function (req, res) {
+app.get('/api/match/:t_id/:m_id', async function (req, res) {
     const matchData = await query.getMatchByMatchID(req.params.t_id, req.params.m_id);
     res.end(JSON.stringify(matchData));
 })
