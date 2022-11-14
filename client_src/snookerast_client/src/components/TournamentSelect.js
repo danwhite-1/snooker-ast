@@ -25,8 +25,13 @@ class TournamentSelect extends Component {
         fetch(search_url)
             .then(res => res.json())
             .then(tournamentData => {
-                this.setState({tournament_name: tournamentData[0].tournamentname})
-            });
+                if (!tournamentData[0].error) {
+                    this.setState({tournament_name: tournamentData[0].tournamentname})
+                } else {
+                    alert("Tournament " + this.state.tournament_id + " doesn't exist");
+                }
+            })
+            .catch(error => alert("An error occured: " + error));
     }
 
     render() {
