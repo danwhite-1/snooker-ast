@@ -15,16 +15,23 @@ module.exports.getMatchByMatchID = (t_id, m_id) => {
     return sendQuery(qry);
 }
 
+createErrJson = (err_msg, err_code) => {
+    return [{'error' : 'true',
+             'e_msg' : err_msg,
+             'e_code' : err_code}];
+}
+
 sendQuery = async(query) => {
     const client = await getClient.getClient();
     try {
         const res = await client.query(query);
         await client.end();
-        return res.rows;
+        if(res.rows.length > 0 ) {
+            return res.rows;
+        }
+
+        return createErrJson("no records found", "1");
     } catch (error) {
-        const error_json = [{'error' : 'true',
-                             'e_msg' : error.routine,
-                             'e_code' : error.code }];
-        return error_json;
+        return createErrJson(error.routine, error.code);
     }
 }

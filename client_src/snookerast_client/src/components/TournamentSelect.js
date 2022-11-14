@@ -12,6 +12,12 @@ class TournamentSelect extends Component {
         };
     }
 
+    validateTournamentId = () => {
+        if (this.state.tournament_id.length === 5 && !isNaN(this.state.tournament_id)) {
+            return true;
+        }
+    }
+
     handleSearchBoxChange = (sb_value) => {
         this.setState({
             tournament_id : sb_value
@@ -19,6 +25,11 @@ class TournamentSelect extends Component {
     }
 
     handleSearchButtonPress = () => {
+        if (!this.validateTournamentId()) {
+            alert("Tournament ID must be a number of 5 digits");
+            return;
+        }
+
         // TODO investigate using a proxy with axios to prevent needing whole URL, or custom route function
         const search_url = "http://127.0.0.1:8000/tournament/" + this.state.tournament_id;
         // TODO improve error handling if promise returns error
