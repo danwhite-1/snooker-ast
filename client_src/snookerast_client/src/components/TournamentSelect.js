@@ -32,14 +32,13 @@ class TournamentSelect extends Component {
 
         // TODO investigate using a proxy with axios to prevent needing whole URL, or custom route function
         const search_url = "http://127.0.0.1:8000/tournament/" + this.state.tournament_id;
-        // TODO improve error handling if promise returns error
         fetch(search_url)
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
                     this.setState({tournament_name: tournamentData[0].tournamentname})
                 } else {
-                    alert("Tournament " + this.state.tournament_id + " doesn't exist");
+                    alert("Tournament " + this.state.tournament_id + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
             })
             .catch(error => alert("An error occured: " + error));
