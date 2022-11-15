@@ -107,6 +107,8 @@ class Tournament:
                     if find_arr["count"] >= 1:
                         span_idx = line.rstrip().find("</span></td>")
                         day = line.rstrip()[span_idx-2:span_idx]
+                        if day[0] == ">": # catch when the date in first 9 days of month
+                            day = day[1:]
                         try:
                             tourn_end_date = date(int(current_year), int(current_month), int(day))
                         except ValueError:

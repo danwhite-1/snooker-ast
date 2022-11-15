@@ -39,7 +39,8 @@ def checkNewTourns(dbcon, newTournIds) -> List[Tournament]:
 
     # Don't check tourns we already have
     for et in existingTourns:
-        newTournIds.remove(et)
+        if et in newTournIds:
+            newTournIds.remove(et)
 
     for tourn in newTournIds:
         if Tournament.isFinished(tourn) and tourn not in existingTourns:
