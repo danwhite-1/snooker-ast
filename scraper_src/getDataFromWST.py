@@ -18,9 +18,14 @@ def findNewValidTournaments(startnum) -> List[int]:
 
 def findValidTourns(startnum, endnum) -> List[int]:
     rtn_arr = []
+    last_valid_tourn = startnum
     for i in range(startnum + 1, endnum): # Already checked up to 20000 on 14/08/22
         if Tournament.isValidTourn(i):
             rtn_arr.append(str(i))
+            last_valid_tourn = i
+        if i - last_valid_tourn > 50:
+            log(logLevel.INFO, "No valid tournaments found in the last 50")
+            break
 
     return rtn_arr
 
