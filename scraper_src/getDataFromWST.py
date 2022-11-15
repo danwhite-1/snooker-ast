@@ -13,7 +13,7 @@ from enum import Enum
 #valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
 
 def findNewValidTournaments(startnum) -> List[int]:
-    endnum = startnum + 100
+    endnum = startnum + 250
     return findValidTourns(startnum, endnum)
 
 def findValidTourns(startnum, endnum) -> List[int]:
@@ -24,14 +24,20 @@ def findValidTourns(startnum, endnum) -> List[int]:
 
     return rtn_arr
 
-def checkNewTourns(newTournIds) -> List[Tournament]:
+def checkNewTourns(dbcon, newTournIds) -> List[Tournament]:
     rtn_arr = []
     if not newTournIds:
         log(logLevel.INFO, "No new tournaments found")
         return rtn_arr
 
+    existingTourns = dbcon.getAllTournamentIDs()
+
+    # Don't check tourns we already have
+    for et in existingTourns:
+        newTournIds.remove(et)
+
     for tourn in newTournIds:
-        if Tournament.isFinished(tourn):
+        if Tournament.isFinished(tourn) and tourn not in existingTourns:
             log(logLevel.INFO ,f"Tournament {tourn} is finished")
             rtn_arr.append(Tournament(tourn))
         else:
@@ -49,6 +55,7 @@ def addNewTournsToDb(dbcon, newTourns) -> None:
 
 def addTournMatchesToDB(dbcon, newTourns) -> None:
     for t in newTourns:
+        log(logLevel.INFO ,f"Matches for {t.tournamentid} being added to DB")
         for m_id in t.matches:
             if Match.isMatchValid(m_id, t.tournamentid):
                 m = Match(m_id, t.tournamentid)
@@ -118,10 +125,10 @@ def main():
             new_tourn_ids = [args.forceaddtourn]
 
         elif mode == Mode.FULL:
-            current_largest_tourn = dbcon.getLargestTournamentID()
+            current_largest_tourn = 14500
             new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
 
-        new_tourns = checkNewTourns(new_tourn_ids)
+        new_tourns = checkNewTourns(dbcon, new_tourn_ids)
         addNewTournsToDb(dbcon, new_tourns)
         addTournMatchesToDB(dbcon, new_tourns)
 

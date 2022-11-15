@@ -56,6 +56,15 @@ class accessSnookerDB:
         rows = self.cursor.fetchall()
         return rows
 
+    def getAllTournamentIDs(self):
+        table = "tournaments"
+        values = ["tournamentid"]
+        command = constructSimpleSelect(table, values)
+        self.cursor.execute(command)
+        rows = self.cursor.fetchall()
+        rtn = [str(r[0]) for r in rows] # handle strange output from pg
+        return rtn
+
     def getTournamentFromDB(self, id):
         self.cursor.execute("SELECT * FROM tournaments WHERE tournamentid=" + str(id) + ";")
         row = self.cursor.fetchone()
@@ -82,7 +91,7 @@ def constructInsert(table, values, columns=None):
 
     return rtn_cmd
 
-def constructSimpleSelect(table, vals=None):
+def constructSimpleSelect(table, vals=[]):
     rtn_cmd = f"SELECT "
     if vals:
         for val in vals:

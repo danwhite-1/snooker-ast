@@ -58,6 +58,8 @@ class Match:
                 elif "<p>Round" in line:
                     return line.strip()[3:10]
 
+        return "not found"
+
     @staticmethod
     def isMatchValid(matchid, tournamentid) -> bool:
         r = requests.get(RESULT_URL + tournamentid + "/" + matchid + "/", allow_redirects=False)
