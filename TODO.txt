@@ -1,2 +1,18 @@
-Consider putting date in tournament table
-Consider putting date in match table - don't think this is possible
+CLIENT
+* Improve UI
+    * Add black (colour?) bars to each side to focus attention on the centre
+* Add graphs/charts (need API support first)
+
+SERVER
+* Implement config file for postgres creds
+* Implement APIs for sending shot time data
+    * Consider which APIs would be useful
+    * Do calculations/matchs work server side
+
+SCRAPER
+* Implement config file for postgres creds
+* Implement emails in preparation for automated running
+* Implement automated running as a CRON job of rasp pi (need cloud DB first)
+
+DB
+* Migrate to cloud solution
