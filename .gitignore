@@ -5,3 +5,5 @@ __pycache__
 snookerast_logs.txt
 
 node_modules
+
+node_src/db_creds.env

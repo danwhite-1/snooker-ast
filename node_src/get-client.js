@@ -1,15 +1,16 @@
 const { Client } = require("pg")
+const dotenv = require("dotenv").config({ path: "db_creds.env" })
 
 // TODO improve error handling on connection
-// TODO - move to use environment vars
 // TODO - consider using connection pool over client
 module.exports.getClient = async () => {
     try {
+        // User environment vars for credentials
         const client = new Client({
-            user: "postgres",
-            host: "/tmp/",
-            database: "snookertest",
-            password: "myPassword",
+            user: process.env.PGUSER,
+            host: process.env.PGHOST,
+            database: process.env.PGDATABASE,
+            password: process.env.PGPASSWORD,
         })
  
         await client.connect()
