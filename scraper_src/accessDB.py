@@ -1,10 +1,12 @@
 import psycopg2
+import configparser
 from logger import log, logLevel
 
 class accessSnookerDB:
     def __init__(self) :
+        creds = self.getCredentials()
         try:
-            self.conn = psycopg2.connect("dbname='snookertest' host='/tmp/' user='postgres' password='myPassword'")
+            self.conn = psycopg2.connect(f"dbname={creds['dbname']} host={creds['host']} user={creds['user']} password={creds['password']}")
             self.cursor = self.conn.cursor()
         except psycopg2.DatabaseError as err:
             log(logLevel.ERR, err)
@@ -12,6 +14,18 @@ class accessSnookerDB:
 
     def closedb(self):
         self.cursor.close()
+
+    def getCredentials(self):
+        config = configparser.ConfigParser()
+        config.read("db_creds.ini")
+        cred_dict = {
+            "dbname" : config["pg_credentials"]["dbname"],
+            "host" : config["pg_credentials"]["host"],
+            "user" : config["pg_credentials"]["user"],
+            "password" : config["pg_credentials"]["password"]
+        }
+
+        return cred_dict
 
     # TODO Add a force arg to allow a tournament to be re-added
     def addTournamentToDB(self, tournament):
