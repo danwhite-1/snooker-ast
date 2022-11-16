@@ -1,7 +1,6 @@
 CLIENT
-* Improve UI
-    * Add black (colour?) bars to each side to focus attention on the centre
 * Add graphs/charts (need API support first)
+* Improve UI
 
 SERVER
 * Implement APIs for sending shot time data
