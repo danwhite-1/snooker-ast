@@ -4,13 +4,11 @@ CLIENT
 * Add graphs/charts (need API support first)
 
 SERVER
-* Implement config file for postgres creds
 * Implement APIs for sending shot time data
     * Consider which APIs would be useful
     * Do calculations/matchs work server side
 
 SCRAPER
-* Implement config file for postgres creds
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
 
