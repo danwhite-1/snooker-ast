@@ -1,4 +1,5 @@
 const query = require('./queries')
+const errjson = require('./errorJson');
 var cors = require('cors');
 const express = require('express');
 const app = express();
@@ -20,14 +21,16 @@ app.get('/api/match/:t_id/:m_id', async function (req, res) {
 })
 
 app.get('/api/tournamentdata',  async function (req, res) {
-    let action = req.query.action;
+    const action = req.query.action;
     if(action !== "roundavg") {
-        res.send("Error"); // TODO send proper json
+        const resp = errjson.createErrJson("Error: action does not match available options", 3)
+        res.send(JSON.stringify(resp));
     }
 
     const t_id = req.query.tournament;
     if (!t_id) {
-        res.send("Error"); // TODO send proper json
+        const resp = errjson.createErrJson("Error: no tournament number provided", 4)
+        res.send(JSON.stringify(resp));
     }
 
     const roundCounts = {};
