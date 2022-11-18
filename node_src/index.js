@@ -19,6 +19,55 @@ app.get('/api/match/:t_id/:m_id', async function (req, res) {
     res.end(JSON.stringify(matchData));
 })
 
+app.get('/api/tournamentdata',  async function (req, res) {
+    let action = req.query.action;
+    if(action !== "roundavg") {
+        res.send("Error"); // TODO send proper json
+    }
+
+    const t_id = req.query.tournament;
+    if (!t_id) {
+        res.send("Error"); // TODO send proper json
+    }
+
+    const roundCounts = {};
+    const matchData = await query.getMatchesByTournamentId(t_id);
+    for (const num of matchData) {
+        roundCounts[num.roundno] = roundCounts[num.roundno] ? roundCounts[num.roundno] + 1 : 1;
+    }
+
+    let astArr = [];
+    for(let s = 0; s < Object.keys(roundCounts).length; s++) {
+        astArr.push(0);
+    }
+
+    for(let i = 0; i < matchData.length; i++) {
+        // handle "not found"
+        for(let j = 0; j < astArr.length; j++) {
+            if (matchData[i].roundno.includes(String(j+1))) {
+                astArr[j] = astArr[j] + matchData[i].player1ast + matchData[i].player2ast;
+                continue;
+            }
+        }
+
+        // check bounds here
+        if (matchData[i].roundno.includes("quarter")) {
+            astArr[astArr.length - 3] = astArr[astArr.length - 3] + matchData[i].player1ast + matchData[i].player2ast;
+        } else if (matchData[i].roundno.includes("semi")) {
+            astArr[astArr.length - 2] = astArr[astArr.length - 2] + matchData[i].player1ast + matchData[i].player2ast;
+        } else {
+            astArr[astArr.length - 1]= astArr[astArr.length - 1] + matchData[i].player1ast + matchData[i].player2ast;
+        }
+    }
+
+    for(let i = 0; i < astArr.length; i++) {
+        astArr[i] = astArr[i] / Object.values(roundCounts)[i] / 2; // divide by number of matches and number of players
+        astArr[i] = Math.round(astArr[i] * 10) / 10; // round to 1 dp
+    }
+
+    res.send(JSON.stringify(astArr));
+})
+
 const server = app.listen(8000, function () {
     const host = server.address().address
     const port = server.address().port
