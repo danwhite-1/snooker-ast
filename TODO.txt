@@ -5,16 +5,12 @@ CLIENT
 SERVER
 * Implement APIs for sending shot time data
     * Consider which APIs would be useful
-        * getAverageAstPerRoundForTournament()
-            * get all matches for a tournament
-            * split into each round (throw out any bad data)
-            * get averages
-            * return a list of values
     * Do calculations/matchs work server side
 
 SCRAPER
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
+* Change scraping to use bs4
 
 DB
 * Migrate to cloud solution
