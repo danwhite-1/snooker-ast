@@ -8,7 +8,8 @@ class TournamentSelect extends Component {
         super(props);
         this.state = {
             tournament_name : "",
-            tournament_id : ""
+            tournament_id : "",
+            tournament_round_averages : []
         };
     }
 
@@ -30,12 +31,24 @@ class TournamentSelect extends Component {
             return;
         }
 
-        const search_url = "/api/tournament/" + this.state.tournament_id;
+        let search_url = "/api/tournament/" + this.state.tournament_id;
         fetch(search_url)
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
                     this.setState({tournament_name: tournamentData[0].tournamentname})
+                } else {
+                    alert("Tournament " + this.state.tournament_id + " doesn't exist. Error: " + tournamentData[0].e_msg);
+                }
+            })
+            .catch(error => alert("An error occured: " + error));
+
+        search_url = "/api/tournamentdata?action=roundavg&tournament=" + this.state.tournament_id;
+        fetch(search_url)
+            .then(res => res.json())
+            .then(tournamentData => {
+                if (!tournamentData[0].error) {
+                    this.setState({tournament_round_averages: [...this.state.tournament_round_averages, tournamentData]})
                 } else {
                     alert("Tournament " + this.state.tournament_id + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -49,6 +62,7 @@ class TournamentSelect extends Component {
                 <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
                 <TournamentSearchBox onSearchBoxChange={this.handleSearchBoxChange}/>
                 <TournamentSearchButton onButtonPress={this.handleSearchButtonPress} />
+                <h3 className="TournamentNameHeader">{this.state.tournament_round_averages.join(", ")}</h3>
             </div>
         )
     }
