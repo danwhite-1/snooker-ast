@@ -1,4 +1,5 @@
 const getClient = require('./get-client');
+const errjson = require('./errorJson');
 
 module.exports.getTournamanetById = (id) => {
     const qry = `SELECT * FROM tournaments WHERE tournamentid=${id}`;
@@ -15,12 +16,6 @@ module.exports.getMatchByMatchID = (t_id, m_id) => {
     return sendQuery(qry);
 }
 
-createErrJson = (err_msg, err_code) => {
-    return [{'error' : 'true',
-             'e_msg' : err_msg,
-             'e_code' : err_code}];
-}
-
 sendQuery = async(query) => {
     const client = await getClient.getClient();
     try {
@@ -30,8 +25,8 @@ sendQuery = async(query) => {
             return res.rows;
         }
 
-        return createErrJson("no records found", "1");
+        return errjson.createErrJson("no records found", "1");
     } catch (error) {
-        return createErrJson(error.routine, error.code);
+        return errjson.createErrJson(error.routine, error.code);
     }
 }
