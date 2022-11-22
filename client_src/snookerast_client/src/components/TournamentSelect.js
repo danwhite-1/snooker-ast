@@ -62,7 +62,7 @@ class TournamentSelect extends Component {
                 <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
                 <TournamentSearchBox onSearchBoxChange={this.handleSearchBoxChange}/>
                 <TournamentSearchButton onButtonPress={this.handleSearchButtonPress} />
-                <h3 className="TournamentNameHeader">{this.state.tournament_round_averages.join(", ")}</h3>
+                <p className="TournamentResultsPara">{this.state.tournament_round_averages.join(", ")}</p>
             </div>
         )
     }
