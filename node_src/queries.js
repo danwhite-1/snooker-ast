@@ -6,6 +6,11 @@ module.exports.getTournamanetById = (id) => {
     return sendQuery(qry);
 }
 
+module.exports.getAllTournaments = () => {
+    const qry = `SELECT * FROM tournaments`;
+    return sendQuery(qry);
+}
+
 module.exports.getMatchesByTournamentId = (id) => {
     const qry = `SELECT * FROM matches WHERE tournamentid=${id}`;
     return sendQuery(qry);
