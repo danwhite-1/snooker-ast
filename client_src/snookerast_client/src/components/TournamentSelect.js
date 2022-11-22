@@ -1,6 +1,7 @@
 import { Component } from "react";
 import TournamentSearchBox from "./TournamentSearchBox";
 import TournamentSearchButton from "./TournamentSearchButton";
+import TournamentDropDown from "./TournamentDropDown";
 
 class TournamentSelect extends Component {
 
@@ -9,8 +10,23 @@ class TournamentSelect extends Component {
         this.state = {
             tournament_name : "",
             tournament_id : "",
-            tournament_round_averages : []
+            tournament_round_averages : [],
+            tournament_list : []
         };
+    }
+
+    componentDidMount() {
+        const search_url = "/api/tournaments";
+        fetch(search_url)
+            .then(res => res.json())
+            .then(tournamentData => {
+                if (!tournamentData[0].error) {
+                    this.setState({tournament_list: tournamentData});
+                } else {
+                    alert("Tournament " + this.state.tournament_id + " doesn't exist. Error: " + tournamentData[0].e_msg);
+                }
+            })
+            .catch(error => alert("An error occured: " + error));
     }
 
     validateTournamentId = () => {
@@ -48,7 +64,7 @@ class TournamentSelect extends Component {
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
-                    this.setState({tournament_round_averages: [...this.state.tournament_round_averages, tournamentData]})
+                    this.setState({tournament_round_averages: [...this.state.tournament_round_averages, tournamentData]});
                 } else {
                     alert("Tournament " + this.state.tournament_id + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -59,6 +75,7 @@ class TournamentSelect extends Component {
     render() {
         return (
             <div className="TournamentSearchBoxDiv">
+                <TournamentDropDown className="TournamentDropDown" tournaments={this.state.tournament_list}/>
                 <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
                 <TournamentSearchBox onSearchBoxChange={this.handleSearchBoxChange}/>
                 <TournamentSearchButton onButtonPress={this.handleSearchButtonPress} />

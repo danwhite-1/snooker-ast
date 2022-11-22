@@ -6,8 +6,13 @@
   margin: 1%;
 }
 
+.TournamentDropDownDiv {
+  width: 30%;
+  margin: auto;
+}
+
 .rounded {
-  border-radius:0.5em;
+  border-radius: 1em;
 }
 
 .title {
