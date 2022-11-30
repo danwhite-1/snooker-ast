@@ -8,7 +8,7 @@ class TournamentSelect extends Component {
         this.state = {
             tournament_name : "",
             tournament_id : "",
-            tournament_round_averages : [],
+            tournament_round_averages : {},
             tournament_list : []
         };
     }
@@ -60,7 +60,7 @@ class TournamentSelect extends Component {
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
-                    this.setState({tournament_round_averages: [...this.state.tournament_round_averages, tournamentData]});
+                    this.setState({tournament_round_averages: tournamentData[0]});
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -73,7 +73,7 @@ class TournamentSelect extends Component {
             <div className="TournamentSearchBoxDiv">
                 <TournamentDropDown className="TournamentDropDown" onDDChange={this.handleDropDownChange} tournaments={this.state.tournament_list}/>
                 <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
-                <p className="TournamentResultsPara">{this.state.tournament_round_averages.join(", ")}</p>
+                <pre>{JSON.stringify(this.state.tournament_round_averages, null, 2) }</pre>
             </div>
         )
     }
