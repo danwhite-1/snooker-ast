@@ -38,42 +38,33 @@ app.get('/api/tournamentdata',  async function (req, res) {
         res.send(JSON.stringify(resp));
     }
 
-    const roundCounts = {};
     const matchData = await query.getMatchesByTournamentId(t_id);
-    for (const num of matchData) {
-        roundCounts[num.roundno] = roundCounts[num.roundno] ? roundCounts[num.roundno] + 1 : 1;
-    }
 
-    let astArr = [];
-    for(let s = 0; s < Object.keys(roundCounts).length; s++) {
-        astArr.push(0);
-    }
-
-    for(let i = 0; i < matchData.length; i++) {
-        // handle "not found"
-        for(let j = 0; j < astArr.length; j++) {
-            if (matchData[i].roundno.includes(String(j+1))) {
-                astArr[j] = astArr[j] + matchData[i].player1ast + matchData[i].player2ast;
-                continue;
-            }
+    let roundMatches = {};
+    let roundASTs = [{}]; // array to maintain consistency with other api returns
+    let roundMatchCounter = {};
+    for (const match of matchData) {
+        if (!roundMatches.hasOwnProperty(match.roundno)) {
+            roundMatches[match.roundno] = [];
+            roundASTs[0][match.roundno] = 0;
+            roundMatchCounter[match.roundno] = 0;
         }
 
-        // check bounds here
-        if (matchData[i].roundno.includes("quarter")) {
-            astArr[astArr.length - 3] = astArr[astArr.length - 3] + matchData[i].player1ast + matchData[i].player2ast;
-        } else if (matchData[i].roundno.includes("semi")) {
-            astArr[astArr.length - 2] = astArr[astArr.length - 2] + matchData[i].player1ast + matchData[i].player2ast;
-        } else {
-            astArr[astArr.length - 1]= astArr[astArr.length - 1] + matchData[i].player1ast + matchData[i].player2ast;
-        }
+        roundMatches[match.roundno].push(match);
+        roundMatchCounter[match.roundno] += 1;
     }
 
-    for(let i = 0; i < astArr.length; i++) {
-        astArr[i] = astArr[i] / Object.values(roundCounts)[i] / 2; // divide by number of matches and number of players
-        astArr[i] = Math.round(astArr[i] * 10) / 10; // round to 1 dp
+    for (const round in roundMatches) {
+        roundMatches[round].forEach(match => {
+            roundASTs[0][match.roundno] += (match.player1ast + match.player2ast);
+        });
     }
 
-    res.send(JSON.stringify(astArr));
+    for(const round in roundASTs[0]) {
+        roundASTs[0][round] = Math.round((roundASTs[0][round] / roundMatchCounter[round] / 2) * 10) / 10;
+    }
+
+    res.send(JSON.stringify(roundASTs));
 })
 
 const server = app.listen(8000, function () {
