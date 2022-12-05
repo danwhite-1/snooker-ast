@@ -11,6 +11,17 @@
   margin: auto;
 }
 
+.TournamentLineChartDiv {
+  width: 50%;
+  margin: auto;
+  background-color: #ffff;
+  border: #ffff;
+}
+
+.TournamentLineChart {
+  padding: 20px;
+}
+
 .rounded {
   border-radius: 1em;
 }

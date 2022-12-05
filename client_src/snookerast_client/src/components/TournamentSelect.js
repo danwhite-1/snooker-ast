@@ -1,5 +1,6 @@
 import { Component } from "react";
 import TournamentDropDown from "./TournamentDropDown";
+import TournamentLineChart from "./TournamentLineChart";
 
 class TournamentSelect extends Component {
 
@@ -9,7 +10,8 @@ class TournamentSelect extends Component {
             tournament_name : "",
             tournament_id : "",
             tournament_round_averages : {},
-            tournament_list : []
+            tournament_list : [],
+            placeholder_data : []
         };
     }
 
@@ -61,6 +63,17 @@ class TournamentSelect extends Component {
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
                     this.setState({tournament_round_averages: tournamentData[0]});
+                    let newData = tournamentData[0];
+                    let rtnData = []
+
+                    for (let r in newData) {
+                        rtnData.push({
+                            round : r,
+                            avg_ast : newData[r]
+                        });
+                    }
+
+                    this.setState({ placeholder_data : rtnData });
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -74,6 +87,7 @@ class TournamentSelect extends Component {
                 <TournamentDropDown className="TournamentDropDown" onDDChange={this.handleDropDownChange} tournaments={this.state.tournament_list}/>
                 <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
                 <pre>{JSON.stringify(this.state.tournament_round_averages, null, 2) }</pre>
+                <TournamentLineChart data={this.state.placeholder_data}/>
             </div>
         )
     }
