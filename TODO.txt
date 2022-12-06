@@ -1,5 +1,4 @@
 CLIENT
-* Add graphs/charts (need API support first)
 * Improve UI
 
 SERVER
@@ -11,6 +10,8 @@ SCRAPER
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
 * Change scraping to use bs4
+    * Done for match parsing
+* Scrape more data, players, wining player
 
 DB
 * Migrate to cloud solution
