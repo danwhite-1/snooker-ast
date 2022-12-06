@@ -85,8 +85,6 @@ class TournamentSelect extends Component {
         return (
             <div className="TournamentSearchBoxDiv">
                 <TournamentDropDown className="TournamentDropDown" onDDChange={this.handleDropDownChange} tournaments={this.state.tournament_list}/>
-                <h2 className="TournamentNameHeader">Tournament name = {this.state.tournament_name}</h2>
-                <pre>{JSON.stringify(this.state.tournament_round_averages, null, 2) }</pre>
                 <TournamentLineChart data={this.state.placeholder_data}/>
             </div>
         )
