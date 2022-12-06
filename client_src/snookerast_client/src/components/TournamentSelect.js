@@ -67,10 +67,12 @@ class TournamentSelect extends Component {
                     let rtnData = []
 
                     for (let r in newData) {
-                        rtnData.push({
-                            round : r,
-                            avg_ast : newData[r]
-                        });
+                        if (r !== "not found") {
+                            rtnData.push({
+                                round : r,
+                                avg_ast : newData[r]
+                            });
+                        }
                     }
 
                     this.setState({ placeholder_data : rtnData });
