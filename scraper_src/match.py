@@ -3,6 +3,7 @@ from io import StringIO
 from wst_urls import RESULT_URL
 from logger import logLevel, log
 from utils import isFloat
+from bs4 import BeautifulSoup
 
 class Match:
     def __init__(self, matchid, tournamentid):
@@ -15,18 +16,10 @@ class Match:
         rtn_arr = []
         r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
         if r.status_code == 200:
-            with StringIO(r.text) as s:
-                for line in s.readlines():
-                    if "secs" in line:
-                        p_idx = line.index("</p>")
-                        val = line[p_idx-9:p_idx-5]
-                        if not isFloat(val):
-                            if val[0] == ">": # incase the shot time < 10.0
-                                val = val[1:]
-                            else:
-                                log(logLevel.ERR, f"Tournament: {self.tournamentid} Match: {self.matchid} Failed to parse AST")
-                                return -1, -1
-                        rtn_arr.append(val)
+            html_soup = BeautifulSoup(r.text, 'html.parser')
+            asts = html_soup.find_all('p', class_ = 'score-ast')
+            for val in asts:
+                rtn_arr.append(val.text[:-5])
 
         if len(rtn_arr) == 2:
             return rtn_arr[0], rtn_arr[1]
@@ -47,16 +40,18 @@ class Match:
         if r.status_code != 200:
             return "not found"
 
-        with StringIO(r.text) as s:
-            for line in s.readlines():
-                if "Final" in line:
-                    if "Semi" in line:
-                        return "semi-final"
-                    elif "Quarter" in line:
-                        return "quarter-final"
-                    return "final"
-                elif "<p>Round" in line:
-                    return line.strip()[3:10]
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+        round = html_soup.find('div', class_ = 'component-title').p.text
+        round_text_idx = round.find("Round")
+        if(round_text_idx != -1):
+            return round[:round_text_idx+7]
+
+        if "Final" in round:
+            if "Semi" in round:
+                return "semi-final"
+            elif "Quarter" in round:
+                return "quarter-final"
+            return "final"
 
         return "not found"
 
