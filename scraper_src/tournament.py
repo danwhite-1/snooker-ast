@@ -2,6 +2,7 @@ import requests
 from io import StringIO
 from wst_urls import INDEX_URL, CAL_URL
 from datetime import date
+from bs4 import BeautifulSoup
 
 class Tournament:
     def __init__(self, tournamentid):
@@ -16,11 +17,11 @@ class Tournament:
         if r.status_code != 200:
             return False
 
-        with StringIO(r.text) as s:
-            for line in s.readlines():
-                if "data-href" in line:
-                    idx = line.index(self.tournamentid)
-                    rtn_arr.append(line[idx+6:idx+12])
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+        matches = html_soup.find_all("tr", {"data-href" : True})
+        for m in matches:
+            indx = m["data-href"].index("14560")
+            rtn_arr.append(m["data-href"][indx+6:indx+12])
         return rtn_arr
 
     def getTournamentName(self):
