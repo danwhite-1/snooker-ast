@@ -56,7 +56,7 @@ class Tournament:
         return True
 
     @staticmethod
-    def isFinished(tourn_num="14563"):
+    def isFinished(tourn_num):
         # Construct an array of the possible month + year combinations
         month_arr = []
         currentYear = date.today().year
