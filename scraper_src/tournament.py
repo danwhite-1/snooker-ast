@@ -3,6 +3,7 @@ from io import StringIO
 from wst_urls import INDEX_URL, CAL_URL
 from datetime import date
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse, parse_qs
 
 class Tournament:
     def __init__(self, tournamentid):
@@ -54,60 +55,52 @@ class Tournament:
             return False
         return True
 
-    @staticmethod # This is a bit messy, could do with a refactor or whole rethink
-    def isFinished(tourn_num):
-        month = date.today().month
-        year1 = date.today().year if month>=6 else date.today().year - 1
-        year2 = year1 + 1
+    @staticmethod
+    def isFinished(tourn_num="14563"):
+        # Construct an array of the possible month + year combinations
+        month_arr = []
+        currentYear = date.today().year
+        for i in range(1, 13):
+            yr = currentYear if i >= 6 else currentYear + 1
+            month_arr.append([i, yr])
 
-        month_arr = [[6, year1], 
-                     [7, year1], 
-                     [8, year1], 
-                     [9, year1], 
-                     [10, year1], 
-                     [11, year1], 
-                     [12, year1], 
-                     [1, year2], 
-                     [2, year2], 
-                     [3, year2], 
-                     [4, year2], 
-                     [5, year2]]
+        month_arr = month_arr[5:] + month_arr[:5] # wst year is July - May
 
-        # get all html of wst calendar pages for whole season
+        # Get all html of wst calendar pages for whole season
         wst_cal_html = ""
         for month in month_arr:
             r = requests.get(f"{CAL_URL}{month[1]}&month={month[0]}")
             if r.status_code == 200:
                 wst_cal_html += f"{r.text.rstrip()}\nMonth={month[0]}\nYear={month[1]}\n"
 
-        # search through html backwards to find last mention of tournament
-        with StringIO(wst_cal_html) as s:
-            find_arr = {"found" : False, "count" : 0 }
-            current_month = ""
-            for idx, line in enumerate(reversed(s.readlines())):
-                if "Month=" in line:
-                    current_month = line.rstrip()[6:]
-                if "Year=" in line:
-                    current_year = line.rstrip()[5:]
+        html_soup = BeautifulSoup(wst_cal_html, 'html.parser')
+        trows = html_soup.find_all(['tr', 'li'])
 
-                if find_arr["found"]:
-                    if find_arr["count"] >= 1:
-                        span_idx = line.rstrip().find("</span></td>")
-                        day = line.rstrip()[span_idx-2:span_idx]
-                        if day[0] == ">": # catch when the date in first 9 days of month
-                            day = day[1:]
-                        try:
-                            tourn_end_date = date(int(current_year), int(current_month), int(day))
-                        except ValueError:
-                            return False # Will get here if tournament is in progress
-                        if date.today() > tourn_end_date:
-                            return True # tournament finished
-                        else:
-                            return False
-                    else:
-                        find_arr["count"] += 1
+        # iterate backwards to get last match
+        found = False
+        day, month, year = ""
+        for h in reversed(trows):
+            if found and h.name == "li" and h.has_attr('class') and h['class'][0] == 'active':
+                monthAndYear = parse_qs(urlparse(h.a["href"]).query)
+                month = monthAndYear["month"][0]
+                year = monthAndYear["year"][0]
+                break
 
-                elif str(tourn_num) in line:
-                    find_arr["found"] = True
+            if not found:
+                if len(h.select('td')) < 2:
+                    continue
+                if h.select('td')[1].a is None:
+                    continue
+                if tourn_num in h.select('td')[1].a['href']:
+                    day = h.td.select('span')[1].text
+                    found = True
 
-        return False # Shouldn't get here
+        try:
+            tourn_end_date = date(int(year), int(month), int(day))
+        except ValueError:
+            return False
+
+        if date.today() > tourn_end_date:
+            return True # tournament finished
+        else:
+            return False # Will get here if tournament is in progress
