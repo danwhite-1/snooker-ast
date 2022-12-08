@@ -50,16 +50,11 @@ class Tournament:
         if r.status_code != 200:
             return False
 
-        with StringIO(r.text) as s:
-            for line in s.readlines():
-                if valid:
-                    if "championship league" in line.lower():
-                        isChampLeague = True
-                    break
-                if "tournament-name" in line:
-                    valid = True
-
-        return valid and not isChampLeague
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+        name = html_soup.find("div", {"id": "tournament-name"}).h1.text
+        if name is None or "championship league" in name:
+            return False
+        return True
 
     @staticmethod # This is a bit messy, could do with a refactor or whole rethink
     def isFinished(tourn_num):
