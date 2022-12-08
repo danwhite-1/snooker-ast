@@ -29,13 +29,9 @@ class Tournament:
         if r.status_code != 200:
             return "not found"
 
-        with StringIO(r.text) as s:
-            found = False
-            for line in s.readlines():
-                if found:
-                    return line.strip()[4:-5]
-                if "tournament-name" in line:
-                    found = True
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+        name = html_soup.find("div", {"id": "tournament-name"})
+        print(name.h1.text)
 
     def getNoOfRounds(self):
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
