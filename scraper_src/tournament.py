@@ -44,8 +44,6 @@ class Tournament:
 
     @staticmethod
     def isValidTourn(tourn_num):
-        valid = False
-        isChampLeague = False
         r = requests.get(INDEX_URL + str(tourn_num), allow_redirects=False)
         if r.status_code != 200:
             return False
