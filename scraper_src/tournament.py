@@ -31,19 +31,16 @@ class Tournament:
 
         html_soup = BeautifulSoup(r.text, 'html.parser')
         name = html_soup.find("div", {"id": "tournament-name"})
-        print(name.h1.text)
+        return name.h1.text
 
     def getNoOfRounds(self):
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
         if r.status_code != 200:
             return -1
 
-        with StringIO(r.text) as s:
-            counter = 0
-            for line in s.readlines():
-                if "matches-sub-title" in line:
-                    counter += 1
-            return counter
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+        rounds = html_soup.find_all('h3', class_ = 'matches-sub-title')
+        return len(rounds)
 
     @staticmethod
     def isValidTourn(tourn_num):
