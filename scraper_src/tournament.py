@@ -78,7 +78,7 @@ class Tournament:
 
         # iterate backwards to get last match
         found = False
-        day, month, year = ""
+        day, month, year = "", "", ""
         for h in reversed(trows):
             if found and h.name == "li" and h.has_attr('class') and h['class'][0] == 'active':
                 monthAndYear = parse_qs(urlparse(h.a["href"]).query)
