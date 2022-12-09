@@ -55,6 +55,21 @@ class accessSnookerDB:
             log(logLevel.ERR ,"Error: This match already exists")
             return False
 
+    def addPlayerToDB(self, player):
+        tab = "players"
+        name = dealWithApostrophes(player.playerName)
+        vals = [player.playerWstid, name]
+        command = constructInsert(tab, vals)
+
+        try:
+            self.cursor.execute(command)
+            self.conn.commit()
+            return True
+        except psycopg2.errors.UniqueViolation as err:
+            self.conn.rollback()
+            log(logLevel.ERR ,"Error: This player already exists")
+            return False
+
     def getLargestTournamentID(self) -> str:
         table = "tournaments"
         cols = ["max(tournamentid)"]
@@ -81,6 +96,11 @@ class accessSnookerDB:
 
     def getTournamentFromDB(self, id):
         self.cursor.execute("SELECT * FROM tournaments WHERE tournamentid=" + str(id) + ";")
+        row = self.cursor.fetchone()
+        return row
+
+    def getPlayerByID(self, id):
+        self.cursor.execute("SELECT * FROM players WHERE playerwstid=" + str(id) + ";")
         row = self.cursor.fetchone()
         return row
 
@@ -116,3 +136,12 @@ def constructSimpleSelect(table, vals=[]):
     rtn_cmd += f"FROM {table};"
 
     return rtn_cmd
+
+def dealWithApostrophes(name):
+    if "'" not in name:
+        return name
+
+    name_list = list(name)
+    idx = name_list.index("'")
+    name_list.insert(idx, "'")
+    return ''.join(name_list)

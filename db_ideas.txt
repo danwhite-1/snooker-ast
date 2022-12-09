@@ -2,9 +2,16 @@ Matches Table
 Match ID
 Tournament ID
 Round No.
+Player1ID
+Player2ID
 Player1 ast
 Player2 ast
 
 Tournament Table
 TournamentID
 Tournament name
+
+Player Table
+PlayerID
+wst_playerID
+Name

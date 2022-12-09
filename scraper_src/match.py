@@ -4,12 +4,15 @@ from wst_urls import RESULT_URL
 from logger import logLevel, log
 from utils import isFloat
 from bs4 import BeautifulSoup
+from accessDB import accessSnookerDB
+from player import Player
 
 class Match:
     def __init__(self, matchid, tournamentid):
         self.matchid = str(matchid)
         self.tournamentid = str(tournamentid)
         self.p1ast, self.p2ast = self.getASTforMatch()
+        self.p1id, self.p2id = self.getPlayers()
         self.roundno = self.getRoundNo()
 
     def getASTforMatch(self):
@@ -54,6 +57,36 @@ class Match:
             return "final"
 
         return "not found"
+
+
+    def getPlayers(self):
+        r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
+        if r.status_code != 200:
+            return -1, -1
+
+        rtn_arr = []
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+        p1 = html_soup.find('p', class_ = 'name text-right')
+
+        p1_id = p1.a["href"].split("/")[4]
+        rtn_arr.append(p1_id)
+
+        p2 = html_soup.find_all('p', class_ = 'name')[1]
+        p2_id = p2.a["href"].split("/")[4]
+        rtn_arr.append(p2_id)
+
+        # check if players are in db, if not then create
+        dbcon = accessSnookerDB()
+        p1inDB = dbcon.getPlayerByID(p1_id)
+        if p1inDB is None:
+            p1_name = p1.a.text
+            dbcon.addPlayerToDB(Player(p1_id, p1_name))
+        p2inDB = dbcon.getPlayerByID(p2_id)
+        if p2inDB is None:
+            p2_name = p2.a.text
+            dbcon.addPlayerToDB(Player(p2_id, p2_name))
+
+        return rtn_arr
 
     @staticmethod
     def isMatchValid(matchid, tournamentid) -> bool:
