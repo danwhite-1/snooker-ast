@@ -11,40 +11,42 @@ class Match:
     def __init__(self, matchid, tournamentid):
         self.matchid = str(matchid)
         self.tournamentid = str(tournamentid)
+        self.matchPageHtml = self.getPageHtml()
         self.p1ast, self.p2ast = self.getASTforMatch()
         self.p1id, self.p2id = self.getPlayers()
         self.p1score, self.p2score = self.getScores()
         self.roundno = self.getRoundNo()
 
-    def getASTforMatch(self):
-        rtn_arr = []
+
+    def getPageHtml(self):
         r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
-        if r.status_code == 200:
-            html_soup = BeautifulSoup(r.text, 'html.parser')
-            asts = html_soup.find_all('p', class_ = 'score-ast')
-            for val in asts:
-                rtn_arr.append(val.text[:-5])
+        if r.status_code != 200:
+            return None
+
+        return r.text
+
+
+    def getASTforMatch(self):
+        if self.matchPageHtml == None:
+            return -1, -1
+
+        rtn_arr = []
+        html_soup = BeautifulSoup(self.matchPageHtml, 'html.parser')
+        asts = html_soup.find_all('p', class_ = 'score-ast')
+        for val in asts:
+            rtn_arr.append(val.text[:-5])
 
         if len(rtn_arr) == 2:
             return rtn_arr[0], rtn_arr[1]
 
         return -1, -1
 
-    def getMatchInfo(self):
-        ret_dict = {
-            "matchid" : self.matchid,
-            "tournamentid" : self.tournamentid,
-            "p1ast" : self.p1ast,
-            "p2ast" : self.p2ast
-        }
-        return ret_dict
 
     def getRoundNo(self) -> str: 
-        r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
-        if r.status_code != 200:
+        if self.matchPageHtml == None:
             return "not found"
 
-        html_soup = BeautifulSoup(r.text, 'html.parser')
+        html_soup = BeautifulSoup(self.matchPageHtml, 'html.parser')
         round = html_soup.find('div', class_ = 'component-title').p.text
         round_text_idx = round.find("Round")
         if(round_text_idx != -1):
@@ -61,12 +63,11 @@ class Match:
 
 
     def getPlayers(self):
-        r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
-        if r.status_code != 200:
+        if self.matchPageHtml == None:
             return -1, -1
 
         rtn_arr = []
-        html_soup = BeautifulSoup(r.text, 'html.parser')
+        html_soup = BeautifulSoup(self.matchPageHtml, 'html.parser')
         p1 = html_soup.find('p', class_ = 'name text-right')
 
         p1_id = p1.a["href"].split("/")[4]
@@ -90,12 +91,11 @@ class Match:
         return rtn_arr
 
     def getScores(self):
-        r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
-        if r.status_code != 200:
+        if self.matchPageHtml == None:
             return -1, -1
 
         rtn_arr = []
-        html_soup = BeautifulSoup(r.text, 'html.parser')
+        html_soup = BeautifulSoup(self.matchPageHtml, 'html.parser')
 
         p1_score = html_soup.find('p', class_ = 'score score-player1 text-right')
         if p1_score is None:
