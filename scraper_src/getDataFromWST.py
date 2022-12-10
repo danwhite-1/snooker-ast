@@ -9,9 +9,6 @@ from typing import List
 from utils import isInt
 from enum import Enum
 
-
-#valid_tourns = ["14539", "14540", "14541", "14542", "14543", "14546", "14547", "14552", "14554"]
-
 def findNewValidTournaments(startnum) -> List[int]:
     endnum = startnum + 250
     return findValidTourns(startnum, endnum)
