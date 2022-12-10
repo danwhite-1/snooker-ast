@@ -130,7 +130,7 @@ def main():
             new_tourn_ids = [args.forceaddtourn]
 
         elif mode == Mode.FULL:
-            current_largest_tourn = 14500
+            current_largest_tourn = 14500 # good place to start searching for 2022/23 tournaments
             new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
 
         new_tourns = checkNewTourns(dbcon, new_tourn_ids)
