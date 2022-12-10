@@ -1,17 +1,18 @@
 CLIENT
-* Improve UI
+* Improve graphs
+    * Axis bounds
+    * Box plots
+* Add UI to compare tournaments + players
+* Show more raw stats rather than just graphs
 
 SERVER
 * Implement APIs for sending shot time data
     * Consider which APIs would be useful
-    * Do calculations/matchs work server side
+        * Get ast by player
 
 SCRAPER
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
-* Change scraping to use bs4
-    * Done for match parsing
-* Scrape more data, players, wining player
 
 DB
 * Migrate to cloud solution
