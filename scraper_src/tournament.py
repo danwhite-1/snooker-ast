@@ -8,40 +8,48 @@ from urllib.parse import urlparse, parse_qs
 class Tournament:
     def __init__(self, tournamentid):
         self.tournamentid = str(tournamentid)
+        self.tournPageSoup = self.getPageSoup()
         self.tournamentname = self.getTournamentName()
         self.noofrounds = self.getNoOfRounds()
         self.matches = self.findValidMatches()
 
-    def findValidMatches(self):
-        rtn_arr = []
+
+    def getPageSoup(self):
         r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
         if r.status_code != 200:
-            return False
+            return None
 
-        html_soup = BeautifulSoup(r.text, 'html.parser')
-        matches = html_soup.find_all("tr", {"data-href" : True})
+        return BeautifulSoup(r.text, 'html.parser')
+
+
+    def findValidMatches(self):
+        if self.tournPageSoup == None:
+            return []
+
+        rtn_arr = []
+
+        matches = self.tournPageSoup.find_all("tr", {"data-href" : True})
         for m in matches:
             indx = m["data-href"].index(self.tournamentid)
             rtn_arr.append(m["data-href"][indx+6:indx+12])
         return rtn_arr
 
+
     def getTournamentName(self):
-        r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
-        if r.status_code != 200:
+        if self.tournPageSoup == None:
             return "not found"
 
-        html_soup = BeautifulSoup(r.text, 'html.parser')
-        name = html_soup.find("div", {"id": "tournament-name"})
+        name = self.tournPageSoup.find("div", {"id": "tournament-name"})
         return name.h1.text
 
+
     def getNoOfRounds(self):
-        r = requests.get(INDEX_URL + self.tournamentid, allow_redirects=False)
-        if r.status_code != 200:
+        if self.tournPageSoup == None:
             return -1
 
-        html_soup = BeautifulSoup(r.text, 'html.parser')
-        rounds = html_soup.find_all('h3', class_ = 'matches-sub-title')
+        rounds = self.tournPageSoup.find_all('h3', class_ = 'matches-sub-title')
         return len(rounds)
+
 
     @staticmethod
     def isValidTourn(tourn_num):
@@ -54,6 +62,7 @@ class Tournament:
         if name is None or "championship league" in name.lower():
             return False
         return True
+
 
     @staticmethod
     def isFinished(tourn_num):
