@@ -21,7 +21,7 @@ class Tournament:
         html_soup = BeautifulSoup(r.text, 'html.parser')
         matches = html_soup.find_all("tr", {"data-href" : True})
         for m in matches:
-            indx = m["data-href"].index("14560")
+            indx = m["data-href"].index(self.tournamentid)
             rtn_arr.append(m["data-href"][indx+6:indx+12])
         return rtn_arr
 
@@ -51,7 +51,7 @@ class Tournament:
 
         html_soup = BeautifulSoup(r.text, 'html.parser')
         name = html_soup.find("div", {"id": "tournament-name"}).h1.text
-        if name is None or "championship league" in name:
+        if name is None or "championship league" in name.lower():
             return False
         return True
 
@@ -91,7 +91,9 @@ class Tournament:
                     continue
                 if h.select('td')[1].a is None:
                     continue
-                if tourn_num in h.select('td')[1].a['href']:
+                # Potential bug here - if more than one event is on a particular day 
+                # then we wont be able to get the date this way, this though is rare
+                if tourn_num in h.select('td')[1].a['href'] and len(h.td.select('span')) > 1:
                     day = h.td.select('span')[1].text
                     found = True
 
