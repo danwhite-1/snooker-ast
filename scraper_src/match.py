@@ -13,6 +13,7 @@ class Match:
         self.tournamentid = str(tournamentid)
         self.p1ast, self.p2ast = self.getASTforMatch()
         self.p1id, self.p2id = self.getPlayers()
+        self.p1score, self.p2score = self.getScores()
         self.roundno = self.getRoundNo()
 
     def getASTforMatch(self):
@@ -85,6 +86,26 @@ class Match:
         if p2inDB is None:
             p2_name = p2.a.text
             dbcon.addPlayerToDB(Player(p2_id, p2_name))
+
+        return rtn_arr
+
+    def getScores(self):
+        r = requests.get(RESULT_URL + self.tournamentid + "/" + self.matchid + "/", allow_redirects=False)
+        if r.status_code != 200:
+            return -1, -1
+
+        rtn_arr = []
+        html_soup = BeautifulSoup(r.text, 'html.parser')
+
+        p1_score = html_soup.find('p', class_ = 'score score-player1 text-right')
+        if p1_score is None:
+            return -1, -1
+        rtn_arr.append(p1_score.text)
+
+        p2_score = html_soup.find('p', class_ = 'score score-player2')
+        if p2_score is None:
+            return -1, -1
+        rtn_arr.append(p2_score.text)
 
         return rtn_arr
 
