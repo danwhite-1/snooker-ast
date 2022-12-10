@@ -87,6 +87,7 @@ class Match:
 
         return rtn_arr
 
+
     def getScores(self):
         if self.matchPageSoup == None:
             return -1, -1
@@ -103,6 +104,7 @@ class Match:
         rtn_arr.append(p2_score.text)
 
         return rtn_arr
+
 
     @staticmethod
     def isMatchValid(matchid, tournamentid) -> bool:
