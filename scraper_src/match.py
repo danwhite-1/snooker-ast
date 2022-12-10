@@ -50,6 +50,10 @@ class Match:
         if(round_text_idx != -1):
             return round[:round_text_idx+7]
 
+        # This coveres 2022 CoC, will need to update
+        if self.tournamentid == "14586":
+            return self.handleCoC(round)
+
         if "Final" in round:
             if "Semi" in round:
                 return "semi-final"
@@ -58,6 +62,19 @@ class Match:
             return "final"
 
         return "not found"
+
+
+    # CoC uses a normal format, but with strange round naming
+    # This function corrects it to be more normal
+    def handleCoC(self, round):
+        if "Group Semi-Finals" in round:
+            return "round 1"
+        elif "Group Final" in round:
+            return "quarter-final"
+        elif "Semi-Final" in round:
+            return "semi-final"
+        else:
+            return "final"
 
 
     def getPlayers(self):
