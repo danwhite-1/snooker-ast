@@ -43,8 +43,9 @@ class accessSnookerDB:
     # TODO Add a force arg to allow a match to be re-added
     def addMatchToDB(self, match):
         tab = "matches"
-        vals = [match.matchid, match.tournamentid, match.roundno, match.p1ast, match.p2ast]
-        command = constructInsert(tab, vals)
+        vals = [match.matchid, match.tournamentid, match.roundno, match.p1id, match.p1ast, match.p2id, match.p2ast]
+        cols = ["matchid", "tournamentid", "roundno", "player1id", "player1ast", "player2id", "player2ast"]
+        command = constructInsert(tab, vals, cols)
 
         try:
             self.cursor.execute(command)
