@@ -11,13 +11,24 @@ class CompareDropDown extends Component {
         }
     }
 
+    translateStringToInt = (valAsString) => {
+        const numToIntDict = {
+            'one' : 1,
+            'two' : 2,
+            'three': 3,
+            'four' : 4
+        }
+
+        this.props.onDDChange(numToIntDict[valAsString]);
+    }
+
     render() {
         return (
             <div className="CompareDropDownDiv">
                 <DropdownList
                     defaultValue="one"
                     data={this.state.options}
-                    onChange={this.props.onDDChange}
+                    onChange={this.translateStringToInt}
                 />
             </div>
         )

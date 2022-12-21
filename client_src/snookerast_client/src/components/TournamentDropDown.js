@@ -6,12 +6,13 @@ class TournamentDropDown extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            options: ["one", "two", "three"],//["loading"],
+            options: ["loading"],
             selected: "placeholder"
         }
     }
 
-    shouldComponentUpdate (nextProps) {
+    // TODO: Move to newer version of this hook
+    UNSAFE_componentWillReceiveProps (nextProps) {
         if (nextProps.tournaments !== this.props.options) {
             this.setState({options : []});
             for (let i = 0; i < nextProps.tournaments.length; i++) {

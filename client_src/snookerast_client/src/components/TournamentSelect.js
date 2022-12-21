@@ -12,7 +12,8 @@ class TournamentSelect extends Component {
             tournament_id : "",
             tournament_round_averages : {},
             tournament_list : [],
-            placeholder_data : []
+            chart_data : [],
+            tournaments_to_compare : "one"
         };
     }
 
@@ -35,12 +36,6 @@ class TournamentSelect extends Component {
         if (this.state.tournament_id.length === 5 && !isNaN(this.state.tournament_id)) {
             return true;
         }
-    }
-
-    handleSearchBoxChange = (sb_value) => {
-        this.setState({
-            tournament_id : sb_value
-        })
     }
 
     handleDropDownChange = (dropDownValue) => {
@@ -76,7 +71,7 @@ class TournamentSelect extends Component {
                         }
                     }
 
-                    this.setState({ placeholder_data : rtnData });
+                    this.setState({ chart_data : rtnData });
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -85,15 +80,23 @@ class TournamentSelect extends Component {
     }
 
     handleCompareDropDownChange = (dropDownValue) => {
-        console.log("Compare drop down changed. new val = " + dropDownValue);
+        this.setState({
+            tournaments_to_compare : dropDownValue
+        })
     }
 
     render() {
         return (
             <div className="TournamentSearchBoxDiv">
                 <CompareDropDown className="CompareDropDown" onDDChange={this.handleCompareDropDownChange}/>
-                <TournamentDropDown className="TournamentDropDown" onDDChange={this.handleDropDownChange} tournaments={this.state.tournament_list}/>
-                <TournamentLineChart data={this.state.placeholder_data}/>
+                <div className="TournamentDropDownGridDiv">
+                    {Array(this.state.tournaments_to_compare).fill(true).map((_, i) => <TournamentDropDown 
+                                                                                            key={i} className="TournamentDropDown"
+                                                                                            onDDChange={this.handleDropDownChange}
+                                                                                            tournaments={this.state.tournament_list}
+                                                                                        />)}
+                </div>
+                <TournamentLineChart data={this.state.chart_data}/>
             </div>
         )
     }
