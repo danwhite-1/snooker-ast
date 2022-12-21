@@ -10,6 +10,16 @@
   width: 35%;
   margin: auto;
   margin-bottom: 2%;
+  margin-left: 1%;
+  display:inline-block;
+}
+
+.CompareDropDownDiv {
+  width: 8%;
+  margin: auto;
+  margin-bottom: 2%;
+  margin-right: 1%;
+  display:inline-block;
 }
 
 .TournamentLineChartDiv {

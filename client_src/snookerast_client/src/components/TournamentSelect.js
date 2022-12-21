@@ -1,4 +1,5 @@
 import { Component } from "react";
+import CompareDropDown from "./CompareDropDown";
 import TournamentDropDown from "./TournamentDropDown";
 import TournamentLineChart from "./TournamentLineChart";
 
@@ -83,9 +84,14 @@ class TournamentSelect extends Component {
             .catch(error => alert("An error occured: " + error));
     }
 
+    handleCompareDropDownChange = (dropDownValue) => {
+        console.log("Compare drop down changed. new val = " + dropDownValue);
+    }
+
     render() {
         return (
             <div className="TournamentSearchBoxDiv">
+                <CompareDropDown className="CompareDropDown" onDDChange={this.handleCompareDropDownChange}/>
                 <TournamentDropDown className="TournamentDropDown" onDDChange={this.handleDropDownChange} tournaments={this.state.tournament_list}/>
                 <TournamentLineChart data={this.state.placeholder_data}/>
             </div>
