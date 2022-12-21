@@ -72,6 +72,10 @@ class TournamentSelect extends Component {
                     }
 
                     this.setState({ chart_data : rtnData });
+
+                    // Each rtndata should have avg_ast1, avg_ast2 etc. which should correlate to tournament selected
+                    // How to handle tournaments with different rounds? Each rtn_data element represents a round, if we
+                    // are comparing rounds we should only show ticks not round numbers.
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -96,7 +100,7 @@ class TournamentSelect extends Component {
                                                                                             tournaments={this.state.tournament_list}
                                                                                         />)}
                 </div>
-                <TournamentLineChart data={this.state.chart_data}/>
+                <TournamentLineChart data={this.state.chart_data} noOfLines={this.state.tournaments_to_compare}/>
             </div>
         )
     }
