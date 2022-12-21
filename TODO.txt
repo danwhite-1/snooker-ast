@@ -3,7 +3,10 @@ CLIENT
     * Axis bounds
     * Box plots
 * Add UI to compare tournaments + players
+    * Allow multiple rounds to be compared on the graph
+    * Move to use a '+' button rather than a dropdown
 * Show more raw stats rather than just graphs
+    * New area below the graph?
 
 SERVER
 * Implement APIs for sending shot time data
@@ -11,6 +14,8 @@ SERVER
         * Get ast by player
 
 SCRAPER
+* Implement way to stitch Qualifier tournaments into their main components...
+    * This wouldn't work for World Champs, but should for minor Ts
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
 
