@@ -59,7 +59,7 @@ class TournamentSelect extends Component {
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
                     this.setState({tournament_round_averages: tournamentData[0]});
-                    let newData = tournamentData[0];
+                    const newData = tournamentData[0];
                     let rtnData = []
 
                     for (let r in newData) {
