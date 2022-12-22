@@ -4,6 +4,9 @@ CLIENT
     * Box plots
 * Add UI to compare tournaments + players
     * Allow multiple rounds to be compared on the graph
+        * This is now working but there are some issues:
+             * 2,3 and 4 drop downs only populate after a selection in one of the others
+             * If tournament 1 has less rounds than tournament 2 then not all tournament 2's rounds will be shown
     * Move to use a '+' button rather than a dropdown
 * Show more raw stats rather than just graphs
     * New area below the graph?
