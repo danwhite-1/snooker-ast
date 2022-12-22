@@ -12,6 +12,8 @@ class TournamentDropDown extends Component {
     }
 
     // TODO: Move to newer version of this hook
+    // BUG! Extra dropdowns only populate after there has been
+    // a selection in the first one
     UNSAFE_componentWillReceiveProps (nextProps) {
         if (nextProps.tournaments !== this.props.options) {
             this.setState({options : []});
@@ -30,7 +32,7 @@ class TournamentDropDown extends Component {
                 <DropdownList
                     defaultValue="Select a tournament"
                     data={this.state.options}
-                    onChange={this.props.onDDChange}
+                    onChange={selected => this.props.onDDChange(selected, this.props.id)}
                 />
             </div>
         )

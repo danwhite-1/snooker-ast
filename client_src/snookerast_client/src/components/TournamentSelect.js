@@ -38,7 +38,23 @@ class TournamentSelect extends Component {
         }
     }
 
-    handleDropDownChange = (dropDownValue) => {
+    calcDataKey = (id) => {
+        // duplicate logic from TournamentLineChart.js
+        const dataKeyBase = "avg_ast";
+        const dataKeyMap = {
+        "0" : dataKeyBase + "1",
+        "1" : dataKeyBase + "2",
+        "2" : dataKeyBase + "3",
+        "3" : dataKeyBase + "4",
+        }
+
+        return dataKeyMap[id.toString()]
+    }
+
+    handleDropDownChange = (dropDownValue, DDkey) => {
+        if (dropDownValue === "loading") {
+            return;
+        }
         const selected = this.state.tournament_list.find(tournament => tournament.tournamentname === dropDownValue);
 
         let search_url = "/api/tournament/" + selected.tournamentid;
@@ -53,6 +69,8 @@ class TournamentSelect extends Component {
             })
             .catch(error => alert("An error occured: " + error));
 
+        const dataKey = this.calcDataKey(DDkey);
+
         search_url = "/api/tournamentdata?action=roundavg&tournament=" + selected.tournamentid;
         fetch(search_url)
             .then(res => res.json())
@@ -62,20 +80,24 @@ class TournamentSelect extends Component {
                     const newData = tournamentData[0];
                     let rtnData = []
 
+                    if (DDkey === 0) {
+                        for (let r in newData) {
+                            let obj = { round : r};
+                            obj[dataKey] = newData[r];
+                            rtnData.push(obj);
+                        }
+                        this.setState({ chart_data : rtnData });
+                        return;
+                    }
+
+                    rtnData = this.state.chart_data;
                     for (let r in newData) {
-                        if (r !== "not found") {
-                            rtnData.push({
-                                round : r,
-                                avg_ast : newData[r]
-                            });
+                        if(rtnData.find(round => round.round === r)) {
+                            rtnData.find(round => round.round === r)[dataKey] = newData[r]
                         }
                     }
 
                     this.setState({ chart_data : rtnData });
-
-                    // Each rtndata should have avg_ast1, avg_ast2 etc. which should correlate to tournament selected
-                    // How to handle tournaments with different rounds? Each rtn_data element represents a round, if we
-                    // are comparing rounds we should only show ticks not round numbers.
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -95,7 +117,7 @@ class TournamentSelect extends Component {
                 <CompareDropDown className="CompareDropDown" onDDChange={this.handleCompareDropDownChange}/>
                 <div className="TournamentDropDownGridDiv">
                     {Array(this.state.tournaments_to_compare).fill(true).map((_, i) => <TournamentDropDown 
-                                                                                            key={i} className="TournamentDropDown"
+                                                                                            key={i} id={i} className="TournamentDropDown"
                                                                                             onDDChange={this.handleDropDownChange}
                                                                                             tournaments={this.state.tournament_list}
                                                                                         />)}
