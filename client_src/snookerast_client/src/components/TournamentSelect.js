@@ -51,6 +51,28 @@ class TournamentSelect extends Component {
         return dataKeyMap[id.toString()]
     }
 
+    sortRounds (array) {
+        return array.sort(function(a, b) {
+            var x = a["round"];
+            var y = b["round"];
+            if (!x.includes("final") && !y.includes("final")) {
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            } else if (x.includes("final") && !y.includes("final")) {
+                return 1;
+            } else if (!x.includes("final") && y.includes("final")) {
+                return -1;
+            } else if (x.includes("semi") && y !== "final") {
+                return 1;
+            } else if (y.includes("semi") && x !== "final") {
+                return -1;
+            } else if (x.includes("quarter") && !y.includes("final")) {
+                return 1;
+            } else if (y.includes("quarter") && !x.includes("final")) {
+                return -1;
+            }
+        });
+    }
+
     handleDropDownChange = (dropDownValue, DDkey) => {
         if (dropDownValue === "loading") {
             return;
@@ -92,10 +114,15 @@ class TournamentSelect extends Component {
 
                     rtnData = this.state.chart_data;
                     for (let r in newData) {
-                        if(rtnData.find(round => round.round === r)) {
+                        if (rtnData.find(round => round.round === r)) {
                             rtnData.find(round => round.round === r)[dataKey] = newData[r]
+                        } else {
+                            let obj = { round : r};
+                            obj[dataKey] = newData[r];
+                            rtnData.push(obj);
                         }
                     }
+                    rtnData = this.sortRounds(rtnData);
 
                     this.setState({ chart_data : rtnData });
                 } else {

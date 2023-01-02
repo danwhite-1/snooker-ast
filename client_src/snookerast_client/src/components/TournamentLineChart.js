@@ -21,6 +21,7 @@ export default function TournamentLineChart(props) {
   return (
     <div className="TournamentLineChartDiv rounded">
         <LineChart
+          key={`lc_${props.data.length}`}
           className="TournamentLineChart"
           width={900}
           height={600}
@@ -32,11 +33,11 @@ export default function TournamentLineChart(props) {
               bottom: 5
           }}
           >
-          <CartesianGrid strokeDasharray="10 10" />
-          <XAxis dataKey="round" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <CartesianGrid key={`cg_${props.data.length}`} strokeDasharray="10 10" />
+          <XAxis key={`x_${props.data.length}`} dataKey="round" />
+          <YAxis key={`y_${props.data.length}`} />
+          <Tooltip key={`tt_${props.data.length}`} />
+          <Legend key={`l_${props.data.length}`} />
           {Array(props.noOfLines).fill(true).map((_, i) => <Line
                                                               key={i}
                                                               type="monotone"
