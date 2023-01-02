@@ -6,24 +6,15 @@ class TournamentDropDown extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            options: ["loading"],
+            options: this.props.tournaments,
             selected: "placeholder"
         }
     }
 
     // TODO: Move to newer version of this hook
-    // BUG! Extra dropdowns only populate after there has been
-    // a selection in the first one
+    // This is required to allow the first dropdown to populate
     UNSAFE_componentWillReceiveProps (nextProps) {
-        if (nextProps.tournaments !== this.props.options) {
-            this.setState({options : []});
-            for (let i = 0; i < nextProps.tournaments.length; i++) {
-                this.setState(prev => ({options : [...prev.options, Object.values(nextProps.tournaments[i])[1]]}));
-            }
-            return true;
-        } else {
-            return false;
-        }
+        this.setState({options : nextProps.tournaments});
     }
 
     render() {

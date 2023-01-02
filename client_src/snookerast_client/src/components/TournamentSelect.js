@@ -12,6 +12,7 @@ class TournamentSelect extends Component {
             tournament_id : "",
             tournament_round_averages : {},
             tournament_list : [],
+            tournament_list_names : [],
             chart_data : [],
             tournaments_to_compare : "one"
         };
@@ -24,6 +25,11 @@ class TournamentSelect extends Component {
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
                     this.setState({tournament_list: tournamentData});
+
+                    // strip out tourn names for drop downs
+                    for (let i = 0; i < tournamentData.length; i++) {
+                        this.setState(prev => ({tournament_list_names : [...prev.tournament_list_names, Object.values(tournamentData[i])[1]]}));
+                    }
                 } else {
                     // Correct this error message
                     alert("Error retriving tournaments. Error: " + tournamentData[0].e_msg);
@@ -146,7 +152,7 @@ class TournamentSelect extends Component {
                     {Array(this.state.tournaments_to_compare).fill(true).map((_, i) => <TournamentDropDown 
                                                                                             key={i} id={i} className="TournamentDropDown"
                                                                                             onDDChange={this.handleDropDownChange}
-                                                                                            tournaments={this.state.tournament_list}
+                                                                                            tournaments={this.state.tournament_list_names}
                                                                                         />)}
                 </div>
                 <TournamentLineChart data={this.state.chart_data} noOfLines={this.state.tournaments_to_compare}/>
