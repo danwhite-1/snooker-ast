@@ -17,6 +17,13 @@ const dataKeyMap = {
   "3" : dataKeyBase + "4",
 }
 
+const dataKeyColours = {
+  "0" : "#2596be",
+  "1" : "#9925be",
+  "2" : "#be4d25",
+  "3" : "#49be25",
+}
+
 export default function TournamentLineChart(props) {
   return (
     <div className="TournamentLineChartDiv rounded">
@@ -42,7 +49,7 @@ export default function TournamentLineChart(props) {
                                                               key={i}
                                                               type="monotone"
                                                               dataKey={dataKeyMap[i.toString()]}
-                                                              stroke="#8884d8" 
+                                                              stroke={dataKeyColours[i.toString()]}
                                                               activeDot={{ r: 8 }} />)}
         </LineChart>
     </div>
