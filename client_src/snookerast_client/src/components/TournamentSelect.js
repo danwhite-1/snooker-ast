@@ -80,66 +80,49 @@ class TournamentSelect extends Component {
     }
 
     handleDropDownChange = (dropDownValue, DDkey) => {
-        if (dropDownValue === "loading") {
-            return;
-        }
         const selected = this.state.tournament_list.find(tournament => tournament.tournamentname === dropDownValue);
+        const search_url = "/api/tournamentdata?action=roundavg&tournament=" + selected.tournamentid;
 
-        let search_url = "/api/tournament/" + selected.tournamentid;
         fetch(search_url)
-            .then(res => res.json())
-            .then(tournamentData => {
-                if (!tournamentData[0].error) {
-                    this.setState({tournament_name: tournamentData[0].tournamentname})
-                } else {
-                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
-                }
-            })
-            .catch(error => alert("An error occured: " + error));
+        .then(res => res.json())
+        .then(tournamentData => {
+            if (!tournamentData[0].error) {
+                this.setState({tournament_round_averages: tournamentData[0]});
+                const newData = tournamentData[0];
+                const dataKey = this.calcDataKey(DDkey);
+                let rtnData = [];
 
-        const dataKey = this.calcDataKey(DDkey);
-
-        search_url = "/api/tournamentdata?action=roundavg&tournament=" + selected.tournamentid;
-        fetch(search_url)
-            .then(res => res.json())
-            .then(tournamentData => {
-                if (!tournamentData[0].error) {
-                    this.setState({tournament_round_averages: tournamentData[0]});
-                    const newData = tournamentData[0];
-                    let rtnData = []
-
-                    if (DDkey === 0) {
-                        for (let r in newData) {
-                            if (r !== "not found") {
-                                let obj = { round : r};
-                                obj[dataKey] = newData[r];
-                                rtnData.push(obj);
-                            }
-                        }
-                        this.setState({ chart_data : rtnData });
-                        return;
-                    }
-
-                    rtnData = this.state.chart_data;
+                if (DDkey === 0) {
                     for (let r in newData) {
-                        if (rtnData.find(round => round.round === r)) {
-                            rtnData.find(round => round.round === r)[dataKey] = newData[r]
-                        } else {
-                            if (r !== "not found") {
-                                let obj = { round : r};
-                                obj[dataKey] = newData[r];
-                                rtnData.push(obj);
-                            }
+                        if (r !== "not found") {
+                            let obj = { round : r};
+                            obj[dataKey] = newData[r];
+                            rtnData.push(obj);
                         }
                     }
-                    rtnData = this.sortRounds(rtnData);
-
                     this.setState({ chart_data : rtnData });
-                } else {
-                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
+                    return;
                 }
-            })
-            .catch(error => alert("An error occured: " + error));
+
+                rtnData = this.state.chart_data;
+                for (let r in newData) {
+                    if (rtnData.find(round => round.round === r)) {
+                        rtnData.find(round => round.round === r)[dataKey] = newData[r]
+                    } else {
+                        if (r !== "not found") {
+                            let obj = { round : r};
+                            obj[dataKey] = newData[r];
+                            rtnData.push(obj);
+                        }
+                    }
+                }
+
+                this.setState({ chart_data : this.sortRounds(rtnData) });
+            } else {
+                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
+            }
+        })
+        .catch(error => alert("An error occured: " + error));
     }
 
     handleCompareDropDownChange = (dropDownValue) => {
