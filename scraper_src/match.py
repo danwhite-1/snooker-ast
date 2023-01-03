@@ -68,7 +68,7 @@ class Match:
     # This function corrects it to be more normal
     def handleCoC(self, round):
         if "Group Semi-Finals" in round:
-            return "round 1"
+            return "Round 1"
         elif "Group Final" in round:
             return "quarter-final"
         elif "Semi-Final" in round:
