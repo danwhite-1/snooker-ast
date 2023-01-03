@@ -10,7 +10,8 @@ class TournamentSelect extends Component {
             tournament_list : [],
             tournament_list_names : [],
             chart_data : [],
-            tournaments_to_compare : 1
+            noOfTournamentsToCompare : 1,
+            tournamentNamesToCompare : []
         };
     }
 
@@ -78,7 +79,7 @@ class TournamentSelect extends Component {
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
                     const newData = tournamentData[0];
-                    const dataKey = this.calcDataKey(DDkey);
+                    const dataKey = dropDownValue;
                     let rtnData = [];
 
                     this.state.chart_data.forEach(function (arrayItem) {
@@ -102,7 +103,11 @@ class TournamentSelect extends Component {
                         }
                     }
 
-                    this.setState({ chart_data : this.sortRounds(rtnData) });
+                    this.setState({
+                        chart_data : this.sortRounds(rtnData),
+                        tournamentNamesToCompare :  [...this.state.tournamentNamesToCompare, dropDownValue]
+                    });
+
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
@@ -113,11 +118,11 @@ class TournamentSelect extends Component {
     changeNoToCompare = (change) => {
         const min = 1;
         const max = 4;
-        const newVal = this.state.tournaments_to_compare + change;
+        const newVal = this.state.noOfTournamentsToCompare + change;
         if (newVal < min || newVal > max) return;
 
         this.setState({
-            tournaments_to_compare : newVal
+            noOfTournamentsToCompare : newVal
         })
     }
 
@@ -127,13 +132,13 @@ class TournamentSelect extends Component {
                 <button className="CompareButton" onClick={() => {this.changeNoToCompare(1)}}>+</button>
                 <button className="CompareButton" onClick={() => {this.changeNoToCompare(-1)}}>-</button>
                 <div className="TournamentDropDownGridDiv">
-                    {Array(this.state.tournaments_to_compare).fill(true).map((_, i) => <TournamentDropDown 
+                    {Array(this.state.noOfTournamentsToCompare).fill(true).map((_, i) => <TournamentDropDown 
                                                                                             key={i} id={i} className="TournamentDropDown"
                                                                                             onDDChange={this.handleDropDownChange}
                                                                                             tournaments={this.state.tournament_list_names}
                                                                                         />)}
                 </div>
-                <TournamentLineChart data={this.state.chart_data} noOfLines={this.state.tournaments_to_compare}/>
+                <TournamentLineChart data={this.state.chart_data} tournNames={this.state.tournamentNamesToCompare}/>
             </div>
         )
     }

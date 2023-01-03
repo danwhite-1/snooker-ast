@@ -9,14 +9,6 @@ import {
   Legend
 } from "recharts";
 
-const dataKeyBase = "avg_ast";
-const dataKeyMap = {
-  "0" : dataKeyBase + "1",
-  "1" : dataKeyBase + "2",
-  "2" : dataKeyBase + "3",
-  "3" : dataKeyBase + "4",
-}
-
 const dataKeyColours = {
   "0" : "#2596be",
   "1" : "#9925be",
@@ -45,10 +37,10 @@ export default function TournamentLineChart(props) {
           <YAxis key={`y_${props.data.length}`} />
           <Tooltip key={`tt_${props.data.length}`} />
           <Legend key={`l_${props.data.length}`} />
-          {Array(props.noOfLines).fill(true).map((_, i) => <Line
+          {Array(props.tournNames.length).fill(true).map((_, i) => <Line
                                                               key={i}
                                                               type="monotone"
-                                                              dataKey={dataKeyMap[i.toString()]}
+                                                              dataKey={props.tournNames[i]}
                                                               stroke={dataKeyColours[i.toString()]}
                                                               activeDot={{ r: 8 }} />)}
         </LineChart>
