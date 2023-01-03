@@ -3,7 +3,7 @@ CLIENT
     * Axis bounds
     * Box plots
 * Add UI to compare tournaments + players
-    * Fix changing dropdowns + removing dropdowns
+    * Test new keys more thouroughly
 * Show more raw stats rather than just graphs
     * New area below the graph?
 
