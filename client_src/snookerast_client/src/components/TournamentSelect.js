@@ -110,9 +110,11 @@ class TournamentSelect extends Component {
 
                     if (DDkey === 0) {
                         for (let r in newData) {
-                            let obj = { round : r};
-                            obj[dataKey] = newData[r];
-                            rtnData.push(obj);
+                            if (r !== "not found") {
+                                let obj = { round : r};
+                                obj[dataKey] = newData[r];
+                                rtnData.push(obj);
+                            }
                         }
                         this.setState({ chart_data : rtnData });
                         return;
@@ -123,9 +125,11 @@ class TournamentSelect extends Component {
                         if (rtnData.find(round => round.round === r)) {
                             rtnData.find(round => round.round === r)[dataKey] = newData[r]
                         } else {
-                            let obj = { round : r};
-                            obj[dataKey] = newData[r];
-                            rtnData.push(obj);
+                            if (r !== "not found") {
+                                let obj = { round : r};
+                                obj[dataKey] = newData[r];
+                                rtnData.push(obj);
+                            }
                         }
                     }
                     rtnData = this.sortRounds(rtnData);
