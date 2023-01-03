@@ -82,7 +82,7 @@ class TournamentSelect extends Component {
                     const dataKey = this.calcDataKey(DDkey);
                     let rtnData = [];
 
-                    if (DDkey === 0) {
+                    if (this.tournaments_to_compare === 1) {
                         for (let r in newData) {
                             if (r !== "not found") {
                                 let obj = { round : r};
@@ -94,7 +94,15 @@ class TournamentSelect extends Component {
                         return;
                     }
 
-                    rtnData = this.state.chart_data;
+                    this.state.chart_data.forEach(function (arrayItem) {
+                        if (dataKey in arrayItem) {
+                            delete arrayItem[dataKey];
+                        }
+                        if (Object.keys(arrayItem).length !== 1) {
+                            rtnData.push(arrayItem);
+                        }
+                    });
+
                     for (let r in newData) {
                         if (rtnData.find(round => round.round === r)) {
                             rtnData.find(round => round.round === r)[dataKey] = newData[r]
