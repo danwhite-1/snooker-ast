@@ -1,5 +1,4 @@
 import { Component } from "react";
-import CompareDropDown from "./CompareDropDown";
 import TournamentDropDown from "./TournamentDropDown";
 import TournamentLineChart from "./TournamentLineChart";
 
@@ -11,7 +10,7 @@ class TournamentSelect extends Component {
             tournament_list : [],
             tournament_list_names : [],
             chart_data : [],
-            tournaments_to_compare : "one"
+            tournaments_to_compare : 1
         };
     }
 
@@ -123,16 +122,22 @@ class TournamentSelect extends Component {
             .catch(error => alert("An error occured: " + error));
     }
 
-    handleCompareDropDownChange = (dropDownValue) => {
+    changeNoToCompare = (change) => {
+        const min = 1;
+        const max = 4;
+        const newVal = this.state.tournaments_to_compare + change;
+        if (newVal < min || newVal > max) return;
+
         this.setState({
-            tournaments_to_compare : dropDownValue
+            tournaments_to_compare : newVal
         })
     }
 
     render() {
         return (
             <div className="TournamentSearchBoxDiv">
-                <CompareDropDown className="CompareDropDown" onDDChange={this.handleCompareDropDownChange}/>
+                <button className="CompareButton rounded" onClick={() => {this.changeNoToCompare(1)}}>+</button>
+                <button className="CompareButton rounded" onClick={() => {this.changeNoToCompare(-1)}}>-</button>
                 <div className="TournamentDropDownGridDiv">
                     {Array(this.state.tournaments_to_compare).fill(true).map((_, i) => <TournamentDropDown 
                                                                                             key={i} id={i} className="TournamentDropDown"

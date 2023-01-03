@@ -14,8 +14,9 @@
   display:inline-block;
 }
 
-.CompareDropDownDiv {
-  width: 8%;
+.CompareButton {
+  width: 35px;
+  height: 35px;
   margin: auto;
   margin-bottom: 2%;
   margin-right: 1%;
