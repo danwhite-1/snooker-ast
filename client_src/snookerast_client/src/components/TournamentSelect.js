@@ -84,45 +84,45 @@ class TournamentSelect extends Component {
         const search_url = "/api/tournamentdata?action=roundavg&tournament=" + selected.tournamentid;
 
         fetch(search_url)
-        .then(res => res.json())
-        .then(tournamentData => {
-            if (!tournamentData[0].error) {
-                this.setState({tournament_round_averages: tournamentData[0]});
-                const newData = tournamentData[0];
-                const dataKey = this.calcDataKey(DDkey);
-                let rtnData = [];
+            .then(res => res.json())
+            .then(tournamentData => {
+                if (!tournamentData[0].error) {
+                    this.setState({tournament_round_averages: tournamentData[0]});
+                    const newData = tournamentData[0];
+                    const dataKey = this.calcDataKey(DDkey);
+                    let rtnData = [];
 
-                if (DDkey === 0) {
+                    if (DDkey === 0) {
+                        for (let r in newData) {
+                            if (r !== "not found") {
+                                let obj = { round : r};
+                                obj[dataKey] = newData[r];
+                                rtnData.push(obj);
+                            }
+                        }
+                        this.setState({ chart_data : rtnData });
+                        return;
+                    }
+
+                    rtnData = this.state.chart_data;
                     for (let r in newData) {
-                        if (r !== "not found") {
-                            let obj = { round : r};
-                            obj[dataKey] = newData[r];
-                            rtnData.push(obj);
+                        if (rtnData.find(round => round.round === r)) {
+                            rtnData.find(round => round.round === r)[dataKey] = newData[r]
+                        } else {
+                            if (r !== "not found") {
+                                let obj = { round : r};
+                                obj[dataKey] = newData[r];
+                                rtnData.push(obj);
+                            }
                         }
                     }
-                    this.setState({ chart_data : rtnData });
-                    return;
-                }
 
-                rtnData = this.state.chart_data;
-                for (let r in newData) {
-                    if (rtnData.find(round => round.round === r)) {
-                        rtnData.find(round => round.round === r)[dataKey] = newData[r]
-                    } else {
-                        if (r !== "not found") {
-                            let obj = { round : r};
-                            obj[dataKey] = newData[r];
-                            rtnData.push(obj);
-                        }
-                    }
+                    this.setState({ chart_data : this.sortRounds(rtnData) });
+                } else {
+                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
-
-                this.setState({ chart_data : this.sortRounds(rtnData) });
-            } else {
-                alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
-            }
-        })
-        .catch(error => alert("An error occured: " + error));
+            })
+            .catch(error => alert("An error occured: " + error));
     }
 
     handleCompareDropDownChange = (dropDownValue) => {
