@@ -78,34 +78,42 @@ class TournamentSelect extends Component {
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
-                    const newData = tournamentData[0];
-                    const dataKey = dropDownValue;
                     let rtnData = [];
+                    let oldDataKey = "";
+                    if (this.state.tournamentNamesToCompare.length >= DDkey) {
+                        oldDataKey = this.state.tournamentNamesToCompare[DDkey]
+                    }
 
                     this.state.chart_data.forEach(function (arrayItem) {
-                        if (dataKey in arrayItem) {
-                            delete arrayItem[dataKey];
+                        if (oldDataKey in arrayItem) {
+                            delete arrayItem[oldDataKey];
                         }
                         if (Object.keys(arrayItem).length !== 1) {
                             rtnData.push(arrayItem);
                         }
                     });
 
+                    const newData = tournamentData[0];
                     for (let r in newData) {
                         if (rtnData.find(round => round.round === r)) {
-                            rtnData.find(round => round.round === r)[dataKey] = newData[r]
+                            rtnData.find(round => round.round === r)[dropDownValue] = newData[r]
                         } else {
                             if (r !== "not found") {
                                 let obj = { round : r};
-                                obj[dataKey] = newData[r];
+                                obj[dropDownValue] = newData[r];
                                 rtnData.push(obj);
                             }
                         }
                     }
 
+                    let tNames = this.state.tournamentNamesToCompare;
+                    if (tNames[DDkey] !== "undefined") {
+                        tNames[DDkey] = dropDownValue;
+                    }
+
                     this.setState({
                         chart_data : this.sortRounds(rtnData),
-                        tournamentNamesToCompare :  [...this.state.tournamentNamesToCompare, dropDownValue]
+                        tournamentNamesToCompare : tNames
                     });
 
                 } else {
