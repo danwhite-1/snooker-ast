@@ -129,8 +129,18 @@ class TournamentSelect extends Component {
         const newVal = this.state.noOfTournamentsToCompare + change;
         if (newVal < min || newVal > max) return;
 
+        if (change > 0) {
+            this.setState({
+                noOfTournamentsToCompare : newVal
+            })
+            return;
+        }
+
+        let tNames = this.state.tournamentNamesToCompare;
+        tNames.pop();
         this.setState({
-            noOfTournamentsToCompare : newVal
+            noOfTournamentsToCompare : newVal,
+            tournamentNamesToCompare : tNames
         })
     }
 
