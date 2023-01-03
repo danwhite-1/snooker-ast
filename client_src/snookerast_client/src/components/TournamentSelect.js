@@ -119,7 +119,7 @@ class TournamentSelect extends Component {
 
                 this.setState({ chart_data : this.sortRounds(rtnData) });
             } else {
-                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
+                alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
             }
         })
         .catch(error => alert("An error occured: " + error));
