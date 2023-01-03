@@ -8,9 +8,6 @@ class TournamentSelect extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tournament_name : "",
-            tournament_id : "",
-            tournament_round_averages : {},
             tournament_list : [],
             tournament_list_names : [],
             chart_data : [],
@@ -36,12 +33,6 @@ class TournamentSelect extends Component {
                 }
             })
             .catch(error => alert("An error occured: " + error));
-    }
-
-    validateTournamentId = () => {
-        if (this.state.tournament_id.length === 5 && !isNaN(this.state.tournament_id)) {
-            return true;
-        }
     }
 
     calcDataKey = (id) => {
@@ -87,7 +78,6 @@ class TournamentSelect extends Component {
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
-                    this.setState({tournament_round_averages: tournamentData[0]});
                     const newData = tournamentData[0];
                     const dataKey = this.calcDataKey(DDkey);
                     let rtnData = [];
