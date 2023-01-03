@@ -135,9 +135,9 @@ class TournamentSelect extends Component {
 
     render() {
         return (
-            <div className="TournamentSearchBoxDiv">
-                <button className="CompareButton rounded" onClick={() => {this.changeNoToCompare(1)}}>+</button>
-                <button className="CompareButton rounded" onClick={() => {this.changeNoToCompare(-1)}}>-</button>
+            <div className="TournamentDiv">
+                <button className="CompareButton" onClick={() => {this.changeNoToCompare(1)}}>+</button>
+                <button className="CompareButton" onClick={() => {this.changeNoToCompare(-1)}}>-</button>
                 <div className="TournamentDropDownGridDiv">
                     {Array(this.state.tournaments_to_compare).fill(true).map((_, i) => <TournamentDropDown 
                                                                                             key={i} id={i} className="TournamentDropDown"
