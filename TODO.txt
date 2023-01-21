@@ -6,6 +6,7 @@ CLIENT
     * Test new keys more thouroughly
 * Show more raw stats rather than just graphs
     * New area below the graph?
+* BUG! Size of linechart is hardcoded - this needs to be dynamic
 
 SERVER
 * Implement APIs for sending shot time data
