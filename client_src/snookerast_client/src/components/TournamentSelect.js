@@ -39,19 +39,6 @@ class TournamentSelect extends Component {
             .catch(error => alert("An error occured: " + error));
     }
 
-    calcDataKey = (id) => {
-        // duplicate logic from TournamentLineChart.js
-        const dataKeyBase = "avg_ast";
-        const dataKeyMap = {
-        "0" : dataKeyBase + "1",
-        "1" : dataKeyBase + "2",
-        "2" : dataKeyBase + "3",
-        "3" : dataKeyBase + "4",
-        }
-
-        return dataKeyMap[id.toString()]
-    }
-
     sortRounds (array) {
         return array.sort(function(a, b) {
             var x = a["round"];
@@ -148,17 +135,22 @@ class TournamentSelect extends Component {
         })
     }
 
+    isDisabled = (type) => {
+        if (type == "+" && this.state.noOfTournamentsToCompare == 4) return true
+        if (type == "-" && this.state.noOfTournamentsToCompare == 1) return true
+    }
+
     render() {
         return (
             <div className="TournamentDiv">
-                <button className="CompareButton" onClick={() => {this.changeNoToCompare(1)}}>+</button>
-                <button className="CompareButton" onClick={() => {this.changeNoToCompare(-1)}}>-</button>
                 <div className="TournamentDropDownGridDiv">
                     {Array(this.state.noOfTournamentsToCompare).fill(true).map((_, i) => <TournamentDropDown 
                                                                                             key={i} id={i} className="TournamentDropDown"
                                                                                             onDDChange={this.handleDropDownChange}
                                                                                             tournaments={this.state.tournament_list_names}
-                                                                                        />)}
+                                                                                            />)}
+                    <button className="CompareButton" disabled={this.isDisabled("+")} onClick={() => {this.changeNoToCompare(1)}}>+</button>
+                    <button className="CompareButton" disabled={this.isDisabled("-")} onClick={() => {this.changeNoToCompare(-1)}}>-</button>
                 </div>
                 <TournamentLineChart data={this.state.chart_data} tournNames={this.state.tournamentNamesToCompare}/>
             </div>

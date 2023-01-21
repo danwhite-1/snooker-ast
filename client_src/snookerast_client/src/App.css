@@ -7,7 +7,7 @@
 }
 
 .TournamentDropDownDiv {
-  width: 35%;
+  width: 20%;
   margin: auto;
   margin-bottom: 2%;
   margin-left: 1%;
@@ -19,7 +19,7 @@
   height: 35px;
   margin: auto;
   margin-bottom: 2%;
-  margin-right: 1%;
+  margin-left: 1%;
   display:inline-block;
   background-color: #ffff;
   font-weight: bolder;
@@ -28,7 +28,7 @@
 }
 
 .TournamentLineChartDiv {
-  width: 50%;
+  width: 75%;
   margin: auto;
   background-color: #ffff;
   border: #ffff;

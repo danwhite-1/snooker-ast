@@ -22,7 +22,7 @@ export default function TournamentLineChart(props) {
         <LineChart
           key={`lc_${props.data.length}`}
           className="TournamentLineChart"
-          width={900}
+          width={1350}
           height={600}
           data={props.data}
           margin={{
