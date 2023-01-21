@@ -1,6 +1,7 @@
 import requests
 from io import StringIO
 from wst_urls import INDEX_URL, CAL_URL
+from logger import log, logLevel
 from datetime import date
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
@@ -68,9 +69,13 @@ class Tournament:
     def isFinished(tourn_num):
         # Construct an array of the possible month + year combinations
         month_arr = []
+        currentMonth = date.today().month
         currentYear = date.today().year
         for i in range(1, 13):
-            yr = currentYear if i >= 6 else currentYear + 1
+            if currentMonth >= 6:
+                yr = currentYear if i >= 6 else currentYear + 1
+            else:
+                yr = currentYear - 1 if i >= 6 else currentYear
             month_arr.append([i, yr])
 
         month_arr = month_arr[5:] + month_arr[:5] # wst year is July - May
@@ -102,13 +107,14 @@ class Tournament:
                     continue
                 # Potential bug here - if more than one event is on a particular day 
                 # then we wont be able to get the date this way, this though is rare
-                if tourn_num in h.select('td')[1].a['href'] and len(h.td.select('span')) > 1:
+                if str(tourn_num) in h.select('td')[1].a['href'] and len(h.td.select('span')) > 1:
                     day = h.td.select('span')[1].text
                     found = True
 
         try:
             tourn_end_date = date(int(year), int(month), int(day))
         except ValueError:
+            log(logLevel.ERR, f"Unable to parse end date for tournament {tourn_num}")
             return False
 
         if date.today() > tourn_end_date:
