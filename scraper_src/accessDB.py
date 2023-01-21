@@ -44,14 +44,14 @@ class accessSnookerDB:
 
 
     def addMatchToDB(self, match):
-        tab = "matches"
+        table = "matches"
         vals = [match.matchid, match.tournamentid, match.roundno,
                 match.p1id, match.p1score, match.p1ast,
                 match.p2id, match.p2score, match.p2ast]
         cols = ["matchid", "tournamentid", "roundno",
                 "player1id", "player1score","player1ast",
                 "player2id", "player2score", "player2ast"]
-        command = constructInsert(tab, vals, cols)
+        command = constructInsert(table, vals, cols)
 
         try:
             self.cursor.execute(command)
@@ -64,10 +64,10 @@ class accessSnookerDB:
 
 
     def addPlayerToDB(self, player):
-        tab = "players"
+        table = "players"
         name = dealWithApostrophes(player.playerName)
         vals = [player.playerWstid, name]
-        command = constructInsert(tab, vals)
+        command = constructInsert(table, vals)
 
         try:
             self.cursor.execute(command)
