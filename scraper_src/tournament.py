@@ -1,5 +1,4 @@
 import requests
-from io import StringIO
 from wst_urls import INDEX_URL, CAL_URL
 from logger import log, logLevel
 from datetime import date
