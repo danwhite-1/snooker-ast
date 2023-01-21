@@ -6,8 +6,6 @@ from accessDB import accessSnookerDB
 from logger import logLevel, log, initLogs, logOutput
 from argparse import ArgumentParser
 from typing import List
-from utils import isInt
-from enum import Enum
 
 
 def findNewValidTournaments(startnum) -> List[int]:
