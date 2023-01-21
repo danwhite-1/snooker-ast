@@ -12,6 +12,7 @@ SERVER
 * Implement APIs for sending shot time data
     * Consider which APIs would be useful
         * Get ast by player
+* Close down CORS
 
 SCRAPER
 * Deal with remaining "not found" rounds
