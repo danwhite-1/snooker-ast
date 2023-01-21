@@ -83,7 +83,7 @@ class accessSnookerDB:
         row = self.cursor.fetchone()
         return row[0]
 
-    def getAllTournamants(self):
+    def getAllTournaments(self):
         table = "tournaments"
         command = constructSimpleSelect(table)
         self.cursor.execute(command)
@@ -108,6 +108,17 @@ class accessSnookerDB:
         self.cursor.execute("SELECT * FROM players WHERE playerwstid=" + str(id) + ";")
         row = self.cursor.fetchone()
         return row
+
+    def updateMatchesTournamentID(self, oldid, newid):
+        command = f"UPDATE matches SET tournamentid={str(newid)} WHERE tournamentid={str(oldid)}"
+        self.cursor.execute(command)
+        self.conn.commit()
+
+    def deleteTournamentByID(self, id):
+        command = f"DELETE FROM tournaments WHERE tournamentid={str(id)}"
+        self.cursor.execute(command)
+        self.conn.commit()
+
 
 # Create a DBUtils static class
 def constructInsert(table, values, columns=None):

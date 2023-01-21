@@ -23,7 +23,7 @@ def findValidTourns(startnum, endnum) -> List[int]:
             rtn_arr.append(str(i))
             last_valid_tourn = i
         if i - last_valid_tourn > 50:
-            log(logLevel.INFO, "No valid tournaments found in the last 50")
+            log(logLevel.INFO, "No valid tournaments found in the last 50. Seach complete")
             break
 
     return rtn_arr
@@ -55,7 +55,7 @@ def checkNewTourns(dbcon, newTournIds) -> List[Tournament]:
 def addNewTournsToDb(dbcon, newTourns) -> None:
     if newTourns:
         for t in newTourns:
-            log(logLevel.INFO ,f"{t.tournamentid} being added to DB")
+            log(logLevel.INFO ,f"{t.tournamentid}:{t.tournamentname} being added to DB")
             dbcon.addTournamentToDB(t)
     else:
         log(logLevel.INFO, "No tournaments to be added to DB")
@@ -68,6 +68,18 @@ def addTournMatchesToDB(dbcon, newTourns) -> None:
             if Match.isMatchValid(m_id, t.tournamentid):
                 m = Match(m_id, t.tournamentid)
                 dbcon.addMatchToDB(m)
+
+
+def cleanupQualifierTournaments(dbcon) -> None:
+    currentTourns = dbcon.getAllTournaments()
+    for t1 in currentTourns:
+        for t2 in currentTourns:
+            if t1[1] in t2[1] and t1[1] != t2[1]:
+                if "world championship" in t1[1].lower():
+                    continue
+                log(logLevel.INFO ,f"{t2[0]}:{t2[1]} being removed from DB")
+                dbcon.updateMatchesTournamentID(t2[0], t1[0])
+                dbcon.deleteTournamentByID(t2[0])
 
 
 def addTournMatchToDB(dbcon, tournamentid, matchid) -> None:
@@ -142,6 +154,7 @@ def main():
         new_tourns = checkNewTourns(dbcon, new_tourn_ids)
         addNewTournsToDb(dbcon, new_tourns)
         addTournMatchesToDB(dbcon, new_tourns)
+        cleanupQualifierTournaments(dbcon)
 
     dbcon.closedb()
 
