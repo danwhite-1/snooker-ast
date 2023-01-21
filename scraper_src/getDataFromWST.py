@@ -87,7 +87,7 @@ def addTournMatchToDB(dbcon, tournamentid, matchid) -> None:
         dbcon.addMatchToDB(m)
 
 
-def parseArgs():
+def parseArgs() -> None:
     parser = ArgumentParser()
     parser.add_argument("-o", "--output", help="Send output to logfile or stdout. Default value: 'logfile' Option value: 'stdout'")
     args = parser.parse_args()
