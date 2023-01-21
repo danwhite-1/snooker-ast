@@ -92,8 +92,6 @@ def addTournMatchToDB(dbcon, tournamentid, matchid) -> None:
 def parseArgs():
     parser = ArgumentParser()
     parser.add_argument("-o", "--output", help="Send output to logfile or stdout. Default value: 'logfile' Option value: 'stdout'")
-    parser.add_argument("-FAT", "--forceaddtourn", help="Force adding or re-adding of a specified tournament.")
-    parser.add_argument("-FAM", "--forceaddmatch", help="Force adding or re-adding of a specified match. Must be used with -FAT.")
     args = parser.parse_args()
 
     if args.output == "stdout":
@@ -102,59 +100,19 @@ def parseArgs():
     else:
         initLogs()
 
-    return args
-
-
-class Mode(Enum):
-    FULL = 1
-    MATCH = 2
-    TOURN = 3
-
 
 def main():
-    args = parseArgs()
-
-    mode = Mode.FULL
-
-    if args.forceaddtourn:
-        tournToAdd = args.forceaddtourn
-        mode = Mode.TOURN
-
-    if args.forceaddmatch:
-        matchToAdd = args.forceaddmatch
-        mode = Mode.MATCH
+    parseArgs()
 
     dbcon = accessSnookerDB()
 
-    if mode == Mode.MATCH: # untested
-        if tournToAdd and matchToAdd:
-            if not isInt(matchToAdd) or not Match.isMatchValid(matchToAdd, tournToAdd):
-                log(logLevel.WARN, f"Invalid match and/or tournament ID")
-                return
-            addTournMatchToDB(dbcon, tournToAdd, matchToAdd)
-            dbcon.closedb()
-            log(logLevel.INFO, "Finished without Error")
-            return
+    tournid_search_start = 14500 # good place to start searching for 2022/23 tournaments
+    new_tourn_ids = findNewValidTournaments(int(tournid_search_start))
 
-        log(logLevel.WARN, f"Invalid match and/or tournament ID")
-        return
-
-    else:
-        if mode == Mode.TOURN:
-            if tournToAdd:
-                if not isInt(args.forceaddtourn) or not Tournament.isValidTourn(args.forceaddtourn):
-                    log(logLevel.WARN, f"Invalid tournament ID")
-                    return
-            new_tourn_ids = [args.forceaddtourn]
-
-        elif mode == Mode.FULL:
-            current_largest_tourn = 14500 # good place to start searching for 2022/23 tournaments
-            new_tourn_ids = findNewValidTournaments(int(current_largest_tourn))
-
-        new_tourns = checkNewTourns(dbcon, new_tourn_ids)
-        addNewTournsToDb(dbcon, new_tourns)
-        addTournMatchesToDB(dbcon, new_tourns)
-        cleanupQualifierTournaments(dbcon)
+    new_tourns = checkNewTourns(dbcon, new_tourn_ids)
+    addNewTournsToDb(dbcon, new_tourns)
+    addTournMatchesToDB(dbcon, new_tourns)
+    cleanupQualifierTournaments(dbcon)
 
     dbcon.closedb()
 
