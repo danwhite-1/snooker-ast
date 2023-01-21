@@ -9,9 +9,11 @@ from typing import List
 from utils import isInt
 from enum import Enum
 
+
 def findNewValidTournaments(startnum) -> List[int]:
     endnum = startnum + 250
     return findValidTourns(startnum, endnum)
+
 
 def findValidTourns(startnum, endnum) -> List[int]:
     rtn_arr = []
@@ -25,6 +27,7 @@ def findValidTourns(startnum, endnum) -> List[int]:
             break
 
     return rtn_arr
+
 
 def checkNewTourns(dbcon, newTournIds) -> List[Tournament]:
     rtn_arr = []
@@ -48,6 +51,7 @@ def checkNewTourns(dbcon, newTournIds) -> List[Tournament]:
 
     return rtn_arr
 
+
 def addNewTournsToDb(dbcon, newTourns) -> None:
     if newTourns:
         for t in newTourns:
@@ -55,6 +59,7 @@ def addNewTournsToDb(dbcon, newTourns) -> None:
             dbcon.addTournamentToDB(t)
     else:
         log(logLevel.INFO, "No tournaments to be added to DB")
+
 
 def addTournMatchesToDB(dbcon, newTourns) -> None:
     for t in newTourns:
@@ -64,11 +69,13 @@ def addTournMatchesToDB(dbcon, newTourns) -> None:
                 m = Match(m_id, t.tournamentid)
                 dbcon.addMatchToDB(m)
 
+
 def addTournMatchToDB(dbcon, tournamentid, matchid) -> None:
     # TODO Check if tournament is already in DB
     if Match.isMatchValid(matchid, tournamentid):
         m = Match(matchid, tournamentid)
         dbcon.addMatchToDB(m)
+
 
 def parseArgs():
     parser = ArgumentParser()
@@ -85,10 +92,12 @@ def parseArgs():
 
     return args
 
+
 class Mode(Enum):
     FULL = 1
     MATCH = 2
     TOURN = 3
+
 
 def main():
     args = parseArgs()
@@ -137,6 +146,7 @@ def main():
     dbcon.closedb()
 
     log(logLevel.INFO, "Finished without Error")
+
 
 if __name__ == "__main__":
     main()
