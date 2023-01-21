@@ -7,7 +7,7 @@ module.exports.getTournamanetById = (id) => {
 }
 
 module.exports.getAllTournaments = () => {
-    const qry = `SELECT * FROM tournaments`;
+    const qry = `SELECT * FROM tournaments WHERE tournamentname NOT LIKE '%Qualifier%'`;
     return sendQuery(qry);
 }
 
