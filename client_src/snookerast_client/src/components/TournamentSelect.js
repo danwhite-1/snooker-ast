@@ -16,7 +16,6 @@ class TournamentSelect extends Component {
     }
 
     componentDidMount() {
-        console.log("got here");
         const search_url = "/api/tournaments";
         fetch(search_url)
             .then(res => res.json())
