@@ -1,8 +1,5 @@
 import requests
-from io import StringIO
 from wst_urls import RESULT_URL
-from logger import logLevel, log
-from utils import isFloat
 from bs4 import BeautifulSoup
 from accessDB import accessSnookerDB
 from player import Player
