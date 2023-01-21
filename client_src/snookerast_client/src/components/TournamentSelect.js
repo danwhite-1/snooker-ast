@@ -149,8 +149,10 @@ class TournamentSelect extends Component {
                                                                                             onDDChange={this.handleDropDownChange}
                                                                                             tournaments={this.state.tournament_list_names}
                                                                                             />)}
-                    <button className="CompareButton" disabled={this.isDisabled("+")} onClick={() => {this.changeNoToCompare(1)}}>+</button>
-                    <button className="CompareButton" disabled={this.isDisabled("-")} onClick={() => {this.changeNoToCompare(-1)}}>-</button>
+                    <div className="CompareButtonDiv">
+                        <button className="CompareButton" disabled={this.isDisabled("+")} onClick={() => {this.changeNoToCompare(1)}}>+</button>
+                        <button className="CompareButton" disabled={this.isDisabled("-")} onClick={() => {this.changeNoToCompare(-1)}}>-</button>
+                    </div>
                 </div>
                 <TournamentLineChart data={this.state.chart_data} tournNames={this.state.tournamentNamesToCompare}/>
             </div>

@@ -14,12 +14,15 @@
   display:inline-block;
 }
 
+.CompareButtonDiv {
+  margin-left: 1%;
+  display:inline-block;
+}
+
 .CompareButton {
   width: 35px;
   height: 35px;
   margin: auto;
-  margin-bottom: 2%;
-  margin-left: 1%;
   display:inline-block;
   background-color: #ffff;
   font-weight: bolder;
