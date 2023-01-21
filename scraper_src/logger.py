@@ -20,7 +20,7 @@ def log(level, message):
         logfile.write(createLogMessage(level, message))
         logfile.close()
     else:
-        print(createLogMessage(level, message), end="") #newline is handled by createLogMessage
+        print(createLogMessage(level, message), end="") # newline is handled by createLogMessage
 
 def createLogMessage(level, message):
     return f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][{level}] {message}\n"

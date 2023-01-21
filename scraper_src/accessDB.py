@@ -12,8 +12,10 @@ class accessSnookerDB:
             log(logLevel.ERR, err)
             return False
 
+
     def closedb(self):
         self.cursor.close()
+
 
     def getCredentials(self):
         config = configparser.ConfigParser()
@@ -27,9 +29,9 @@ class accessSnookerDB:
 
         return cred_dict
 
-    # TODO Add a force arg to allow a tournament to be re-added
+
     def addTournamentToDB(self, tournament):
-        table = "tournaments" # needs to be an enum
+        table = "tournaments"
         vals = [tournament.tournamentid, tournament.tournamentname]
         command = constructInsert(table, vals)
 
@@ -40,7 +42,7 @@ class accessSnookerDB:
             self.conn.rollback()
             log(logLevel.ERR ,"Error: This tournament already exists")
 
-    # TODO Add a force arg to allow a match to be re-added
+
     def addMatchToDB(self, match):
         tab = "matches"
         vals = [match.matchid, match.tournamentid, match.roundno,
@@ -60,6 +62,7 @@ class accessSnookerDB:
             log(logLevel.ERR ,"Error: This match already exists")
             return False
 
+
     def addPlayerToDB(self, player):
         tab = "players"
         name = dealWithApostrophes(player.playerName)
@@ -75,6 +78,7 @@ class accessSnookerDB:
             log(logLevel.ERR ,"Error: This player already exists")
             return False
 
+
     def getLargestTournamentID(self) -> str:
         table = "tournaments"
         cols = ["max(tournamentid)"]
@@ -83,12 +87,14 @@ class accessSnookerDB:
         row = self.cursor.fetchone()
         return row[0]
 
+
     def getAllTournaments(self):
         table = "tournaments"
         command = constructSimpleSelect(table)
         self.cursor.execute(command)
         rows = self.cursor.fetchall()
         return rows
+
 
     def getAllTournamentIDs(self):
         table = "tournaments"
@@ -99,20 +105,18 @@ class accessSnookerDB:
         rtn = [str(r[0]) for r in rows] # handle strange output from pg
         return rtn
 
-    def getTournamentFromDB(self, id):
-        self.cursor.execute("SELECT * FROM tournaments WHERE tournamentid=" + str(id) + ";")
-        row = self.cursor.fetchone()
-        return row
 
     def getPlayerByID(self, id):
         self.cursor.execute("SELECT * FROM players WHERE playerwstid=" + str(id) + ";")
         row = self.cursor.fetchone()
         return row
 
+
     def updateMatchesTournamentID(self, oldid, newid):
         command = f"UPDATE matches SET tournamentid={str(newid)} WHERE tournamentid={str(oldid)}"
         self.cursor.execute(command)
         self.conn.commit()
+
 
     def deleteTournamentByID(self, id):
         command = f"DELETE FROM tournaments WHERE tournamentid={str(id)}"
