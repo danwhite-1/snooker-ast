@@ -6,7 +6,6 @@ CLIENT
     * Test new keys more thouroughly
 * Show more raw stats rather than just graphs
     * New area below the graph?
-* Bug! Tournament drop downs repeat the tournaments twice
 
 SERVER
 * Implement APIs for sending shot time data

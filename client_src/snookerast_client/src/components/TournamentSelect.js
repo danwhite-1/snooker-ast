@@ -16,12 +16,16 @@ class TournamentSelect extends Component {
     }
 
     componentDidMount() {
+        console.log("got here");
         const search_url = "/api/tournaments";
         fetch(search_url)
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
-                    this.setState({tournament_list: tournamentData});
+                    this.setState({ 
+                        tournament_list: tournamentData,
+                        tournament_list_names : [] 
+                    });
 
                     // strip out tourn names for drop downs
                     for (let i = 0; i < tournamentData.length; i++) {
