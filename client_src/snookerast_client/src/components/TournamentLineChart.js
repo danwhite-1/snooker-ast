@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -16,14 +16,41 @@ const dataKeyColours = {
   "3" : "#49be25",
 }
 
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
+const useWindowDimensions = () => {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowDimensions;
+}
+
 export default function TournamentLineChart(props) {
+  const { height, width } = useWindowDimensions();
+
   return (
     <div className="TournamentLineChartDiv rounded">
         <LineChart
           key={`lc_${props.data.length}`}
           className="TournamentLineChart"
-          width={1350}
-          height={600}
+          width={width * 0.7}
+          height={height * 0.65}
           data={props.data}
           margin={{
               top: 5,
