@@ -6,15 +6,14 @@ class TournamentDropDown extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            options: this.props.tournaments,
-            selected: "placeholder"
+            options : this.props.options
         }
     }
 
     // TODO: Move to newer version of this hook
     // This is required to allow the first dropdown to populate
     UNSAFE_componentWillReceiveProps (nextProps) {
-        this.setState({options : nextProps.tournaments});
+        this.setState({options : nextProps.options});
     }
 
     render() {
