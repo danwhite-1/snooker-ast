@@ -2,19 +2,23 @@ CLIENT
 * Improve graphs
     * Axis bounds
     * Box plots
-* Add UI to compare tournaments + players
-    * Test new keys more thouroughly
+* Add UI to compare players
 * Show more raw stats rather than just graphs
     * New area below the graph?
-* BUG! Size of linechart is hardcoded - this needs to be dynamic
 
 SERVER
-* Implement APIs for sending shot time data
-    * Consider which APIs would be useful
-        * Get ast by player
+* Implement APIs to get general tournament info
+    * Overall average
+    * Fastest player
+    * Slowest player
+    * Fastest match
+    * Slowest match
+    * Avg winning ast
+    * Avg losing ast
 * Close down CORS
 
 SCRAPER
+* BUG! Qualifier tournaments could be re-added
 * Deal with remaining "not found" rounds
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
