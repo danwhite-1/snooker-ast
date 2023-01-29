@@ -21,6 +21,16 @@ module.exports.getMatchByMatchID = (t_id, m_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getAllPlayers = () => {
+    const qry = `SELECT * FROM players`;
+    return sendQuery(qry);
+}
+
+module.exports.getMatchesByPlayerId = (p_id) => {
+    const qry = `SELECT * from matches WHERE player1id=${p_id} OR player2id=${p_id}`;
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     const client = await getClient.getClient();
     try {

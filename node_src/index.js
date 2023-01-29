@@ -1,3 +1,4 @@
+const { groupBy } = require('lodash');
 const query = require('./queries')
 const errjson = require('./errorJson');
 var cors = require('cors');
@@ -65,6 +66,45 @@ app.get('/api/tournamentdata',  async function (req, res) {
     }
 
     res.send(JSON.stringify(roundASTs));
+})
+
+app.get('/api/players', async function (req, res) {
+    const playerData = await query.getAllPlayers();
+    res.end(JSON.stringify(playerData));
+})
+
+app.get('/api/playerdata', async function (req, res) {
+    const action = req.query.action;
+    if(action !== "tournavg") {
+        const resp = errjson.createErrJson("Error: action does not match available options", 3)
+        res.send(JSON.stringify(resp));
+    }
+
+    const p_id = req.query.player;
+    if (!p_id) {
+        const resp = errjson.createErrJson("Error: no player number provided", 4)
+        res.send(JSON.stringify(resp));
+    }
+
+    const playerMatches = await query.getMatchesByPlayerId(p_id);
+    const grouped = groupBy(playerMatches, tournament => tournament.tournamentid);
+
+    let ret = {};
+    for (const t in grouped) {
+        const tournament = grouped[t];
+        let shotTimeTotal = 0;
+        let incorrectVals = 0;
+        for (const match of tournament) {
+            if (match.player1ast == -1 || match.player2ast == -1) {
+                incorrectVals++;
+                break;
+            }
+            shotTimeTotal += match.player1id == p_id ? match.player1ast : match.player2ast;
+        }
+        ret[t] = Math.round((shotTimeTotal / (tournament.length - incorrectVals)) * 10) / 10;
+    }
+
+    res.end(JSON.stringify(ret, null, 2));
 })
 
 const server = app.listen(8000, function () {
