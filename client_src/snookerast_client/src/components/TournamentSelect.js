@@ -218,20 +218,20 @@ class TournamentSelect extends Component {
     }
 
     isDisabled = (type) => {
-        if (type == "+" && this.state.noToCompare == 4) return true;
-        if (type == "-" && this.state.noToCompare == 1) return true;
+        if (type === "+" && this.state.noToCompare === 4) return true;
+        if (type === "-" && this.state.noToCompare === 1) return true;
         return false;
     }
 
     changeMode = () => {
-        if (this.state.mode == "T") this.setState({mode : "M"})
+        if (this.state.mode === "T") this.setState({mode : "M"})
         else this.setState({mode : "T"})
 
         this.setState({ noToCompare : 1, tournament_chart_data : [], tournamentNamesToCompare : []});
     }
 
     render() {
-        if (this.state.mode == "T") {
+        if (this.state.mode === "T") {
             return (
                 <div className="TournamentDiv">
                     <label onClick={this.changeMode}>Mode:{this.state.mode}</label>
