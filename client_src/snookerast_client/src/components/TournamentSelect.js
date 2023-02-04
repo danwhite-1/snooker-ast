@@ -1,4 +1,5 @@
 import { Component } from "react";
+import ModeChange from "./ModeChange";
 import TournamentDropDown from "./TournamentDropDown";
 import TournamentLineChart from "./TournamentLineChart";
 
@@ -223,18 +224,15 @@ class TournamentSelect extends Component {
         return false;
     }
 
-    changeMode = () => {
-        if (this.state.mode === "T") this.setState({mode : "M"})
-        else this.setState({mode : "T"})
-
-        this.setState({ noToCompare : 1, tournament_chart_data : [], tournamentNamesToCompare : []});
+    handleModeChange = (newMode) => {
+        this.setState({ mode: newMode, noToCompare : 1, tournament_chart_data : [], tournamentNamesToCompare : []});
     }
 
     render() {
         if (this.state.mode === "T") {
             return (
                 <div className="TournamentDiv">
-                    <label onClick={this.changeMode}>Mode:{this.state.mode}</label>
+                    <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
                     <div className="TournamentDropDownGridDiv">
                         {Array(this.state.noToCompare).fill(true).map((_, i) => <TournamentDropDown
                                                                                                 key={i} id={i} className="TournamentDropDown"
@@ -254,7 +252,7 @@ class TournamentSelect extends Component {
             // Once complete and functional then tidy up and optimise, reduce redundancy
             return (
                 <div className="PlayersDiv">
-                    <label onClick={this.changeMode}>Mode:{this.state.mode}</label>
+                    <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
                     <div className="TournamentDropDownGridDiv">
                         {Array(this.state.noToCompare).fill(true).map((_, i) => <TournamentDropDown
                                                                                                 key={i} id={i} className="TournamentDropDown"
