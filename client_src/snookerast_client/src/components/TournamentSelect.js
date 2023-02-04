@@ -1,4 +1,5 @@
 import { Component } from "react";
+import CompareButtons from "./CompareButtons";
 import ModeChange from "./ModeChange";
 import TournamentDropDown from "./TournamentDropDown";
 import TournamentLineChart from "./TournamentLineChart";
@@ -188,19 +189,13 @@ class TournamentSelect extends Component {
             .catch(error => alert("An error occured: " + error));
     }
 
-    changeNoToCompare = (change) => {
-        const min = 1;
-        const max = 4;
-        const newVal = this.state.noToCompare + change;
-        if (newVal < min || newVal > max) return;
-
-        if (change > 0) {
-            this.setState({
-                noToCompare : newVal
-            })
+    handleNoToCompareChange = (newVal) => {
+        if (newVal > this.state.noToCompare) {
+            this.setState({ noToCompare : newVal});
             return;
         }
 
+        // if reducing the number to compare, remove the last item from chart data
         if (this.state.mode === "T") {
             let tNames = this.state.tournamentNamesToCompare;
             tNames.pop();
@@ -218,12 +213,6 @@ class TournamentSelect extends Component {
         }
     }
 
-    isDisabled = (type) => {
-        if (type === "+" && this.state.noToCompare === 4) return true;
-        if (type === "-" && this.state.noToCompare === 1) return true;
-        return false;
-    }
-
     handleModeChange = (newMode) => {
         this.setState({ mode: newMode, noToCompare : 1, tournament_chart_data : [], tournamentNamesToCompare : []});
     }
@@ -239,10 +228,7 @@ class TournamentSelect extends Component {
                                                                                                 onDDChange={this.handleTournamentDropDownChange}
                                                                                                 options={this.state.tournament_list_names}
                                                                                                 />)}
-                        <div className="CompareButtonDiv">
-                            <button className="CompareButton" disabled={this.isDisabled("+")} onClick={() => {this.changeNoToCompare(1)}}>+</button>
-                            <button className="CompareButton" disabled={this.isDisabled("-")} onClick={() => {this.changeNoToCompare(-1)}}>-</button>
-                        </div>
+                        <CompareButtons compareNo={this.state.noToCompare} handleNoToCompareChange={this.handleNoToCompareChange} />
                     </div>
                     <TournamentLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round"/>
                 </div>
@@ -259,10 +245,7 @@ class TournamentSelect extends Component {
                                                                                                 onDDChange={this.handlePlayerDropDownChange}
                                                                                                 options={this.state.players_list_names}
                                                                                                 />)}
-                        <div className="CompareButtonDiv">
-                            <button className="CompareButton" disabled={this.isDisabled("+")} onClick={() => {this.changeNoToCompare(1)}}>+</button>
-                            <button className="CompareButton" disabled={this.isDisabled("-")} onClick={() => {this.changeNoToCompare(-1)}}>-</button>
-                        </div>
+                        <CompareButtons compareNo={this.state.noToCompare} handleNoToCompareChange={this.handleNoToCompareChange} />
                     </div>
                     <TournamentLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid"/>
                 </div>
