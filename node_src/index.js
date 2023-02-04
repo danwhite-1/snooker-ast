@@ -89,7 +89,7 @@ app.get('/api/playerdata', async function (req, res) {
     const playerMatches = await query.getMatchesByPlayerId(p_id);
     const grouped = groupBy(playerMatches, tournament => tournament.tournamentid);
 
-    let ret = {};
+    let ret = [{}];
     for (const t in grouped) {
         const tournament = grouped[t];
         let shotTimeTotal = 0;
@@ -101,7 +101,7 @@ app.get('/api/playerdata', async function (req, res) {
             }
             shotTimeTotal += match.player1id == p_id ? match.player1ast : match.player2ast;
         }
-        ret[t] = Math.round((shotTimeTotal / (tournament.length - incorrectVals)) * 10) / 10;
+        ret[0][t] = Math.round((shotTimeTotal / (tournament.length - incorrectVals)) * 10) / 10;
     }
 
     res.end(JSON.stringify(ret, null, 2));
