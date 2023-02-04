@@ -60,7 +60,7 @@ export default function TournamentLineChart(props) {
           }}
           >
           <CartesianGrid key={`cg_${props.data.length}`} strokeDasharray="10 10" />
-          <XAxis key={`x_${props.data.length}`} dataKey="round" />
+          <XAxis key={`x_${props.data.length}`} dataKey={props.dataKey} />
           <YAxis key={`y_${props.data.length}`} />
           <Tooltip key={`tt_${props.data.length}`} />
           <Legend key={`l_${props.data.length}`} />
