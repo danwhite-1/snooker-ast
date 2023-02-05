@@ -1,8 +1,6 @@
 import { Component } from "react";
-import CompareButtons from "./CompareButtons";
 import DropdownGrid from "./DropdownGrid";
 import ModeChange from "./ModeChange";
-import TournamentDropDown from "./TournamentDropDown";
 import CustomLineChart from "./CustomLineChart";
 
 class TournamentSelect extends Component {
@@ -233,8 +231,6 @@ class TournamentSelect extends Component {
                 </div>
             )
         } else {
-            // Plan is to build player comparison v similar to tournaments down here
-            // Once complete and functional then tidy up and optimise, reduce redundancy
             return (
                 <div className="PlayersDiv">
                     <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
