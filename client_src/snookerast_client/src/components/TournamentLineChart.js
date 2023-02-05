@@ -10,10 +10,10 @@ import {
 } from "recharts";
 
 const dataKeyColours = {
-  "0" : "#2596be",
-  "1" : "#9925be",
-  "2" : "#be4d25",
-  "3" : "#49be25",
+  "0" : "#2596be", // blue
+  "1" : "#9925be", // purple
+  "2" : "#be4d25", // red
+  "3" : "#49be25", // green
 }
 
 const getWindowDimensions = () => {
