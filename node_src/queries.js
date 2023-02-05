@@ -31,6 +31,11 @@ module.exports.getMatchesByPlayerId = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getAvgAstByTournamentId = (t_id) => {
+    const qry = `SELECT (AVG(player1ast) +  AVG(player2ast)) / 2 AS avgast FROM matches WHERE tournamentid=${t_id};`
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     const client = await getClient.getClient();
     try {

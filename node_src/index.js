@@ -1,6 +1,7 @@
 const { groupBy } = require('lodash');
 const query = require('./queries')
 const errjson = require('./errorJson');
+const apiFunc = require('./api_funcs')
 var cors = require('cors');
 const express = require('express');
 const app = express();
@@ -27,45 +28,24 @@ app.get('/api/match/:t_id/:m_id', async function (req, res) {
 })
 
 app.get('/api/tournamentdata',  async function (req, res) {
-    const action = req.query.action;
-    if(action !== "roundavg") {
+    if (req.query.action === "roundavg") {
+        if (!req.query.tournament) {
+            const resp = errjson.createErrJson("Error: no tournament number provided", 4);
+            res.send(JSON.stringify(resp));
+        }
+        res.send(JSON.stringify(await apiFunc.tournamentRoundAvg(req.query.tournament)));
+    } else if (req.query.action === "tournavg") {
+        if (!req.query.tournament) {
+            const resp = errjson.createErrJson("Error: no tournament number provided", 4);
+            res.send(JSON.stringify(resp));
+        }
+        let tournData = await query.getAvgAstByTournamentId(req.query.tournament);
+        tournData[0]["avgast"] = Math.round(tournData[0]["avgast"] * 10) / 10; // easier to round here than in psql
+        res.end(JSON.stringify(tournData));
+    } else {
         const resp = errjson.createErrJson("Error: action does not match available options", 3)
         res.send(JSON.stringify(resp));
     }
-
-    const t_id = req.query.tournament;
-    if (!t_id) {
-        const resp = errjson.createErrJson("Error: no tournament number provided", 4)
-        res.send(JSON.stringify(resp));
-    }
-
-    const matchData = await query.getMatchesByTournamentId(t_id);
-
-    let roundMatches = {};
-    let roundASTs = [{}]; // array to maintain consistency with other api returns
-    let roundMatchCounter = {};
-    for (const match of matchData) {
-        if (!roundMatches.hasOwnProperty(match.roundno)) {
-            roundMatches[match.roundno] = [];
-            roundASTs[0][match.roundno] = 0;
-            roundMatchCounter[match.roundno] = 0;
-        }
-
-        roundMatches[match.roundno].push(match);
-        roundMatchCounter[match.roundno] += 1;
-    }
-
-    for (const round in roundMatches) {
-        roundMatches[round].forEach(match => {
-            roundASTs[0][match.roundno] += (match.player1ast + match.player2ast);
-        });
-    }
-
-    for(const round in roundASTs[0]) {
-        roundASTs[0][round] = Math.round((roundASTs[0][round] / roundMatchCounter[round] / 2) * 10) / 10;
-    }
-
-    res.send(JSON.stringify(roundASTs));
 })
 
 app.get('/api/players', async function (req, res) {
