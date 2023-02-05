@@ -41,14 +41,14 @@ const useWindowDimensions = () => {
   return windowDimensions;
 }
 
-export default function TournamentLineChart(props) {
+export default function CustomLineChart(props) {
   const { height, width } = useWindowDimensions();
 
   return (
-    <div className="TournamentLineChartDiv rounded">
+    <div className="CustomLineChartDiv rounded">
         <LineChart
           key={`lc_${props.data.length}`}
-          className="TournamentLineChart"
+          className="CustomLineChart"
           width={width * 0.7}
           height={height * 0.65}
           data={props.data}

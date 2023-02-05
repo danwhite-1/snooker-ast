@@ -3,7 +3,7 @@ import CompareButtons from "./CompareButtons";
 import DropdownGrid from "./DropdownGrid";
 import ModeChange from "./ModeChange";
 import TournamentDropDown from "./TournamentDropDown";
-import TournamentLineChart from "./TournamentLineChart";
+import CustomLineChart from "./CustomLineChart";
 
 class TournamentSelect extends Component {
     constructor(props) {
@@ -229,7 +229,7 @@ class TournamentSelect extends Component {
                         handleNoToCompareChange={this.handleNoToCompareChange}
                         compareNo={this.state.noToCompare}
                     />
-                    <TournamentLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
+                    <CustomLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
                 </div>
             )
         } else {
@@ -244,7 +244,7 @@ class TournamentSelect extends Component {
                         handleNoToCompareChange={this.handleNoToCompareChange}
                         compareNo={this.state.noToCompare}
                     />
-                    <TournamentLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid"/>
+                    <CustomLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid" />
                 </div>
             )
         }

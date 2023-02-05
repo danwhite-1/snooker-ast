@@ -35,14 +35,14 @@
   border-radius: 0.5em;
 }
 
-.TournamentLineChartDiv {
+.CustomLineChartDiv {
   width: 75%;
   margin: auto;
   background-color: #ffff;
   border: #ffff;
 }
 
-.TournamentLineChart {
+.CustomLineChart {
   padding: 20px;
 }
 
