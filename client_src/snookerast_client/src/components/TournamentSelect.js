@@ -68,8 +68,8 @@ class TournamentSelect extends Component {
 
     sortRounds (array) {
         return array.sort(function(a, b) {
-            var x = a["round"];
-            var y = b["round"];
+            const x = a["round"];
+            const y = b["round"];
             if (!x.includes("final") && !y.includes("final")) {
                 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
             } else if (x.includes("final") && !y.includes("final")) {
