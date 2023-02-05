@@ -28,17 +28,14 @@ app.get('/api/match/:t_id/:m_id', async function (req, res) {
 })
 
 app.get('/api/tournamentdata',  async function (req, res) {
+    if (!req.query.tournament) {
+        const resp = errjson.createErrJson("Error: no tournament number provided", 4);
+        res.send(JSON.stringify(resp));
+    }
+
     if (req.query.action === "roundavg") {
-        if (!req.query.tournament) {
-            const resp = errjson.createErrJson("Error: no tournament number provided", 4);
-            res.send(JSON.stringify(resp));
-        }
         res.send(JSON.stringify(await apiFunc.tournamentRoundAvg(req.query.tournament)));
     } else if (req.query.action === "tournavg") {
-        if (!req.query.tournament) {
-            const resp = errjson.createErrJson("Error: no tournament number provided", 4);
-            res.send(JSON.stringify(resp));
-        }
         let tournData = await query.getAvgAstByTournamentId(req.query.tournament);
         tournData[0]["avgast"] = Math.round(tournData[0]["avgast"] * 10) / 10; // easier to round here than in psql
         res.end(JSON.stringify(tournData));
