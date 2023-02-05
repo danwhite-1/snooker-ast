@@ -18,7 +18,7 @@ class TournamentDropDown extends Component {
 
     render() {
         return (
-            <div className="TournamentDropDownDiv">
+            <div className="DropDownDiv">
                 <DropdownList
                     defaultValue="Select a tournament"
                     data={this.state.options}

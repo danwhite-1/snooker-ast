@@ -6,7 +6,12 @@
   margin: 1%;
 }
 
-.TournamentDropDownDiv {
+.DropDownGridDiv {
+  margin: auto;
+  margin-top: 1%;
+}
+
+.DropDownDiv {
   width: 20%;
   margin: auto;
   margin-bottom: 2%;

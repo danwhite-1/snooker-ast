@@ -1,5 +1,6 @@
 import { Component } from "react";
 import CompareButtons from "./CompareButtons";
+import DropdownGrid from "./DropdownGrid";
 import ModeChange from "./ModeChange";
 import TournamentDropDown from "./TournamentDropDown";
 import TournamentLineChart from "./TournamentLineChart";
@@ -222,15 +223,13 @@ class TournamentSelect extends Component {
             return (
                 <div className="TournamentDiv">
                     <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
-                    <div className="TournamentDropDownGridDiv">
-                        {Array(this.state.noToCompare).fill(true).map((_, i) => <TournamentDropDown
-                                                                                                key={i} id={i} className="TournamentDropDown"
-                                                                                                onDDChange={this.handleTournamentDropDownChange}
-                                                                                                options={this.state.tournament_list_names}
-                                                                                                />)}
-                        <CompareButtons compareNo={this.state.noToCompare} handleNoToCompareChange={this.handleNoToCompareChange} />
-                    </div>
-                    <TournamentLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round"/>
+                    <DropdownGrid
+                        handleChange={this.handleTournamentDropDownChange}
+                        list_names={this.state.tournament_list_names}
+                        handleNoToCompareChange={this.handleNoToCompareChange}
+                        compareNo={this.state.noToCompare}
+                    />
+                    <TournamentLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
                 </div>
             )
         } else {
@@ -239,14 +238,12 @@ class TournamentSelect extends Component {
             return (
                 <div className="PlayersDiv">
                     <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
-                    <div className="TournamentDropDownGridDiv">
-                        {Array(this.state.noToCompare).fill(true).map((_, i) => <TournamentDropDown
-                                                                                                key={i} id={i} className="TournamentDropDown"
-                                                                                                onDDChange={this.handlePlayerDropDownChange}
-                                                                                                options={this.state.players_list_names}
-                                                                                                />)}
-                        <CompareButtons compareNo={this.state.noToCompare} handleNoToCompareChange={this.handleNoToCompareChange} />
-                    </div>
+                    <DropdownGrid
+                        handleChange={this.handlePlayerDropDownChange}
+                        list_names={this.state.players_list_names}
+                        handleNoToCompareChange={this.handleNoToCompareChange}
+                        compareNo={this.state.noToCompare}
+                    />
                     <TournamentLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid"/>
                 </div>
             )
