@@ -8,6 +8,8 @@ SERVER
 * Implement APIs to get general tournament info
     * Overall average DONE
     * Fastest player
+        * Fix this to exclude players with err ast
+        * Min no. of matches?
     * Slowest player
     * Fastest match
     * Slowest match
