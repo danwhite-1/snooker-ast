@@ -23,7 +23,7 @@ class TournamentSelect extends Component {
 
     async componentDidMount() {
         await this.loadData();
-        this.setState({we_have_data: true});
+        this.setState({ we_have_data : true });
     }
 
     loadData = async () => {

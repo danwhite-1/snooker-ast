@@ -11,6 +11,7 @@ class DropdownGrid extends Component {
     }
 
     componentDidMount() {
+        // Modify the key to force a re-render on a mode change
         if (this.props.mode == "T") {
             this.setState({ key_modifier : 0 });
         } else {
