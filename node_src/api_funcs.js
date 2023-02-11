@@ -29,3 +29,39 @@ module.exports.tournamentRoundAvg = async (t_id) => {
 
     return roundASTs;
 }
+
+module.exports.tournamentOverallAverage = async (t_id) => {
+    let tournData = await query.getAvgAstByTournamentId(t_id);
+    tournData[0]["avgast"] = Math.round(tournData[0]["avgast"] * 10) / 10; // easier to round here than in psql
+    return tournData;
+}
+
+module.exports.fastestPlayerForTournament = async (t_id) => {
+    const players = await query.getAllUniquePlayerIdsByTournamentId(t_id);
+    const p_set = new Set();
+    for(const p of players[0]){
+        p_set.add(p["player1id"]);
+    }
+    for(const p of players[1]){
+        p_set.add(p["player2id"]);
+    }
+
+    let currentFastest = {
+        "playerid" : "",
+        "ast" : 1000
+    };
+
+    for(const player of p_set) {
+        playerTournAST = await query.getPlayerAvgAstForTournament(player, t_id);
+        if (playerTournAST[0]["ast"] < currentFastest["ast"]) {
+            currentFastest = {
+                "playerid" : player,
+                "ast" : playerTournAST[0]["ast"]
+            }
+        }
+    }
+
+    currentFastest["player"] = (await query.getPlayerNameByPlayerId(currentFastest["playerid"]))[0]["playername"];
+
+    return currentFastest;
+}

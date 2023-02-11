@@ -36,9 +36,9 @@ app.get('/api/tournamentdata',  async function (req, res) {
     if (req.query.action === "roundavg") {
         res.send(JSON.stringify(await apiFunc.tournamentRoundAvg(req.query.tournament)));
     } else if (req.query.action === "tournavg") {
-        let tournData = await query.getAvgAstByTournamentId(req.query.tournament);
-        tournData[0]["avgast"] = Math.round(tournData[0]["avgast"] * 10) / 10; // easier to round here than in psql
-        res.end(JSON.stringify(tournData));
+        res.send(JSON.stringify(await apiFunc.tournamentOverallAverage(req.query.tournament))); // TEST THIS
+    } else if (req.query.action === "fastestplayer") {
+        res.send(JSON.stringify(await apiFunc.fastestPlayerForTournament(req.query.tournament)));
     } else {
         const resp = errjson.createErrJson("Error: action does not match available options", 3)
         res.send(JSON.stringify(resp));

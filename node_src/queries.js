@@ -36,6 +36,22 @@ module.exports.getAvgAstByTournamentId = (t_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getPlayerAvgAstForTournament = (p_id, t_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE player2ast END) as ast FROM matches WHERE tournamentid=${t_id} AND (player1id=${p_id} OR player2id=${p_id});`;
+    return sendQuery(qry);
+}
+
+module.exports.getAllUniquePlayerIdsByTournamentId = async (t_id) => {
+    const qry1 = `SELECT DISTINCT player1id FROM matches WHERE tournamentid=${t_id}`;
+    const qry2 = `SELECT DISTINCT player2id FROM matches WHERE tournamentid=${t_id}`;
+    return [await sendQuery(qry1), await sendQuery(qry2)];
+}
+
+module.exports.getPlayerNameByPlayerId = (p_id) => {
+    const qry = `SELECT playername FROM players WHERE playerwstid=${p_id}`;
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     const client = await getClient.getClient();
     try {
