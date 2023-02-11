@@ -1,14 +1,12 @@
 CLIENT
 * Improve graphs
-    * Axis bounds
     * Box plots
-* Add UI to compare players
 * Show more raw stats rather than just graphs
     * New area below the graph?
 
 SERVER
 * Implement APIs to get general tournament info
-    * Overall average
+    * Overall average DONE
     * Fastest player
     * Slowest player
     * Fastest match
