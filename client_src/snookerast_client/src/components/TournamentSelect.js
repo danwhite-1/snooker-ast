@@ -16,13 +16,19 @@ class TournamentSelect extends Component {
             player_chart_data : [],
             playerNamesToCompare : [],
             noToCompare : 1,
-            mode : "T"
+            mode : "T",
+            we_have_data : false
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.loadData();
+        this.setState({we_have_data: true});
+    }
+
+    loadData = async () => {
         let search_url = "/api/tournaments";
-        fetch(search_url)
+        await fetch(search_url)
             .then(res => res.json())
             .then(tournamentData => {
                 if (!tournamentData[0].error) {
@@ -43,7 +49,7 @@ class TournamentSelect extends Component {
             .catch(error => alert("An error occured: " + error));
 
         search_url = "/api/players";
-        fetch(search_url)
+        await fetch(search_url)
             .then(res => res.json())
             .then(playerData => {
                 if (!playerData[0].error) {
@@ -62,6 +68,8 @@ class TournamentSelect extends Component {
                 }
             })
             .catch(error => alert("An error occured: " + error));
+
+        return;
     }
 
     sortRounds (array) {
@@ -217,15 +225,22 @@ class TournamentSelect extends Component {
     }
 
     render() {
+        if (!this.state.we_have_data) {
+            return <div />
+        }
+
         if (this.state.mode === "T") {
             return (
                 <div className="TournamentDiv">
                     <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
                     <DropdownGrid
+                        key="0"
                         handleChange={this.handleTournamentDropDownChange}
                         list_names={this.state.tournament_list_names}
                         handleNoToCompareChange={this.handleNoToCompareChange}
                         compareNo={this.state.noToCompare}
+                        def_val="Select a Tournament"
+                        mode="T"
                     />
                     <CustomLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
                 </div>
@@ -235,10 +250,13 @@ class TournamentSelect extends Component {
                 <div className="PlayersDiv">
                     <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
                     <DropdownGrid
+                        key="1"
                         handleChange={this.handlePlayerDropDownChange}
                         list_names={this.state.players_list_names}
                         handleNoToCompareChange={this.handleNoToCompareChange}
                         compareNo={this.state.noToCompare}
+                        def_val="Select a Player"
+                        mode="M"
                     />
                     <CustomLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid" />
                 </div>

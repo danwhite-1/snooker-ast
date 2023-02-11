@@ -6,23 +6,23 @@ class TournamentDropDown extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            value : this.props.defaultValue,
             options : this.props.options
         }
     }
 
-    // TODO: Move to newer version of this hook
-    // This is required to allow the first dropdown to populate
-    UNSAFE_componentWillReceiveProps (nextProps) {
-        this.setState({options : nextProps.options});
+    handleChange = (selected) => {
+        this.setState({ value : selected });
+        this.props.onDDChange(selected, this.props.id);
     }
 
     render() {
         return (
             <div className="DropDownDiv">
                 <DropdownList
-                    defaultValue="Select a tournament"
+                    value={this.state.value}
                     data={this.state.options}
-                    onChange={selected => this.props.onDDChange(selected, this.props.id)}
+                    onChange={selected => this.handleChange(selected)}
                 />
             </div>
         )
