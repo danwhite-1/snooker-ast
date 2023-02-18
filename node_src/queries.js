@@ -1,4 +1,4 @@
-const getClient = require('./get-client');
+const getPool = require('./get-pool');
 const errjson = require('./errorJson');
 
 module.exports.getTournamanetById = (id) => {
@@ -31,6 +31,11 @@ module.exports.getMatchesByPlayerId = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getNoOfTournamentMatchesByPlayerId = (p_id, t_id) => {
+    const qry = `SELECT COUNT(*) from matches WHERE tournamentid=${t_id} AND (player1id=${p_id} OR player2id=${p_id})`;
+    return sendQuery(qry);
+}
+
 module.exports.getAvgAstByTournamentId = (t_id) => {
     const qry = `SELECT (AVG(player1ast) +  AVG(player2ast)) / 2 AS avgast FROM matches WHERE tournamentid=${t_id};`
     return sendQuery(qry);
@@ -53,10 +58,10 @@ module.exports.getPlayerNameByPlayerId = (p_id) => {
 }
 
 sendQuery = async(query) => {
-    const client = await getClient.getClient();
     try {
-        const res = await client.query(query);
-        await client.end();
+        const pool = await getPool.getPool();
+        res = await pool.query(query);
+
         if(res.rows.length > 0 ) {
             return res.rows;
         }
