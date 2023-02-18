@@ -106,3 +106,15 @@ module.exports.slowestMatchForTournament = async (t_id) => {
 
     return rtn_obj;
 }
+
+module.exports.averageWinningASTForTournament = async (t_id) => {
+    const avgWast = await query.getAvgWinningASTByTournament(t_id);
+    roundedAST = Math.round(avgWast[0]["winningast"] * 10) / 10
+    return { "avgast" : roundedAST};
+}
+
+module.exports.averageLosingASTForTournament = async (t_id) => {
+    const avgWast = await query.getAvgLosingASTByTournament(t_id);
+    roundedAST = Math.round(avgWast[0]["losingast"] * 10) / 10
+    return { "avgast" : roundedAST };
+}

@@ -43,6 +43,10 @@ app.get('/api/tournamentdata',  async function (req, res) {
         res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
     } else if (req.query.action === "slowestmatch") {
         res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
+    } else if (req.query.action === "avgwinast") {
+        res.send(JSON.stringify(await apiFunc.averageWinningASTForTournament(req.query.tournament)));
+    } else if (req.query.action === "avgloseast") {
+        res.send(JSON.stringify(await apiFunc.averageLosingASTForTournament(req.query.tournament)));
     } else {
         const resp = errjson.createErrJson("Error: action does not match available options", 3)
         res.send(JSON.stringify(resp));

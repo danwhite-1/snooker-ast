@@ -67,6 +67,16 @@ module.exports.getSlowestMatchByTournament = (t_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getAvgWinningASTByTournament = (t_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1score>player2score THEN player1ast ELSE player2ast END) as winningast FROM matches WHERE tournamentid=${t_id}`;
+    return sendQuery(qry)
+}
+
+module.exports.getAvgLosingASTByTournament = (t_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1score<player2score THEN player1ast ELSE player2ast END) as losingast FROM matches WHERE tournamentid=${t_id}`;
+    return sendQuery(qry)
+}
+
 sendQuery = async(query) => {
     try {
         const pool = await getPool.getPool();
