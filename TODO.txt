@@ -5,21 +5,12 @@ CLIENT
     * New area below the graph?
 
 SERVER
-* Implement APIs to get general tournament info
-    * Overall average DONE
-    * Fastest player
-        * Fix this to exclude players with err ast
-        * Min no. of matches?
-    * Slowest player
-    * Fastest match
-    * Slowest match
-    * Avg winning ast
-    * Avg losing ast
+* Optimise fastest + slowest player API
 * Close down CORS
 
 SCRAPER
 * BUG! Qualifier tournaments could be re-added
-* Deal with remaining "not found" rounds
+* Deal with remaining "not found" + "-1" rounds/asts ***
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
 
