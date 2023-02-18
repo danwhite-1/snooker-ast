@@ -52,6 +52,10 @@ module.exports.fastestPlayerForTournament = async (t_id) => {
     };
 
     for(const player of p_set) {
+        // Only include players who have more than one match
+        const noOfMatchesInTourn = await query.getNoOfTournamentMatchesByPlayerId(player, t_id);
+        if (noOfMatchesInTourn[0]["count"] < 2) continue;
+
         playerTournAST = await query.getPlayerAvgAstForTournament(player, t_id);
         if (playerTournAST[0]["ast"] < currentFastest["ast"]) {
             currentFastest = {
