@@ -36,7 +36,7 @@ module.exports.tournamentOverallAverage = async (t_id) => {
     return tournData;
 }
 
-module.exports.fastestPlayerForTournament = async (t_id) => {
+module.exports.fastestAndSlowestPlayerForTournament = async (t_id) => {
     const players = await query.getAllUniquePlayerIdsByTournamentId(t_id);
     const p_set = new Set();
     for(const p of players[0]){
@@ -51,6 +51,11 @@ module.exports.fastestPlayerForTournament = async (t_id) => {
         "ast" : 1000
     };
 
+    let currentSlowest = {
+        "playerid" : "",
+        "ast" : -1
+    }
+
     for(const player of p_set) {
         // Only include players who have more than one match
         const noOfMatchesInTourn = await query.getNoOfTournamentMatchesByPlayerId(player, t_id);
@@ -62,10 +67,16 @@ module.exports.fastestPlayerForTournament = async (t_id) => {
                 "playerid" : player,
                 "ast" : playerTournAST[0]["ast"]
             }
+        } else if (playerTournAST[0]["ast"] > currentSlowest["ast"]) {
+            currentSlowest = {
+                "playerid" : player,
+                "ast" : playerTournAST[0]["ast"]
+            }
         }
     }
 
     currentFastest["player"] = (await query.getPlayerNameByPlayerId(currentFastest["playerid"]))[0]["playername"];
+    currentSlowest["player"] = (await query.getPlayerNameByPlayerId(currentSlowest["playerid"]))[0]["playername"];
 
-    return currentFastest;
+    return [currentFastest, currentSlowest];
 }
