@@ -80,3 +80,29 @@ module.exports.fastestAndSlowestPlayerForTournament = async (t_id) => {
 
     return [currentFastest, currentSlowest];
 }
+
+module.exports.fastestMatchForTournament = async (t_id) => {
+    const fm = await query.getFastestMatchByTournament(t_id);
+
+    rtn_obj = {
+        "player1" : (await query.getPlayerNameByPlayerId(fm[0]["player1id"]))[0]["playername"],
+        "player2" : (await query.getPlayerNameByPlayerId(fm[0]["player2id"]))[0]["playername"],
+        "roundno" : fm[0]["roundno"],
+        "ast" : fm[0]["avgast"]
+    }
+
+    return rtn_obj;
+}
+
+module.exports.slowestMatchForTournament = async (t_id) => {
+    const fm = await query.getSlowestMatchByTournament(t_id);
+
+    rtn_obj = {
+        "player1" : (await query.getPlayerNameByPlayerId(fm[0]["player1id"]))[0]["playername"],
+        "player2" : (await query.getPlayerNameByPlayerId(fm[0]["player2id"]))[0]["playername"],
+        "roundno" : fm[0]["roundno"],
+        "ast" : fm[0]["avgast"]
+    }
+
+    return rtn_obj;
+}

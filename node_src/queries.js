@@ -57,6 +57,16 @@ module.exports.getPlayerNameByPlayerId = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getFastestMatchByTournament = (t_id) => {
+    const qry = `SELECT matchid, player1id, player2id, roundno, MAX((player1ast + player2ast) / 2) as avgast FROM matches WHERE tournamentid=${t_id} GROUP BY matchid ORDER BY avgast ASC LIMIT 1;`
+    return sendQuery(qry);
+}
+
+module.exports.getSlowestMatchByTournament = (t_id) => {
+    const qry = `SELECT matchid, player1id, player2id, roundno, MAX((player1ast + player2ast) / 2) as avgast FROM matches WHERE tournamentid=${t_id} GROUP BY matchid ORDER BY avgast DESC LIMIT 1;`
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     try {
         const pool = await getPool.getPool();
