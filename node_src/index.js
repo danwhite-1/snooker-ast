@@ -33,23 +33,31 @@ app.get('/api/tournamentdata',  async function (req, res) {
         res.send(JSON.stringify(resp));
     }
 
-    if (req.query.action === "roundavg") {
-        res.send(JSON.stringify(await apiFunc.tournamentRoundAvg(req.query.tournament)));
-    } else if (req.query.action === "tournavg") {
-        res.send(JSON.stringify(await apiFunc.tournamentOverallAverage(req.query.tournament)));
-    } else if (req.query.action === "fastestandslowestplayers") {
-        res.send(JSON.stringify(await apiFunc.fastestAndSlowestPlayerForTournament(req.query.tournament)));
-    } else if (req.query.action === "fastestmatch") {
-        res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
-    } else if (req.query.action === "slowestmatch") {
-        res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
-    } else if (req.query.action === "avgwinast") {
-        res.send(JSON.stringify(await apiFunc.averageWinningASTForTournament(req.query.tournament)));
-    } else if (req.query.action === "avgloseast") {
-        res.send(JSON.stringify(await apiFunc.averageLosingASTForTournament(req.query.tournament)));
-    } else {
-        const resp = errjson.createErrJson("Error: action does not match available options", 3)
-        res.send(JSON.stringify(resp));
+    switch(req.query.action) {
+        case "roundavg":
+            res.send(JSON.stringify(await apiFunc.tournamentRoundAvg(req.query.tournament)));
+            break;
+        case "tournavg":
+            res.send(JSON.stringify(await apiFunc.tournamentOverallAverage(req.query.tournament)));
+            break;
+        case "fastestandslowestplayers":
+            res.send(JSON.stringify(await apiFunc.fastestAndSlowestPlayerForTournament(req.query.tournament)));
+            break;
+        case "fastestmatch":
+            res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
+            break;
+        case "slowestmatch":
+            res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
+            break;
+        case "avgwinast":
+            res.send(JSON.stringify(await apiFunc.averageWinningASTForTournament(req.query.tournament)));
+            break;
+        case "avgloseast":
+            res.send(JSON.stringify(await apiFunc.averageLosingASTForTournament(req.query.tournament)));
+            break;
+        default:
+            const resp = errjson.createErrJson("Error: action does not match available options", 3)
+            res.send(JSON.stringify(resp));
     }
 })
 
