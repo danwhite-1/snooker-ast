@@ -29,6 +29,11 @@ class Match:
 
         rtn_arr = []
         asts = self.matchPageSoup.find_all('p', class_ = 'score-ast')
+
+        # Some match pages do not have ast data, in this case we return '-2' to indicate this
+        if not asts:
+            return -2, -2
+
         for val in asts:
             rtn_arr.append(val.text[:-5])
 
