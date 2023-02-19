@@ -52,6 +52,9 @@ class Match:
         if "pre-qualifier" in round.lower():
             return "pre-qualifier"
 
+        if "group stage" in round.lower():
+            return "group stage"
+
         round_text_idx = round.find("Round")
         if(round_text_idx != -1):
             return round[:round_text_idx+7]
