@@ -141,3 +141,11 @@ module.exports.getPlayerAverageForTournament = async (p_id) => {
 
     return ret;
 }
+
+module.exports.getFastestMatchForPlayer = async (p_id) => {
+    return await query.getFastestMatchForPlayer(p_id);
+}
+
+module.exports.getSlowestMatchForPlayer = async (p_id) => {
+    return await query.getSlowestMatchForPlayer(p_id);
+}

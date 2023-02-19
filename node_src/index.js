@@ -78,10 +78,10 @@ app.get('/api/playerdata', async function (req, res) {
             res.send(JSON.stringify(await apiFunc.getPlayerAverageForTournament(req.query.player)));
             break;
         case "fastestmatch":
-            res.send(JSON.stringify("API not yet implemented"));
+            res.send(JSON.stringify(await apiFunc.getFastestMatchForPlayer(req.query.player)));
             break;
         case "slowestmatch":
-            res.send(JSON.stringify("API not yet implemented"));
+            res.send(JSON.stringify(await apiFunc.getSlowestMatchForPlayer(req.query.player)));
             break;
         case "fastesttournament":
             res.send(JSON.stringify("API not yet implemented"));
