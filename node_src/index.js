@@ -47,7 +47,7 @@ app.get('/api/tournamentdata',  async function (req, res) {
             res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
             break;
         case "slowestmatch":
-            res.send(JSON.stringify(await apiFunc.fastestMatchForTournament(req.query.tournament)));
+            res.send(JSON.stringify(await apiFunc.slowestMatchForTournament(req.query.tournament)));
             break;
         case "avgwinast":
             res.send(JSON.stringify(await apiFunc.averageWinningASTForTournament(req.query.tournament)));

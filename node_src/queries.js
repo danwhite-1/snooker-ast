@@ -1,6 +1,8 @@
 const getPool = require('./get-pool');
 const errjson = require('./errorJson');
 
+const excludeErrASTsSQL = `matches.player1ast!='-1' AND matches.player2ast!='-1' AND matches.player1ast!='-2' AND matches.player2ast!='-2'`;
+
 module.exports.getTournamanetById = (id) => {
     const qry = `SELECT * FROM tournaments WHERE tournamentid=${id}`;
     return sendQuery(qry);
@@ -37,12 +39,12 @@ module.exports.getNoOfTournamentMatchesByPlayerId = (p_id, t_id) => {
 }
 
 module.exports.getAvgAstByTournamentId = (t_id) => {
-    const qry = `SELECT (AVG(player1ast) +  AVG(player2ast)) / 2 AS avgast FROM matches WHERE tournamentid=${t_id};`
+    const qry = `SELECT (AVG(player1ast) +  AVG(player2ast)) / 2 AS avgast FROM matches WHERE tournamentid=${t_id} AND ${excludeErrASTsSQL};`
     return sendQuery(qry);
 }
 
 module.exports.getPlayerAvgAstForTournament = (p_id, t_id) => {
-    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE player2ast END) as ast FROM matches WHERE tournamentid=${t_id} AND (player1id=${p_id} OR player2id=${p_id});`;
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE player2ast END) as ast FROM matches WHERE tournamentid=${t_id} AND (player1id=${p_id} OR player2id=${p_id}) AND ${excludeErrASTsSQL};`;
     return sendQuery(qry);
 }
 
@@ -58,22 +60,22 @@ module.exports.getPlayerNameByPlayerId = (p_id) => {
 }
 
 module.exports.getFastestMatchByTournament = (t_id) => {
-    const qry = `SELECT matchid, player1id, player2id, roundno, MAX((player1ast + player2ast) / 2) as avgast FROM matches WHERE tournamentid=${t_id} GROUP BY matchid ORDER BY avgast ASC LIMIT 1;`
+    const qry = `SELECT matchid, player1id, player2id, roundno, MAX((player1ast + player2ast) / 2) as avgast FROM matches WHERE tournamentid=${t_id} AND ${excludeErrASTsSQL} GROUP BY matchid ORDER BY avgast ASC LIMIT 1;`
     return sendQuery(qry);
 }
 
 module.exports.getSlowestMatchByTournament = (t_id) => {
-    const qry = `SELECT matchid, player1id, player2id, roundno, MAX((player1ast + player2ast) / 2) as avgast FROM matches WHERE tournamentid=${t_id} GROUP BY matchid ORDER BY avgast DESC LIMIT 1;`
+    const qry = `SELECT matchid, player1id, player2id, roundno, MAX((player1ast + player2ast) / 2) as avgast FROM matches WHERE tournamentid=${t_id} AND ${excludeErrASTsSQL} GROUP BY matchid ORDER BY avgast DESC LIMIT 1;`
     return sendQuery(qry);
 }
 
 module.exports.getAvgWinningASTByTournament = (t_id) => {
-    const qry = `SELECT AVG(CASE WHEN player1score>player2score THEN player1ast ELSE player2ast END) as winningast FROM matches WHERE tournamentid=${t_id}`;
+    const qry = `SELECT AVG(CASE WHEN player1score>player2score THEN player1ast ELSE player2ast END) as winningast FROM matches WHERE tournamentid=${t_id} AND ${excludeErrASTsSQL}`;
     return sendQuery(qry)
 }
 
 module.exports.getAvgLosingASTByTournament = (t_id) => {
-    const qry = `SELECT AVG(CASE WHEN player1score<player2score THEN player1ast ELSE player2ast END) as losingast FROM matches WHERE tournamentid=${t_id}`;
+    const qry = `SELECT AVG(CASE WHEN player1score<player2score THEN player1ast ELSE player2ast END) as losingast FROM matches WHERE tournamentid=${t_id} AND ${excludeErrASTsSQL}`;
     return sendQuery(qry)
 }
 
