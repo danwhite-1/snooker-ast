@@ -1,4 +1,5 @@
 const query = require('./queries')
+const { groupBy } = require('lodash');
 
 module.exports.tournamentRoundAvg = async (t_id) => {
     const matchData = await query.getMatchesByTournamentId(t_id);
@@ -117,4 +118,26 @@ module.exports.averageLosingASTForTournament = async (t_id) => {
     const avgWast = await query.getAvgLosingASTByTournament(t_id);
     roundedAST = Math.round(avgWast[0]["losingast"] * 10) / 10
     return { "avgast" : roundedAST };
+}
+
+module.exports.getPlayerAverageForTournament = async (p_id) => {
+    const playerMatches = await query.getMatchesByPlayerId(p_id);
+    const grouped = groupBy(playerMatches, tournament => tournament.tournamentid);
+
+    let ret = [{}];
+    for (const t in grouped) {
+        const tournament = grouped[t];
+        let shotTimeTotal = 0;
+        let incorrectVals = 0;
+        for (const match of tournament) {
+            if (match.player1ast == -1 || match.player2ast == -1) {
+                incorrectVals++;
+                break;
+            }
+            shotTimeTotal += match.player1id == p_id ? match.player1ast : match.player2ast;
+        }
+        ret[0][t] = Math.round((shotTimeTotal / (tournament.length - incorrectVals)) * 10) / 10;
+    }
+
+    return ret;
 }
