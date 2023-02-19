@@ -5,12 +5,17 @@ CLIENT
     * New area below the graph?
 
 SERVER
-* Optimise fastest + slowest player API
+* Optimise fastest + slowest player for tournament API
+* Player Data APIs
+    * Fastest and slowest tournament
+    * Fastest and slowest Matches DONE
+    * Overall Average AST
 * Close down CORS
 
 SCRAPER
-* BUG! Qualifier tournaments could be re-added
-* Deal with remaining "not found" + "-1" rounds/asts ***
+* BUG! Qualifier tournaments could be re-added DONE - UNTESTED
+* Deal with remaining "not found" + "-1" rounds/asts DONE - UNTESTED
+* BUG! What is up with duelbits world gp? - no matches added, possibly an error during scrape
 * Implement emails in preparation for automated running
 * Implement automated running as a CRON job of rasp pi (need cloud DB first)
 
