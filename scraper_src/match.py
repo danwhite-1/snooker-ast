@@ -48,6 +48,10 @@ class Match:
             return "not found"
 
         round = self.matchPageSoup.find('div', class_ = 'component-title').p.text
+
+        if "pre-qualifier" in round.lower():
+            return "pre-qualifier"
+
         round_text_idx = round.find("Round")
         if(round_text_idx != -1):
             return round[:round_text_idx+7]
