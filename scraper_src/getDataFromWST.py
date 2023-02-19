@@ -77,7 +77,7 @@ def cleanupQualifierTournaments(dbcon) -> None:
                     continue
                 log(logLevel.INFO ,f"{t2[0]}:{t2[1]} being removed from DB")
                 dbcon.updateMatchesTournamentID(t2[0], t1[0])
-                dbcon.deleteTournamentByID(t2[0])
+                dbcon.setTournamentAsQualifier(t2[0])
 
 
 def addTournMatchToDB(dbcon, tournamentid, matchid) -> None:

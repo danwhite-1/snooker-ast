@@ -32,7 +32,7 @@ class accessSnookerDB:
 
     def addTournamentToDB(self, tournament):
         table = "tournaments"
-        vals = [tournament.tournamentid, tournament.tournamentname]
+        vals = [tournament.tournamentid, tournament.tournamentname, "false"]
         command = constructInsert(table, vals)
 
         try:
@@ -118,8 +118,10 @@ class accessSnookerDB:
         self.conn.commit()
 
 
-    def deleteTournamentByID(self, id):
-        command = f"DELETE FROM tournaments WHERE tournamentid={str(id)}"
+    # Setting 'qualifier' as true indicates that this qualifier tournament 
+    # has had it's matches successfully moved over to the main tournament 
+    def setTournamentAsQualifier(self, id):
+        command = f"UPDATE tournaments SET qualifier=true WHERE tournamentid={str(id)}"
         self.cursor.execute(command)
         self.conn.commit()
 
