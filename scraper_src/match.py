@@ -3,6 +3,7 @@ from wst_urls import RESULT_URL
 from bs4 import BeautifulSoup
 from accessDB import accessSnookerDB
 from player import Player
+from logger import log, logLevel
 
 class Match:
     def __init__(self, matchid, tournamentid):
@@ -32,6 +33,7 @@ class Match:
 
         # Some match pages do not have ast data, in this case we return '-2' to indicate this
         if not asts:
+            log(logLevel.WARN, f"Match: {self.matchid} Tournament: {self.tournamentid} AST Not found in page")
             return -2, -2
 
         for val in asts:
@@ -40,6 +42,7 @@ class Match:
         if len(rtn_arr) == 2:
             return rtn_arr[0], rtn_arr[1]
 
+        log(logLevel.ERR, f"Match: {self.matchid} Tournament: {self.tournamentid} AST Not found in page")
         return -1, -1
 
 
@@ -70,6 +73,7 @@ class Match:
                 return "quarter-final"
             return "final"
 
+        log(logLevel.ERR, f"Match: {self.matchid} Tournament: {self.tournamentid} Roundno Not found in page")
         return "not found"
 
 
