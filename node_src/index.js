@@ -84,10 +84,10 @@ app.get('/api/playerdata', async function (req, res) {
             res.send(JSON.stringify(await apiFunc.getSlowestMatchForPlayer(req.query.player)));
             break;
         case "fastesttournament":
-            res.send(JSON.stringify("API not yet implemented"));
+            res.send(JSON.stringify(await apiFunc.getFastestTournamentForPlayer(req.query.player)));
             break;
         case "slowesttournament":
-            res.send(JSON.stringify("API not yet implemented"));
+            res.send(JSON.stringify(await apiFunc.getSlowestTournamentForPlayer(req.query.player)));
             break;
         default:
             const resp = errjson.createErrJson("Error: action does not match available options", 3);

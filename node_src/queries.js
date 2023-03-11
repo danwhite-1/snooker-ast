@@ -89,6 +89,16 @@ module.exports.getSlowestMatchForPlayer = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getFastestTournamentForPlayer = (p_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE CASE WHEN player2id=${p_id} THEN player2ast END END) as ast, matches.tournamentid, tournamentname FROM matches INNER JOIN tournaments ON matches.tournamentid=tournaments.tournamentid WHERE (player1id=${p_id} OR player2id=${p_id}) AND ${excludeErrASTsSQL} GROUP BY matches.tournamentid, tournamentname ORDER BY ast ASC LIMIT 1;`
+    return sendQuery(qry);
+}
+
+module.exports.getSlowestTournamentForPlayer = (p_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE CASE WHEN player2id=${p_id} THEN player2ast END END) as ast, matches.tournamentid, tournamentname FROM matches INNER JOIN tournaments ON matches.tournamentid=tournaments.tournamentid WHERE (player1id=${p_id} OR player2id=${p_id}) AND ${excludeErrASTsSQL} GROUP BY matches.tournamentid, tournamentname ORDER BY ast DESC LIMIT 1;`
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     try {
         const pool = await getPool.getPool();

@@ -149,3 +149,15 @@ module.exports.getFastestMatchForPlayer = async (p_id) => {
 module.exports.getSlowestMatchForPlayer = async (p_id) => {
     return await query.getSlowestMatchForPlayer(p_id);
 }
+
+module.exports.getFastestTournamentForPlayer = async (p_id) => {
+    let fastestTourn = await query.getFastestTournamentForPlayer(p_id);
+    fastestTourn[0]["ast"] = Math.round(fastestTourn[0]["ast"] * 10) / 10;
+    return fastestTourn;
+}
+
+module.exports.getSlowestTournamentForPlayer = async (p_id) => {
+    let slowestTourn = await query.getSlowestTournamentForPlayer(p_id);
+    slowestTourn[0]["ast"] = Math.round(slowestTourn[0]["ast"] * 10) / 10;
+    return slowestTourn;
+}
