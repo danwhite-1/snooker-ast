@@ -99,6 +99,11 @@ module.exports.getSlowestTournamentForPlayer = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getAbsoluteAvgAstForPlayer = (p_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE CASE WHEN player2id=${p_id} THEN player2ast END END) as ast FROM matches WHERE (player1id=${p_id} OR player2id=${p_id}) AND ${excludeErrASTsSQL}`;
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     try {
         const pool = await getPool.getPool();

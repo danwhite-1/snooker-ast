@@ -89,6 +89,9 @@ app.get('/api/playerdata', async function (req, res) {
         case "slowesttournament":
             res.send(JSON.stringify(await apiFunc.getSlowestTournamentForPlayer(req.query.player)));
             break;
+        case "absoluteavg":
+            res.send(JSON.stringify(await apiFunc.getAbsoluteAvgAstForPlayer(req.query.player)));
+            break;
         default:
             const resp = errjson.createErrJson("Error: action does not match available options", 3);
             res.send(JSON.stringify(resp));

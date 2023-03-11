@@ -161,3 +161,9 @@ module.exports.getSlowestTournamentForPlayer = async (p_id) => {
     slowestTourn[0]["ast"] = Math.round(slowestTourn[0]["ast"] * 10) / 10;
     return slowestTourn;
 }
+
+module.exports.getAbsoluteAvgAstForPlayer = async (p_id) => {
+    let abavg = await query.getAbsoluteAvgAstForPlayer(p_id);
+    abavg[0]["ast"] = Math.round(abavg[0]["ast"] * 10) / 10;
+    return abavg;
+}
