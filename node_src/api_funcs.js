@@ -25,7 +25,7 @@ module.exports.tournamentRoundAvg = async (t_id) => {
     }
     
     for(const round in roundASTs[0]) {
-        roundASTs[0][round] = Math.round((roundASTs[0][round] / roundMatchCounter[round] / 2) * 10) / 10;
+        roundASTs[0][round] = roundast((roundASTs[0][round] / roundMatchCounter[round] / 2));
     }
 
     return roundASTs;
@@ -33,7 +33,7 @@ module.exports.tournamentRoundAvg = async (t_id) => {
 
 module.exports.tournamentOverallAverage = async (t_id) => {
     let tournData = await query.getAvgAstByTournamentId(t_id);
-    tournData[0]["avgast"] = Math.round(tournData[0]["avgast"] * 10) / 10; // easier to round here than in psql
+    tournData[0]["avgast"] = roundast(tournData[0]["avgast"]);
     return tournData;
 }
 
@@ -110,13 +110,13 @@ module.exports.slowestMatchForTournament = async (t_id) => {
 
 module.exports.averageWinningASTForTournament = async (t_id) => {
     const avgWast = await query.getAvgWinningASTByTournament(t_id);
-    roundedAST = Math.round(avgWast[0]["winningast"] * 10) / 10
+    roundedAST = roundast(avgWast[0]["winningast"]);
     return { "avgast" : roundedAST};
 }
 
 module.exports.averageLosingASTForTournament = async (t_id) => {
     const avgWast = await query.getAvgLosingASTByTournament(t_id);
-    roundedAST = Math.round(avgWast[0]["losingast"] * 10) / 10
+    roundedAST = roundast(avgWast[0]["losingast"]);
     return { "avgast" : roundedAST };
 }
 
@@ -136,7 +136,7 @@ module.exports.getPlayerAverageForTournament = async (p_id) => {
             }
             shotTimeTotal += match.player1id == p_id ? match.player1ast : match.player2ast;
         }
-        ret[0][t] = Math.round((shotTimeTotal / (tournament.length - incorrectVals)) * 10) / 10;
+        ret[0][t] = roundast((shotTimeTotal / (tournament.length - incorrectVals)));
     }
 
     return ret;
@@ -152,18 +152,22 @@ module.exports.getSlowestMatchForPlayer = async (p_id) => {
 
 module.exports.getFastestTournamentForPlayer = async (p_id) => {
     let fastestTourn = await query.getFastestTournamentForPlayer(p_id);
-    fastestTourn[0]["ast"] = Math.round(fastestTourn[0]["ast"] * 10) / 10;
+    fastestTourn[0]["ast"] = roundast(fastestTourn[0]["ast"]);
     return fastestTourn;
 }
 
 module.exports.getSlowestTournamentForPlayer = async (p_id) => {
     let slowestTourn = await query.getSlowestTournamentForPlayer(p_id);
-    slowestTourn[0]["ast"] = Math.round(slowestTourn[0]["ast"] * 10) / 10;
+    slowestTourn[0]["ast"] = roundast(slowestTourn[0]["ast"]);
     return slowestTourn;
 }
 
 module.exports.getAbsoluteAvgAstForPlayer = async (p_id) => {
     let abavg = await query.getAbsoluteAvgAstForPlayer(p_id);
-    abavg[0]["ast"] = Math.round(abavg[0]["ast"] * 10) / 10;
+    abavg[0]["ast"] = roundast(abavg[0]["ast"]);
     return abavg;
+}
+
+roundast = (val) => {
+    return Math.round(val * 10) / 10;
 }
