@@ -6,10 +6,6 @@ CLIENT
 
 SERVER
 * Optimise fastest + slowest player for tournament API
-* Player Data APIs
-    * Fastest and slowest tournament
-    * Fastest and slowest Matches DONE
-    * Overall Average AST
 * Close down CORS
 
 SCRAPER
