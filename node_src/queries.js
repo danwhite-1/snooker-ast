@@ -157,6 +157,14 @@ module.exports.getAbsoluteAvgAstForPlayer = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getPlayerAvgForTournament = (p_id) => {
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE CASE WHEN player2id=${p_id} THEN player2ast END END) as ast, tournamentid FROM matches
+                 WHERE (player1id=${p_id} OR player2id=13${p_id}95)
+                  AND ${excludeErrASTsSQL}
+                 GROUP BY tournamentid;`;
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     try {
         const pool = await getPool.getPool();

@@ -139,6 +139,17 @@ module.exports.getPlayerAverageForTournament = async (p_id) => {
         ret[0][t] = roundast((shotTimeTotal / (tournament.length - incorrectVals)));
     }
 
+    /*
+    // This is an alternate way of getting the same values as above but is
+    // giving slightly different results. This should be investigated.
+    let ret1 = [{}];
+    const tournavgs = await query.getPlayerAvgForTournament(p_id);
+    for (t of tournavgs) {
+        ret1[0][t["tournamentid"]] = roundast(t["ast"]);
+    }
+    return ret1
+    */
+
     return ret;
 }
 
