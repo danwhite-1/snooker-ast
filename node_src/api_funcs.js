@@ -1,5 +1,4 @@
 const query = require('./queries')
-const { groupBy } = require('lodash');
 
 module.exports.tournamentRoundAvg = async (t_id) => {
     const matchData = await query.getMatchesByTournamentId(t_id);
