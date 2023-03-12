@@ -9,3 +9,6 @@ module.exports = function(app) {
     createProxyMiddleware(proxy)
   );
 };
+
+// NOTE: If adding a new component and fetch is not routing to the correct proxy
+// then try deleting package-lock.json and node_modules/ then reinstalling with npm i
