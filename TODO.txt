@@ -1,12 +1,15 @@
 CLIENT
-* Improve graphs
-    * Box plots
 * Show more raw stats rather than just graphs
-    * New area below the graph?
+    * Improve TournamentStats component
+        * Spin while waiting for API
+        * Make appear per tournament selected
+        * Improve formatting
+    * Implement PlayerStats component (share with tournamentstats?)
 
 SERVER
 * Optimise fastest + slowest player for tournament API
 * Close down CORS
+* BUG! Badly formed API calls can cause server crash - Cannot set headers after they have been sent to client
 
 SCRAPER
 * BUG! Qualifier tournaments could be re-added DONE - UNTESTED
