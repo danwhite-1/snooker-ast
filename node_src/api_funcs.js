@@ -121,35 +121,11 @@ module.exports.averageLosingASTForTournament = async (t_id) => {
 }
 
 module.exports.getPlayerAverageForTournament = async (p_id) => {
-    const playerMatches = await query.getMatchesByPlayerId(p_id);
-    const grouped = groupBy(playerMatches, tournament => tournament.tournamentid);
-
     let ret = [{}];
-    for (const t in grouped) {
-        const tournament = grouped[t];
-        let shotTimeTotal = 0;
-        let incorrectVals = 0;
-        for (const match of tournament) {
-            if (match.player1ast == -1 || match.player2ast == -1) {
-                incorrectVals++;
-                break;
-            }
-            shotTimeTotal += match.player1id == p_id ? match.player1ast : match.player2ast;
-        }
-        ret[0][t] = roundast((shotTimeTotal / (tournament.length - incorrectVals)));
-    }
-
-    /*
-    // This is an alternate way of getting the same values as above but is
-    // giving slightly different results. This should be investigated.
-    let ret1 = [{}];
     const tournavgs = await query.getPlayerAvgForTournament(p_id);
     for (t of tournavgs) {
-        ret1[0][t["tournamentid"]] = roundast(t["ast"]);
+        ret[0][t["tournamentid"]] = roundast(t["ast"]);
     }
-    return ret1
-    */
-
     return ret;
 }
 
