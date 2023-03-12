@@ -165,6 +165,15 @@ module.exports.getPlayerAvgForTournament = (p_id) => {
     return sendQuery(qry);
 }
 
+module.exports.getPerRoundAvgForTournament = (t_id) => {
+    const qry = `SELECT AVG((matches.player1ast + matches.player2ast) / 2), roundno FROM tournaments
+                 INNER JOIN matches ON matches.tournamentid=tournaments.tournamentid
+                 WHERE tournaments.tournamentid=${t_id}
+                 GROUP BY roundno
+                 ORDER BY roundno DESC`;
+    return sendQuery(qry);
+}
+
 sendQuery = async(query) => {
     try {
         const pool = await getPool.getPool();
