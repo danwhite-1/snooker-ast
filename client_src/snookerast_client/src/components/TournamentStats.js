@@ -4,16 +4,25 @@ class TournamentStats extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            tournavg : "50",
+            tournavg : "",
             fastestmatch : "",
             slowestmatch : "",
             avgwinast : "",
             avgloseast : "",
+            we_have_data : false
         }
     }
 
-    componentDidMount() {
-        this.loadData();
+    async componentDidMount() {
+        await this.loadData();
+        this.setState({ we_have_data : true});
+    }
+
+    async componentDidUpdate(prevProps) {
+        if (prevProps.tournamentid !== this.props.tournamentid) {
+            await this.loadData();
+            this.setState({ we_have_data : true});
+        }
     }
 
     // NOTE: There is also an API for fastest and slowest players but this
@@ -25,14 +34,16 @@ class TournamentStats extends Component {
                  "avgloseast"];
 
     loadData = async () => {
-        const tmp_tid = "14563"; // to be replaced by value provided by props
+        if (!this.props.tournamentid) return;
+
         let api_returns = {};
         for (const api_action of this.api_calls) {
-            await fetch(`/api/tournamentdata?action=${api_action}&tournament=${tmp_tid}`)
+            await fetch(`/api/tournamentdata?action=${api_action}&tournament=${this.props.tournamentid}`)
                 .then(res => res.json())
                 .then(res => {
                     api_returns[api_action] = res;
-                });
+                })
+                .catch(error => alert("An error occured getting tournament stats: " + error));
         }
 
         this.setState({
@@ -45,6 +56,12 @@ class TournamentStats extends Component {
     }
 
     render() {
+        if (!this.state.we_have_data) {
+            return (
+                <div />
+            )
+        }
+
         return (
             <div>
                 <p>Tournament Average AST: {this.state.tournavg[0]["avgast"]}</p>

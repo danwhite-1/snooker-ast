@@ -2,6 +2,7 @@ import { Component } from "react";
 import DropdownGrid from "./DropdownGrid";
 import ModeChange from "./ModeChange";
 import CustomLineChart from "./CustomLineChart";
+import TournamentStatsGrid from "./TournamentStatsGrid"
 
 class TournamentSelect extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class TournamentSelect extends Component {
             tournament_list_names : [],
             tournament_chart_data : [],
             tournamentNamesToCompare : [],
+            tournamentIdsToCompare : [],
             players_list : [],
             players_list_names : [],
             player_chart_data : [],
@@ -135,9 +137,15 @@ class TournamentSelect extends Component {
                         tNames[DDkey] = dropDownValue;
                     }
 
+                    let tIds = this.state.tournamentIdsToCompare;
+                    if (tIds[DDkey] !== "undefined") {
+                        tIds[DDkey] = selected.tournamentid;
+                    }
+
                     this.setState({
                         tournament_chart_data : this.sortRounds(rtnData),
-                        tournamentNamesToCompare : tNames
+                        tournamentNamesToCompare : tNames,
+                        tournamentIdsToCompare : tIds
                     });
                 } else {
                     alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
@@ -206,9 +214,14 @@ class TournamentSelect extends Component {
         if (this.state.mode === "T") {
             let tNames = this.state.tournamentNamesToCompare;
             tNames.pop();
+
+            let tIds = this.state.tournamentIdsToCompare;
+            tIds.pop();
+
             this.setState({
                 noToCompare : newVal,
-                tournamentNamesToCompare : tNames
+                tournamentNamesToCompare : tNames,
+                tournamentIdsToCompare : tIds
             })
         } else {
             let pNames = this.state.playerNamesToCompare;
@@ -243,6 +256,7 @@ class TournamentSelect extends Component {
                         mode="T"
                     />
                     <CustomLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
+                    <TournamentStatsGrid tournamentIds={this.state.tournamentIdsToCompare}/>
                 </div>
             )
         } else {
