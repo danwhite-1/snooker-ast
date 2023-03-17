@@ -2,7 +2,7 @@ CLIENT
 * Show more raw stats rather than just graphs
     * Improve TournamentStats component
         * Spin while waiting for API
-        * Make appear per tournament selected
+        * Make appear per tournament selected DONE
         * Improve formatting
     * Implement PlayerStats component (share with tournamentstats?)
 
