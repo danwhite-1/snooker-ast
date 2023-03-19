@@ -1,6 +1,6 @@
 import { Component } from "react";
 import CompareButtons from "./CompareButtons";
-import TournamentDropDown from "./TournamentDropDown";
+import DropDown from "./DropDown";
 
 class DropdownGrid extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class DropdownGrid extends Component {
     render() {
         return (
             <div className="DropDownGridDiv">
-                {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentDropDown
+                {Array(this.props.compareNo).fill(0).map((_, i) => <DropDown
                                                                         key={i+this.state.key_modifier} id={i} className="DropDown"
                                                                         onDDChange={this.props.handleChange}
                                                                         options={this.props.list_names}

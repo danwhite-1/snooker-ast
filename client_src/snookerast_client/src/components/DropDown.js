@@ -2,7 +2,7 @@ import { Component } from "react";
 import DropdownList from "react-widgets/DropdownList";
 import "react-widgets/styles.css";
 
-class TournamentDropDown extends Component {
+class DropDown extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -29,4 +29,4 @@ class TournamentDropDown extends Component {
     }
 }
 
-export default TournamentDropDown
+export default DropDown
