@@ -4,7 +4,7 @@ import ModeChange from "./ModeChange";
 import CustomLineChart from "./CustomLineChart";
 import TournamentStatsGrid from "./TournamentStatsGrid"
 
-class TournamentSelect extends Component {
+class SnookerAST extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -279,4 +279,4 @@ class TournamentSelect extends Component {
     }
 }
 
-export default TournamentSelect;
+export default SnookerAST;

@@ -1,11 +1,11 @@
 import './App.css';
-import TournamentSelect from './components/TournamentSelect';
+import SnookerAST from './components/SnookerAST';
 
 function App() {
   return (
     <div className='AppDiv'>
       <h1 className='title'>Snooker AST</h1>
-      <TournamentSelect />
+      <SnookerAST />
     </div>
   );
 }
