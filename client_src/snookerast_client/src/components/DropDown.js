@@ -13,7 +13,7 @@ class DropDown extends Component {
 
     handleChange = (selected) => {
         this.setState({ value : selected });
-        this.props.onDDChange(selected, this.props.id);
+        this.props.onDDChange(selected);
     }
 
     render() {

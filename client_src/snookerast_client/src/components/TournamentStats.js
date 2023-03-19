@@ -14,14 +14,18 @@ class TournamentStats extends Component {
     }
 
     async componentDidMount() {
-        await this.loadData();
-        this.setState({ we_have_data : true});
+        if (this.props.tournamentid) {
+            await this.loadData();
+            this.setState({ we_have_data : true});
+        }
     }
 
     async componentDidUpdate(prevProps) {
-        if (prevProps.tournamentid !== this.props.tournamentid) {
-            await this.loadData();
-            this.setState({ we_have_data : true});
+        if (this.props.tournamentid) {
+            if (prevProps.tournamentid !== this.props.tournamentid) {
+                await this.loadData();
+                this.setState({ we_have_data : true});
+            }
         }
     }
 
@@ -63,12 +67,12 @@ class TournamentStats extends Component {
         }
 
         return (
-            <div>
-                <p>Tournament Average AST: {this.state.tournavg[0]["avgast"]}</p>
-                <p>Fastest Match: {this.state.fastestmatch["player1"]} vs {this.state.fastestmatch["player2"]} ({this.state.fastestmatch["roundno"]}, AST: {this.state.fastestmatch["ast"]})</p>
-                <p>Slowest Match: {this.state.slowestmatch["player1"]} vs {this.state.slowestmatch["player2"]} ({this.state.fastestmatch["roundno"]}, AST: {this.state.fastestmatch["ast"]})</p>
-                <p>Average Winning AST: {this.state.avgwinast["avgast"]}</p>
-                <p>Average Losing AST: {this.state.avgloseast["avgast"]}</p>
+            <div className="TournamentStatsDiv">
+                <p className="statP">{this.state.tournavg[0]["avgast"]}</p>
+                <p className="statP">{this.state.fastestmatch["player1"]} vs {this.state.fastestmatch["player2"]} ({this.state.fastestmatch["roundno"]}, AST: {this.state.fastestmatch["ast"]})</p>
+                <p className="statP">{this.state.slowestmatch["player1"]} vs {this.state.slowestmatch["player2"]} ({this.state.slowestmatch["roundno"]}, AST: {this.state.slowestmatch["ast"]})</p>
+                <p className="statP">{this.state.avgwinast["avgast"]}</p>
+                <p className="statP">{this.state.avgloseast["avgast"]}</p>
             </div>
         )
     }

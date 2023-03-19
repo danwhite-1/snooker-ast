@@ -96,9 +96,8 @@ class SnookerAST extends Component {
         });
     }
 
-    handleTournamentDropDownChange = (dropDownValue, DDkey) => {
-        const selected = this.state.tournament_list.find(tournament => tournament.tournamentname === dropDownValue);
-        const search_url = "/api/tournamentdata?action=roundavg&tournament=" + selected.tournamentid;
+    handleTournamentDropDownChange = (selection, DDkey) => {
+        const search_url = "/api/tournamentdata?action=roundavg&tournament=" + selection.tournamentid;
 
         fetch(search_url)
             .then(res => res.json())
@@ -122,11 +121,11 @@ class SnookerAST extends Component {
                     const newData = tournamentData[0];
                     for (let r in newData) {
                         if (rtnData.find(round => round.round === r)) {
-                            rtnData.find(round => round.round === r)[dropDownValue] = newData[r]
+                            rtnData.find(round => round.round === r)[selection.tournamentname] = newData[r]
                         } else {
                             if (r !== "not found") {
                                 let obj = { round : r};
-                                obj[dropDownValue] = newData[r];
+                                obj[selection.tournamentname] = newData[r];
                                 rtnData.push(obj);
                             }
                         }
@@ -134,12 +133,12 @@ class SnookerAST extends Component {
 
                     let tNames = this.state.tournamentNamesToCompare;
                     if (tNames[DDkey] !== "undefined") {
-                        tNames[DDkey] = dropDownValue;
+                        tNames[DDkey] = selection.tournamentname;
                     }
 
                     let tIds = this.state.tournamentIdsToCompare;
                     if (tIds[DDkey] !== "undefined") {
-                        tIds[DDkey] = selected.tournamentid;
+                        tIds[DDkey] = selection.tournamentid;
                     }
 
                     this.setState({
@@ -148,7 +147,7 @@ class SnookerAST extends Component {
                         tournamentIdsToCompare : tIds
                     });
                 } else {
-                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
+                    alert("Tournament " + selection.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
                 }
             })
             .catch(error => alert("An error occured: " + error));
@@ -249,6 +248,7 @@ class SnookerAST extends Component {
                     <DropdownGrid
                         key="0"
                         handleChange={this.handleTournamentDropDownChange}
+                        tournament_list={this.state.tournament_list}
                         list_names={this.state.tournament_list_names}
                         handleNoToCompareChange={this.handleNoToCompareChange}
                         compareNo={this.state.noToCompare}
@@ -256,7 +256,6 @@ class SnookerAST extends Component {
                         mode="T"
                     />
                     <CustomLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
-                    <TournamentStatsGrid tournamentIds={this.state.tournamentIdsToCompare}/>
                 </div>
             )
         } else {
