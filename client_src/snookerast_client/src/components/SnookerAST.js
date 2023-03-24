@@ -2,7 +2,6 @@ import { Component } from "react";
 import DropdownGrid from "./DropdownGrid";
 import ModeChange from "./ModeChange";
 import CustomLineChart from "./CustomLineChart";
-import TournamentStatsGrid from "./TournamentStatsGrid"
 
 class SnookerAST extends Component {
     constructor(props) {
