@@ -1,18 +1,18 @@
 import { Component } from "react";
 import DropDown from "./DropDown";
-import TournamentStats from "./TournamentStats";
+import PlayerStats from "./PlayerStats";
 
-class TournamentSelector extends Component {
+class PlayerSelector extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            tournamentid : ""
+            playerid : ""
         }
     }
 
     onDDChange = (dropDownValue) => {
-        const selected = this.props.tournament_list.find(tournament => tournament.tournamentname === dropDownValue);
-        this.setState({ tournamentid : selected.tournamentid });
+        const selected = this.props.players_list.find(player => player.playername === dropDownValue);
+        this.setState({ playerid : selected.playerwstid });
         this.props.onDDChange(selected, this.props.id);
     }
 
@@ -25,10 +25,10 @@ class TournamentSelector extends Component {
                     options={this.props.options}
                     defaultValue={this.props.defaultValue}
                 ></DropDown>
-                <TournamentStats tournamentid={this.state.tournamentid}></TournamentStats>
+                <PlayerStats playerid={this.state.playerid}></PlayerStats>
             </div>
         )
     }
 }
 
-export default TournamentSelector
+export default PlayerSelector

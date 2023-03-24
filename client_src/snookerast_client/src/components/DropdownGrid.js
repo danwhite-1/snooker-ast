@@ -1,6 +1,7 @@
 import { Component } from "react";
 import CompareButtons from "./CompareButtons";
 import DropDown from "./DropDown";
+import PlayerSelector from "./PlayerSelector";
 import TournamentSelector from "./TournamentSelector";
 
 class DropdownGrid extends Component {
@@ -45,9 +46,17 @@ class DropdownGrid extends Component {
 
         return (
             <div className="DropDownGridDiv">
-                {Array(this.props.compareNo).fill(0).map((_, i) => <DropDown
-                                                                        key={i+this.state.key_modifier} id={i} className="DropDown"
+                <div className="statTitleDiv">
+                    <p className="statTitleP">Overall Average AST: </p>
+                    <p className="statLongTitleP">Fastest Tournament: </p>
+                    <p className="statLongTitleP">Slowest Tournament: </p>
+                    <p className="statTitleP">Fastest Match: </p>
+                    <p className="statTitleP">Slowest Match: </p>
+                </div>
+                {Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
+                                                                        key={i+this.state.key_modifier} id={i}
                                                                         onDDChange={this.props.handleChange}
+                                                                        players_list={this.props.players_list}
                                                                         options={this.props.list_names}
                                                                         defaultValue={this.props.def_val}
                                                                     />)}

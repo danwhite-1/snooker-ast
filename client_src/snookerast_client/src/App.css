@@ -12,7 +12,7 @@
 }
 
 .DropDownDiv {
-  width: 100%; /* This will break player dropdowns until playerSelector is implemented */
+  width: 100%;
   margin: auto;
   margin-bottom: 1%;
   margin-left: 1%;
@@ -55,7 +55,7 @@
   font-size: 60px;
 }
 
-.TournamentSelectorDiv {
+.SelectorDiv {
   width: 20%;
   margin: auto;
   margin-bottom: 1%;

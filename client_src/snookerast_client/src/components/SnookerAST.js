@@ -152,9 +152,8 @@ class SnookerAST extends Component {
             .catch(error => alert("An error occured: " + error));
     }
 
-    handlePlayerDropDownChange = (dropDownValue, DDkey) => {
-        const selected = this.state.players_list.find(player => player.playername === dropDownValue);
-        const search_url = "/api/playerdata?action=tournavg&player=" + selected.playerwstid;
+    handlePlayerDropDownChange = (selection, DDkey) => {
+        const search_url = "/api/playerdata?action=tournavg&player=" + selection.playerwstid;
 
         fetch(search_url)
             .then(res => res.json())
@@ -178,17 +177,17 @@ class SnookerAST extends Component {
                     const newData = playerData[0];
                     for (let t in newData) {
                         if (rtnData.find(tourn => tourn.tournid === t)) {
-                            rtnData.find(tourn => tourn.tournid === t)[dropDownValue] = newData[t]
+                            rtnData.find(tourn => tourn.tournid === t)[selection.playername] = newData[t]
                         } else {
                             let obj = { tournid : t};
-                            obj[dropDownValue] = newData[t];
+                            obj[selection.playername] = newData[t];
                             rtnData.push(obj);
                         }
                     }
 
                     let pNames = this.state.playerNamesToCompare;
                     if (pNames[DDkey] !== "undefined") {
-                        pNames[DDkey] = dropDownValue;
+                        pNames[DDkey] = selection.playername;
                     }
 
                     this.setState({
@@ -196,7 +195,7 @@ class SnookerAST extends Component {
                         playerNamesToCompare : pNames
                     });
                 } else {
-                    alert("Tournament " + selected.tournamentid + " doesn't exist. Error: " + playerData[0].e_msg);
+                    alert("Tournament " + selection.tournamentid + " doesn't exist. Error: " + playerData[0].e_msg);
                 }
             })
             .catch(error => alert("An error occured: " + error));
@@ -264,6 +263,7 @@ class SnookerAST extends Component {
                     <DropdownGrid
                         key="1"
                         handleChange={this.handlePlayerDropDownChange}
+                        players_list={this.state.players_list}
                         list_names={this.state.players_list_names}
                         handleNoToCompareChange={this.handleNoToCompareChange}
                         compareNo={this.state.noToCompare}

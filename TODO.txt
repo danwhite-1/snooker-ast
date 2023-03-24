@@ -1,13 +1,11 @@
 CLIENT
 * Show more raw stats rather than just graphs
-    * Improve TournamentStats component
-        * Spin while waiting for API
-        * Make appear per tournament selected DONE
-        * Improve formatting
-    * Implement PlayerStats component (share with tournamentstats?)
+    * Stats componemts
+        * Improve formatting!
 
 SERVER
 * Optimise fastest + slowest player for tournament API
+* Improve fastest + slowest match API calls
 * Close down CORS
 * BUG! Badly formed API calls can cause server crash - Cannot set headers after they have been sent to client
 
