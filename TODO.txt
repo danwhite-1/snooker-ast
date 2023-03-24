@@ -2,9 +2,12 @@ CLIENT
 * Show more raw stats rather than just graphs
     * Stats componemts
         * Improve formatting!
+        * Code tidyup!
+    * Break big compoents up
+    * General formatting
+    * Header
 
 SERVER
-* Optimise fastest + slowest player for tournament API
 * Improve fastest + slowest match API calls
 * Close down CORS
 * BUG! Badly formed API calls can cause server crash - Cannot set headers after they have been sent to client
