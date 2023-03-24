@@ -108,11 +108,31 @@ module.exports.getPlayerAverageForTournament = async (p_id) => {
 }
 
 module.exports.getFastestMatchForPlayer = async (p_id) => {
-    return await query.getFastestMatchForPlayer(p_id);
+    const fm = await query.getFastestMatchForPlayer(p_id);
+    const opposingplayer = await query.getPlayerNameByPlayerId(fm[0]["opposingplayer"]);
+    const tournament = await query.getTournamanetById(fm[0]["tournamentid"]);
+
+    rtn_obj = {
+        "ast" : fm[0]["ast"],
+        "opposingplayer" : opposingplayer[0]["playername"],
+        "tournament" : tournament[0]["tournamentname"],
+    }
+
+    return rtn_obj;
 }
 
 module.exports.getSlowestMatchForPlayer = async (p_id) => {
-    return await query.getSlowestMatchForPlayer(p_id);
+    const fm = await query.getSlowestMatchForPlayer(p_id);
+    const opposingplayer = await query.getPlayerNameByPlayerId(fm[0]["opposingplayer"]);
+    const tournament = await query.getTournamanetById(fm[0]["tournamentid"]);
+
+    rtn_obj = {
+        "ast" : fm[0]["ast"],
+        "opposingplayer" : opposingplayer[0]["playername"],
+        "tournament" : tournament[0]["tournamentname"],
+    }
+
+    return rtn_obj;
 }
 
 module.exports.getFastestTournamentForPlayer = async (p_id) => {
