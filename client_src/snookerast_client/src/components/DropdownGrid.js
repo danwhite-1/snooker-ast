@@ -24,15 +24,22 @@ class DropdownGrid extends Component {
         if (this.props.mode == "T") {
             return (
                 <div className="DropDownGridDiv">
-                {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
-                                                                        key={i+this.state.key_modifier} id={i}
-                                                                        onDDChange={this.props.handleChange}
-                                                                        tournament_list={this.props.tournament_list}
-                                                                        options={this.props.list_names}
-                                                                        defaultValue={this.props.def_val}
-                                                                    />)}
-                <CompareButtons compareNo={this.props.compareNo} handleNoToCompareChange={this.props.handleNoToCompareChange} />
-            </div>
+                    <div className="statTitleDiv">
+                        <p className="statTitleP">Overall Average AST: </p>
+                        <p className="statTitleP">Average Winning AST: </p>
+                        <p className="statTitleP">Average Losing AST: </p>
+                        <p className="statLongTitleP">Fastest Match: </p>
+                        <p className="statLongTitleP">Slowest Match: </p>
+                    </div>
+                    {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
+                                                                            key={i+this.state.key_modifier} id={i}
+                                                                            onDDChange={this.props.handleChange}
+                                                                            tournament_list={this.props.tournament_list}
+                                                                            options={this.props.list_names}
+                                                                            defaultValue={this.props.def_val}
+                                                                        />)}
+                    <CompareButtons compareNo={this.props.compareNo} handleNoToCompareChange={this.props.handleNoToCompareChange} />
+                </div>
             )
         }
 

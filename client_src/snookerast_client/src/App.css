@@ -21,7 +21,7 @@
 
 .CompareButtonDiv {
   margin-left: 1%;
-  display:inline-block;
+  float: left;
 }
 
 .CompareButton {
@@ -40,7 +40,7 @@
   margin: auto;
   background-color: #ffff;
   border: #ffff;
-  margin-top: 1%;
+  margin-top: 12%;
 }
 
 .CustomLineChart {
@@ -60,10 +60,23 @@
   margin: auto;
   margin-bottom: 1%;
   margin-left: 1%;
-  display: inline-block;
   vertical-align: top;
+  float: left;
 }
 
 .statP {
   margin: 5px;
+}
+
+.statTitleP {
+  margin: 5px;
+}
+
+.statLongTitleP {
+  margin: 20px;
+}
+
+.statTitleDiv {
+  padding-top: 40px;
+  float: left;
 }
