@@ -1,36 +1,28 @@
 import { Component } from "react";
-import ModeChange from "./ModeChange";
-import TournamentCompare from "./TournamentCompare";
-import PlayerCompare from "./PlayerCompare";
+import { Link } from 'react-router-dom';
+
 
 class SnookerAST extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            mode : "T"
-        };
-    }
-
-    handleModeChange = (newMode) => {
-        this.setState({ mode: newMode });
     }
 
     render() {
-        if (this.state.mode === "T") {
-            return (
-                <div>
-                    <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
-                    <TournamentCompare />
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                    <ModeChange mode={this.state.mode} handleModeChange={this.handleModeChange} />
-                    <PlayerCompare />
-                </div>
-            )
-        }
+        return (
+            <div>
+                <h1 className='title'>Snooker AST</h1>
+                <nav>
+                    <ul>
+                        <li>
+                            <Link className="link" to="/compare-players">Players</Link>
+                        </li>
+                        <li>
+                            <Link className="link" to="/compare-tournaments">Tournaments</Link>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        )
     }
 }
 
