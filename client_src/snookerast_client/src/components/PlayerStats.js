@@ -60,7 +60,6 @@ class PlayerStats extends Component {
     }
 
     render() {
-        console.log(this.state);
         if (!this.state.we_have_data) {
             return (
                 <div />
