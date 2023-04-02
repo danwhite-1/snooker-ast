@@ -6,9 +6,11 @@ CLIENT
     * Break big compoents up
     * General formatting
     * Header
+    * Sort out css file - break up into multple files
 
 SERVER
 * Improve fastest + slowest match API calls
+* Retructure player avg data returns to also get tournament names, and display those on graph
 * Close down CORS
 * BUG! Badly formed API calls can cause server crash - Cannot set headers after they have been sent to client
 

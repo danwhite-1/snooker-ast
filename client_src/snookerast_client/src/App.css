@@ -83,9 +83,22 @@
   float: left;
 }
 
+.headerDiv {
+  text-align: left;
+  width: 75%;
+  margin: 40px;
+  margin-left: 0;
+}
+
+.navDiv {
+  float: right;
+  margin-top: 10px
+}
+
 .title {
   font-size: 60px;
   display: inline-block;
+  margin: 0;
 }
 
 nav {

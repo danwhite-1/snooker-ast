@@ -9,6 +9,7 @@ function App() {
     <div className='AppDiv'>
       <SnookerAST />
       <Routes>
+        <Route path="/" element={<TournamentCompare />} />
         <Route path="/compare-players" element={<PlayerCompare />} />
         <Route path="/compare-tournaments" element={<TournamentCompare />} />
       </Routes>
