@@ -3,10 +3,9 @@ CLIENT
     * Stats componemts
         * Improve formatting!
         * Code tidyup!
-    * Break big compoents up
-    * General formatting
-    * Header
+    * Header - Improve formatting
     * Sort out css file - break up into multple files
+    * datakeys for player comparison, should be tournament names not ids
 
 SERVER
 * Improve fastest + slowest match API calls
