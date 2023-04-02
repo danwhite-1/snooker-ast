@@ -44,6 +44,15 @@ const useWindowDimensions = () => {
 export default function CustomLineChart(props) {
   const { height, width } = useWindowDimensions();
 
+  const default_str = props.dataKey == "round" ? "Select a Tournament" : "Select a Player";
+  if (props.data.length === 0) {
+    return (
+      <div className="CustomLineChartDiv CustomLineChartTemplateDiv rounded">
+        <h3>{default_str}</h3>
+      </div>
+    )
+  }
+
   return (
     <div className="CustomLineChartDiv rounded">
         <LineChart

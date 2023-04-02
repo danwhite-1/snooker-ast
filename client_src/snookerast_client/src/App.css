@@ -9,6 +9,7 @@
 .DropDownGridDiv {
   margin: auto;
   margin-top: 1%;
+  height: 240px;
 }
 
 .DropDownDiv {
@@ -40,7 +41,12 @@
   margin: auto;
   background-color: #ffff;
   border: #ffff;
-  margin-top: 12%;
+  margin-bottom: 20px;
+}
+
+.CustomLineChartTemplateDiv {
+  height: 700px;
+  line-height: 700px;
 }
 
 .CustomLineChart {
