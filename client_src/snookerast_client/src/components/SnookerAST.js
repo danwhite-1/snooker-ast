@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 
 
 class SnookerAST extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="headerDiv">

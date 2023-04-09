@@ -1,6 +1,5 @@
 import { Component } from "react";
 import CompareButtons from "./CompareButtons";
-import DropDown from "./DropDown";
 import PlayerSelector from "./PlayerSelector";
 import TournamentSelector from "./TournamentSelector";
 
@@ -14,7 +13,7 @@ class DropdownGrid extends Component {
 
     componentDidMount() {
         // Modify the key to force a re-render on a mode change
-        if (this.props.mode == "T") {
+        if (this.props.mode === "T") {
             this.setState({ key_modifier : 0 });
         } else {
             this.setState({ key_modifier : 10 });
@@ -22,7 +21,7 @@ class DropdownGrid extends Component {
     }
 
     render() {
-        if (this.props.mode == "T") {
+        if (this.props.mode === "T") {
             return (
                 <div className="DropDownGridDiv">
                     <div className="statTitleDiv">

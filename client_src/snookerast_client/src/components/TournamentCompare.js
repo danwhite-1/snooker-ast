@@ -63,6 +63,7 @@ class TournamentCompare extends Component {
             } else if (y.includes("quarter") && !x.includes("final")) {
                 return -1;
             }
+            return 1; // Should never get here
         });
     }
 

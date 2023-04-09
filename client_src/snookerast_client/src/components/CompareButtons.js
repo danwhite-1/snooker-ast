@@ -1,10 +1,6 @@
 import { Component } from "react";
 
 class CompareButtons extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     isDisabled = (type) => {
         if (type === "+" && this.props.compareNo === 4) return true;
         if (type === "-" && this.props.compareNo === 1) return true;
