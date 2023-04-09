@@ -25,11 +25,11 @@ class DropdownGrid extends Component {
             return (
                 <div className="DropDownGridDiv">
                     <div className="statTitleDiv">
-                        <p className="statTitleP">Overall Average AST: </p>
-                        <p className="statTitleP">Average Winning AST: </p>
-                        <p className="statTitleP">Average Losing AST: </p>
-                        <p className="statTitleP">Fastest Match: </p>
-                        <p className="statTitleP">Slowest Match: </p>
+                        <p className="statPSingleLine">Overall Average AST: </p>
+                        <p className="statPSingleLine">Average Winning AST: </p>
+                        <p className="statPSingleLine">Average Losing AST: </p>
+                        <p className="statTitlePTrebleLine">Fastest Match: </p>
+                        <p className="statTitlePTrebleLine">Slowest Match: </p>
                     </div>
                     {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
                                                                             key={i+this.state.key_modifier} id={i}
@@ -46,11 +46,11 @@ class DropdownGrid extends Component {
         return (
             <div className="DropDownGridDiv">
                 <div className="statTitleDiv">
-                    <p className="statTitleP">Overall Average AST: </p>
-                    <p className="statTitleP">Fastest Tournament: </p>
-                    <p className="statTitleP">Slowest Tournament: </p>
-                    <p className="statTitleP">Fastest Match: </p>
-                    <p className="statTitleP">Slowest Match: </p>
+                    <p className="statPSingleLine">Overall Average AST: </p>
+                    <p className="statTitlePDualLine">Fastest Tournament: </p>
+                    <p className="statTitlePDualLine">Slowest Tournament: </p>
+                    <p className="statTitlePTrebleLine">Fastest Match: </p>
+                    <p className="statTitlePTrebleLine">Slowest Match: </p>
                 </div>
                 {Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
                                                                         key={i+this.state.key_modifier} id={i}

@@ -68,9 +68,9 @@ class TournamentStats extends Component {
 
         return (
             <div className="TournamentStatsDiv">
-                <p className="statP statPSingleLine">{this.state.tournavg[0]["avgast"]}</p>
-                <p className="statP statPSingleLine">{this.state.avgwinast["avgast"]}</p>
-                <p className="statP statPSingleLine">{this.state.avgloseast["avgast"]}</p>
+                <p className="statPSingleLine">{this.state.tournavg[0]["avgast"]}</p>
+                <p className="statPSingleLine">{this.state.avgwinast["avgast"]}</p>
+                <p className="statPSingleLine">{this.state.avgloseast["avgast"]}</p>
                 <p className="statP">{this.state.fastestmatch["player1"]} vs {this.state.fastestmatch["player2"]} ({this.state.fastestmatch["roundno"]})<br /> AST: {this.state.fastestmatch["ast"]}</p>
                 <p className="statP">{this.state.slowestmatch["player1"]} vs {this.state.slowestmatch["player2"]} ({this.state.slowestmatch["roundno"]})<br /> AST: {this.state.slowestmatch["ast"]}</p>
             </div>

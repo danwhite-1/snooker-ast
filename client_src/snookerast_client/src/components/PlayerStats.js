@@ -68,9 +68,9 @@ class PlayerStats extends Component {
 
         return (
             <div className="PlayerStatsDiv">
-                <p className="statP statPSingleLine">{this.state.absoluteavg[0]["ast"]}</p>
-                <p className="statP">{this.state.fastesttournament[0]["tournamentname"]} AST: {this.state.fastesttournament[0]["ast"]}</p>
-                <p className="statP">{this.state.slowesttournament[0]["tournamentname"]} AST: {this.state.slowesttournament[0]["ast"]}</p>
+                <p className="statPSingleLine">{this.state.absoluteavg[0]["ast"]}</p>
+                <p className="statsPDualLine">{this.state.fastesttournament[0]["tournamentname"]}<br /> AST: {this.state.fastesttournament[0]["ast"]}</p>
+                <p className="statsPDualLine">{this.state.slowesttournament[0]["tournamentname"]}<br /> AST: {this.state.slowesttournament[0]["ast"]}</p>
                 <p className="statP">vs {this.state.fastestmatch["opposingplayer"]}, {this.state.fastestmatch["tournament"]}<br /> AST: {this.state.fastestmatch["ast"]}</p>
                 <p className="statP">vs {this.state.slowestmatch["opposingplayer"]}, {this.state.slowestmatch["tournament"]}<br /> AST: {this.state.slowestmatch["ast"]}</p>
             </div>
