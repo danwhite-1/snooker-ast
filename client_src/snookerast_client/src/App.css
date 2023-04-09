@@ -9,7 +9,7 @@
 .DropDownGridDiv {
   margin: auto;
   margin-top: 1%;
-  height: 240px;
+  height: 400px; /* DANIEL do better here */
   width: 80%;
 }
 
@@ -67,16 +67,19 @@
   float: left;
 }
 
+.statPSingleLine {
+  line-height: 60px;
+}
+
 .statP {
+  height: 60px;
   margin: 5px;
 }
 
 .statTitleP {
+  height: 60px;
   margin: 5px;
-}
-
-.statLongTitleP {
-  margin: 20px;
+  line-height: 60px;
 }
 
 .statTitleDiv {
