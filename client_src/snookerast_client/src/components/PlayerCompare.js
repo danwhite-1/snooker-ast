@@ -11,6 +11,7 @@ class PlayerCompare extends Component {
             player_chart_data : [],
             playerNamesToCompare : [],
             we_have_data : false,
+            selection_made : false,
             noToCompare : 1,
         };
     }
@@ -81,9 +82,12 @@ class PlayerCompare extends Component {
                         pNames[DDkey] = selection.playername;
                     }
 
+                    let s_m = pNames.length ? true : false;
+
                     this.setState({
                         player_chart_data : rtnData,
-                        playerNamesToCompare : pNames
+                        playerNamesToCompare : pNames,
+                        selection_made : s_m
                     });
                 } else {
                     alert("Tournament " + selection.tournamentid + " doesn't exist. Error: " + playerData[0].e_msg);
@@ -121,6 +125,7 @@ class PlayerCompare extends Component {
                     handleNoToCompareChange={this.handleNoToCompareChange}
                     compareNo={this.state.noToCompare}
                     def_val="Select a Player"
+                    selection_made={this.state.selection_made}
                     mode="M"
                 />
                 <CustomLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid" />

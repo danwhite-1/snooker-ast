@@ -2,6 +2,8 @@ import { Component } from "react";
 import CompareButtons from "./CompareButtons";
 import PlayerSelector from "./PlayerSelector";
 import TournamentSelector from "./TournamentSelector";
+import TournamentStatsTitles from "./TournamentStatsTitles";
+import PlayerStatsTitles from "./PlayerStatsTitles";
 
 class DropdownGrid extends Component {
     constructor(props) {
@@ -24,13 +26,7 @@ class DropdownGrid extends Component {
         if (this.props.mode === "T") {
             return (
                 <div className="DropDownGridDiv">
-                    <div className="statTitleDiv">
-                        <p className="statPSingleLine">Overall Average AST: </p>
-                        <p className="statPSingleLine">Average Winning AST: </p>
-                        <p className="statPSingleLine">Average Losing AST: </p>
-                        <p className="statTitlePTrebleLine">Fastest Match: </p>
-                        <p className="statTitlePTrebleLine">Slowest Match: </p>
-                    </div>
+                    { this.props.selection_made ? <TournamentStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
                     {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
                                                                             key={i+this.state.key_modifier} id={i}
                                                                             onDDChange={this.props.handleChange}
@@ -45,13 +41,7 @@ class DropdownGrid extends Component {
 
         return (
             <div className="DropDownGridDiv">
-                <div className="statTitleDiv">
-                    <p className="statPSingleLine">Overall Average AST: </p>
-                    <p className="statTitlePDualLine">Fastest Tournament: </p>
-                    <p className="statTitlePDualLine">Slowest Tournament: </p>
-                    <p className="statTitlePTrebleLine">Fastest Match: </p>
-                    <p className="statTitlePTrebleLine">Slowest Match: </p>
-                </div>
+                { this.props.selection_made ? <PlayerStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
                 {Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
                                                                         key={i+this.state.key_modifier} id={i}
                                                                         onDDChange={this.props.handleChange}

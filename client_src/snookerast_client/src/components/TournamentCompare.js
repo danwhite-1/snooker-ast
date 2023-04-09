@@ -12,6 +12,7 @@ class TournamentCompare extends Component {
             tournamentNamesToCompare : [],
             tournamentIdsToCompare : [],
             we_have_data : false,
+            selection_made : false,
             noToCompare : 1,
         };
     }
@@ -112,10 +113,13 @@ class TournamentCompare extends Component {
                         tIds[DDkey] = selection.tournamentid;
                     }
 
+                    let s_m = tNames.length ? true : false;
+
                     this.setState({
                         tournament_chart_data : this.sortRounds(rtnData),
                         tournamentNamesToCompare : tNames,
-                        tournamentIdsToCompare : tIds
+                        tournamentIdsToCompare : tIds,
+                        selection_made : s_m
                     });
                 } else {
                     alert("Tournament " + selection.tournamentid + " doesn't exist. Error: " + tournamentData[0].e_msg);
@@ -159,6 +163,7 @@ class TournamentCompare extends Component {
                     handleNoToCompareChange={this.handleNoToCompareChange}
                     compareNo={this.state.noToCompare}
                     def_val="Select a Tournament"
+                    selection_made={this.state.selection_made}
                     mode="T"
                 />
                 <CustomLineChart data={this.state.tournament_chart_data} tournNames={this.state.tournamentNamesToCompare} dataKey="round" />
