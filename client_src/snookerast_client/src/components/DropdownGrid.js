@@ -16,10 +16,8 @@ class DropdownGrid extends Component {
 
     onDDChange = (selection, id) => {
         if (this.state.ddGridDivHeight === 50) {
-            if (this.props.mode === "T") this.setState({ ddGridDivHeight : 300 });
-            else this.setState({ ddGridDivHeight : 350 })
-
-            this.setState({ render_stats : true })
+            let newHeight = this.props.mode === "T" ? 300 : 350;
+            this.setState({ render_stats : true, ddGridDivHeight : newHeight })
         }
         this.props.handleChange(selection, id);
     }
