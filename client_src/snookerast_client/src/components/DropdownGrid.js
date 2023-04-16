@@ -9,7 +9,8 @@ class DropdownGrid extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            key_modifier : 0
+            key_modifier : 0,
+            ddGridDivHeight : 50,
         }
     }
 
@@ -22,14 +23,22 @@ class DropdownGrid extends Component {
         }
     }
 
+    onDDChange = (selection, id) => {
+        if (this.state.ddGridDivHeight === 50) {
+            if (this.props.mode === "T") this.setState({ ddGridDivHeight : 300 });
+            else this.setState({ ddGridDivHeight : 350 })
+        }
+        this.props.handleChange(selection, id);
+    }
+
     render() {
         if (this.props.mode === "T") {
             return (
-                <div className="DropDownGridDiv">
+                <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
                     { this.props.selection_made ? <TournamentStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
                     {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
                                                                             key={i+this.state.key_modifier} id={i}
-                                                                            onDDChange={this.props.handleChange}
+                                                                            onDDChange={this.onDDChange}
                                                                             tournament_list={this.props.tournament_list}
                                                                             options={this.props.list_names}
                                                                             defaultValue={this.props.def_val}
@@ -40,11 +49,11 @@ class DropdownGrid extends Component {
         }
 
         return (
-            <div className="DropDownGridDiv">
+            <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
                 { this.props.selection_made ? <PlayerStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
                 {Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
                                                                         key={i+this.state.key_modifier} id={i}
-                                                                        onDDChange={this.props.handleChange}
+                                                                        onDDChange={this.onDDChange}
                                                                         players_list={this.props.players_list}
                                                                         options={this.props.list_names}
                                                                         defaultValue={this.props.def_val}

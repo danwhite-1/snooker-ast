@@ -9,8 +9,8 @@
 .DropDownGridDiv {
   margin: auto;
   margin-top: 1%;
-  height: 350px; /* DANIEL do better here */
   width: 80%;
+  transition: height 1s;
 }
 
 .DropDownDiv {
