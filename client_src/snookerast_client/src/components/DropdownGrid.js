@@ -22,32 +22,34 @@ class DropdownGrid extends Component {
     }
 
     render() {
+        let selector_jsx;
         if (this.props.mode === "T") {
-            return (
-                <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
-                    { this.props.selection_made ? <TournamentStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
-                    {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
-                                                                            key={i} id={i}
-                                                                            onDDChange={this.onDDChange}
-                                                                            tournament_list={this.props.tournament_list}
-                                                                            options={this.props.list_names}
-                                                                            defaultValue={this.props.def_val}
-                                                                        />)}
-                    <CompareButtons compareNo={this.props.compareNo} handleNoToCompareChange={this.props.handleNoToCompareChange} />
-                </div>
+            selector_jsx = (
+                Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
+                                                                                      key={i} id={i}
+                                                                                      onDDChange={this.onDDChange}
+                                                                                      tournament_list={this.props.tournament_list}
+                                                                                      options={this.props.list_names}
+                                                                                      defaultValue={this.props.def_val}
+                                                                  />)
             )
         }
-
+        else {
+            selector_jsx = (
+                Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
+                                                                                  key={i} id={i}
+                                                                                  onDDChange={this.onDDChange}
+                                                                                  players_list={this.props.players_list}
+                                                                                  options={this.props.list_names}
+                                                                                  defaultValue={this.props.def_val}
+                                                                  />)
+            )
+        }
+    
         return (
             <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
                 { this.props.selection_made ? <PlayerStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
-                {Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
-                                                                        key={i} id={i}
-                                                                        onDDChange={this.onDDChange}
-                                                                        players_list={this.props.players_list}
-                                                                        options={this.props.list_names}
-                                                                        defaultValue={this.props.def_val}
-                                                                    />)}
+                { selector_jsx }
                 <CompareButtons compareNo={this.props.compareNo} handleNoToCompareChange={this.props.handleNoToCompareChange} />
             </div>
         )
