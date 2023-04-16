@@ -9,17 +9,7 @@ class DropdownGrid extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            key_modifier : 0,
             ddGridDivHeight : 50,
-        }
-    }
-
-    componentDidMount() {
-        // Modify the key to force a re-render on a mode change
-        if (this.props.mode === "T") {
-            this.setState({ key_modifier : 0 });
-        } else {
-            this.setState({ key_modifier : 10 });
         }
     }
 
@@ -37,7 +27,7 @@ class DropdownGrid extends Component {
                 <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
                     { this.props.selection_made ? <TournamentStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
                     {Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
-                                                                            key={i+this.state.key_modifier} id={i}
+                                                                            key={i} id={i}
                                                                             onDDChange={this.onDDChange}
                                                                             tournament_list={this.props.tournament_list}
                                                                             options={this.props.list_names}
@@ -52,7 +42,7 @@ class DropdownGrid extends Component {
             <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
                 { this.props.selection_made ? <PlayerStatsTitles /> : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
                 {Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
-                                                                        key={i+this.state.key_modifier} id={i}
+                                                                        key={i} id={i}
                                                                         onDDChange={this.onDDChange}
                                                                         players_list={this.props.players_list}
                                                                         options={this.props.list_names}
