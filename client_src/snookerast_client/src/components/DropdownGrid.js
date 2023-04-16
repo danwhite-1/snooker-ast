@@ -10,6 +10,7 @@ class DropdownGrid extends Component {
         super(props)
         this.state = {
             ddGridDivHeight : 50,
+            render_stats : false,
         }
     }
 
@@ -17,6 +18,8 @@ class DropdownGrid extends Component {
         if (this.state.ddGridDivHeight === 50) {
             if (this.props.mode === "T") this.setState({ ddGridDivHeight : 300 });
             else this.setState({ ddGridDivHeight : 350 })
+
+            this.setState({ render_stats : true })
         }
         this.props.handleChange(selection, id);
     }
@@ -24,7 +27,7 @@ class DropdownGrid extends Component {
     render() {
         let selector_jsx, statTitle_jsx;
         if (this.props.mode === "T") {
-            statTitle_jsx = ( <TournamentStatsTitles /> );
+            statTitle_jsx = ( <TournamentStatsTitles render={this.state.render_stats} height={this.state.ddGridDivHeight} /> );
             selector_jsx = (
                 Array(this.props.compareNo).fill(0).map((_, i) => <TournamentSelector className="DropDown"
                                                                                       key={i} id={i}
@@ -36,7 +39,7 @@ class DropdownGrid extends Component {
             );
         }
         else {
-            statTitle_jsx = ( <PlayerStatsTitles /> );
+            statTitle_jsx = ( <PlayerStatsTitles render={this.state.render_stats} height={this.state.ddGridDivHeight} /> );
             selector_jsx = (
                 Array(this.props.compareNo).fill(0).map((_, i) => <PlayerSelector className="DropDown"
                                                                                   key={i} id={i}
@@ -50,7 +53,7 @@ class DropdownGrid extends Component {
     
         return (
             <div className="DropDownGridDiv" style={{height: `${this.state.ddGridDivHeight}px`}}>
-                { this.props.selection_made ? statTitle_jsx : <div style={{minWidth: "220px", float: "left"}}>&nbsp;</div> }
+                { statTitle_jsx }
                 { selector_jsx }
                 <CompareButtons compareNo={this.props.compareNo} handleNoToCompareChange={this.props.handleNoToCompareChange} />
             </div>
