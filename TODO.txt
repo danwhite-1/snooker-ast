@@ -4,10 +4,11 @@ CLIENT
         * Improve formatting!
         * Code tidyup!
         * Use %s instead of raw numbers
-        * Better appear/disappear on selection, utilise transitions
     * Header - Improve formatting
     * Sort out css file - break up into multple files
     * datakeys for player comparison, should be tournament names not ids
+    * BUG! Select same tournament/player on multiple DDs then change one and the original wont be preserved
+        * See TournamentCompare.js:84
 
 SERVER
 * Improve fastest + slowest match API calls
