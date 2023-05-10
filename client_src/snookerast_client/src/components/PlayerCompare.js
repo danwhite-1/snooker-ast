@@ -65,11 +65,14 @@ class PlayerCompare extends Component {
 
                     const newData = playerData[0];
                     for (let t in newData) {
-                        if (rtnData.find(tourn => tourn.tournid === t)) {
-                            rtnData.find(tourn => tourn.tournid === t)[selection.playername] = newData[t]
+                        console.log(newData[t])
+                        if (rtnData.find(tourn => tourn.tournname === newData[t]["tournamentname"])) {
+                            rtnData.find(tourn => tourn.tournname === newData[t]["tournamentname"])[selection.playername] = newData[t]["ast"]
                         } else {
-                            let obj = { tournid : t};
-                            obj[selection.playername] = newData[t];
+                            let obj = {
+                                tournname : newData[t]["tournamentname"],
+                                [selection.playername] : newData[t]["ast"],
+                            };
                             rtnData.push(obj);
                         }
                     }
@@ -90,7 +93,7 @@ class PlayerCompare extends Component {
                     alert("Tournament " + selection.tournamentid + " doesn't exist. Error: " + playerData[0].e_msg);
                 }
             })
-            .catch(error => alert("An error occured: " + error));
+            .catch(error => alert("An error occured: " + error.message));
     }
 
     handleNoToCompareChange = (newVal) => {
@@ -125,7 +128,7 @@ class PlayerCompare extends Component {
                     selection_made={this.state.selection_made}
                     mode="M"
                 />
-                <CustomLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournid" />
+                <CustomLineChart data={this.state.player_chart_data} tournNames={this.state.playerNamesToCompare} dataKey="tournname" />
             </div>
         )
     }

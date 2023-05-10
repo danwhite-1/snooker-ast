@@ -158,10 +158,11 @@ module.exports.getAbsoluteAvgAstForPlayer = (p_id) => {
 }
 
 module.exports.getPlayerAvgForTournament = (p_id) => {
-    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE CASE WHEN player2id=${p_id} THEN player2ast END END) as ast, tournamentid FROM matches
-                 WHERE (player1id=${p_id} OR player2id=${p_id})
+    const qry = `SELECT AVG(CASE WHEN player1id=${p_id} THEN player1ast ELSE CASE WHEN player2id=${p_id} THEN player2ast END END) as ast, matches.tournamentid, tournamentname FROM matches
+                 INNER JOIN tournaments ON matches.tournamentid=tournaments.tournamentid
+                  WHERE (player1id=${p_id} OR player2id=${p_id})
                   AND ${excludeErrASTsSQL}
-                 GROUP BY tournamentid;`;
+                 GROUP BY matches.tournamentid, tournamentname;`;
     return sendQuery(qry);
 }
 

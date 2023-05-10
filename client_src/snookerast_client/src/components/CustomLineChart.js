@@ -54,7 +54,7 @@ export default function CustomLineChart(props) {
   }
 
   let xaxis_jsx = ( <XAxis key={`x_${props.data.length}`} dataKey={props.dataKey} /> );;
-  if (props.dataKey === "tournid") {
+  if (props.dataKey === "tournname") {
     xaxis_jsx = ( <XAxis key={`x_${props.data.length}`} dataKey={props.dataKey} tick={false} /> );
   }
 

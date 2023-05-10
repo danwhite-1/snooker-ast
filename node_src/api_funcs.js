@@ -101,8 +101,12 @@ module.exports.averageLosingASTForTournament = async (t_id) => {
 module.exports.getPlayerAverageForTournament = async (p_id) => {
     let ret = [{}];
     const tournavgs = await query.getPlayerAvgForTournament(p_id);
+    console.log(tournavgs);
     for (t of tournavgs) {
-        ret[0][t["tournamentid"]] = roundast(t["ast"]);
+        ret[0][t["tournamentid"]] = {
+            "ast" : roundast(t["ast"]),
+            "tournamentname" : t["tournamentname"],
+        }
     }
     return ret;
 }
