@@ -6,9 +6,7 @@ CLIENT
         * Use %s instead of raw numbers
     * Header - Improve formatting
     * Sort out css file - break up into multple files
-    * datakeys for player comparison, should be tournament names not ids
-    * BUG! Select same tournament/player on multiple DDs then change one and the original wont be preserved
-        * See TournamentCompare.js:84
+* Need a checkbox to exclude the shootout
 
 SERVER
 * Improve fastest + slowest match API calls
@@ -17,7 +15,6 @@ SERVER
 * BUG! Badly formed API calls can cause server crash - Cannot set headers after they have been sent to client
 
 SCRAPER
-* BUG! Qualifier tournaments could be re-added DONE - UNTESTED
 * Deal with remaining "not found" + "-1" rounds/asts DONE - UNTESTED
 * BUG! What is up with duelbits world gp? - no matches added, possibly an error during scrape
 * Implement emails in preparation for automated running
