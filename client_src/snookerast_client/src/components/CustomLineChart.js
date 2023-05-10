@@ -44,13 +44,18 @@ const useWindowDimensions = () => {
 export default function CustomLineChart(props) {
   const { height, width } = useWindowDimensions();
 
-  const default_str = props.dataKey === "round" ? "Select a Tournament" : "Select a Player";
   if (props.data.length === 0) {
+    const default_str = props.dataKey === "round" ? "Select a Tournament" : "Select a Player";
     return (
       <div className="CustomLineChartDiv CustomLineChartTemplateDiv rounded">
         <h3>{default_str}</h3>
       </div>
     )
+  }
+
+  let xaxis_jsx = ( <XAxis key={`x_${props.data.length}`} dataKey={props.dataKey} /> );;
+  if (props.dataKey === "tournid") {
+    xaxis_jsx = ( <XAxis key={`x_${props.data.length}`} dataKey={props.dataKey} tick={false} /> );
   }
 
   return (
@@ -69,7 +74,7 @@ export default function CustomLineChart(props) {
           }}
           >
           <CartesianGrid key={`cg_${props.data.length}`} strokeDasharray="10 10" />
-          <XAxis key={`x_${props.data.length}`} dataKey={props.dataKey} />
+          { xaxis_jsx }
           <YAxis key={`y_${props.data.length}`} />
           <Tooltip key={`tt_${props.data.length}`} />
           <Legend key={`l_${props.data.length}`} />
