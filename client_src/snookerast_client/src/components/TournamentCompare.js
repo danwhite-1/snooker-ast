@@ -78,13 +78,10 @@ class TournamentCompare extends Component {
                     let rtnData = [];
                     let oldDataKey = "";
                     if (this.state.tournamentNamesToCompare.length >= DDkey) {
-                        oldDataKey = this.state.tournamentNamesToCompare[DDkey]
+                        oldDataKey = this.state.tournamentNamesToCompare[DDkey];
                     }
 
                     this.state.tournament_chart_data.forEach(function (arrayItem) {
-                        if (oldDataKey in arrayItem) {
-                            delete arrayItem[oldDataKey];
-                        }
                         if (Object.keys(arrayItem).length !== 1) {
                             rtnData.push(arrayItem);
                         }

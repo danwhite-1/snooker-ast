@@ -58,9 +58,6 @@ class PlayerCompare extends Component {
                     }
 
                     this.state.player_chart_data.forEach(function (arrayItem) {
-                        if (oldDataKey in arrayItem) {
-                            delete arrayItem[oldDataKey];
-                        }
                         if (Object.keys(arrayItem).length !== 1) {
                             rtnData.push(arrayItem);
                         }
